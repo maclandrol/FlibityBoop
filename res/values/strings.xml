@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">FlibityBoop</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="image_default">Default image!</string>
+    <string name="titre">Le Titre est un peu plus long que ce que je pensais</string>
+    <string name="date">YYYY-MM-DD</string>
+    <string name="score">0.0</string>
+    <string name="search_hint">Enter search query</string>
+    <string name="search">Search</string>
+    
+    
+    
+</resources>
