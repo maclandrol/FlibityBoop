@@ -563,7 +563,7 @@ class TMDBSearch implements MediaInfos{
 
 	@Override
 	public ArrayList<? extends MediaInfos> getSimilar() {
-		return new TheMovieDB().getSimilarMovie(this.id, 2, 2.0, 1);
+		return this.isMovie()? new TheMovieDB().getSimilarMovie(this.id, 2, 2.0, 1):null;
 	}
 	
 	public boolean equals(Object obj){
