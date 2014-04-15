@@ -1,5 +1,7 @@
 package com.maclandrol.flibityboop;
 
+import android.os.Parcel;
+import android.content.Context;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -20,7 +22,7 @@ public class RottenTomatoes extends API {
 	public static final String rottenbase = "http://api.rottentomatoes.com/api/public/v1.0/",
 			rottenkey = "?apikey=fb9vdz4avkk4g7puuapap4mf";
 	// baseURL=http://api.rottentomatoes.com/api/public/v1.0/lists.json?apikey=fb9vdz4avkk4g7puuapap4mf
-	public static final int DEFAULT_PAGE_LIMIT = 30, DEFAULT_MAX_PAGE=10;
+	public static final int DEFAULT_PAGE_LIMIT = 30, DEFAULT_MAX_PAGE = 10;
 
 	public RottenTomatoes() {
 		super(rottenbase, rottenkey);
@@ -32,27 +34,29 @@ public class RottenTomatoes extends API {
 		ArrayList<RTSearch> sr = new ArrayList<RTSearch>();
 		if (page_limit > 50 || page_limit < 1)
 			page_limit = DEFAULT_PAGE_LIMIT;
-		
-		maxPage=maxPage<DEFAULT_MAX_PAGE?maxPage:DEFAULT_MAX_PAGE;
-		
+
+		maxPage = maxPage < DEFAULT_MAX_PAGE ? maxPage : DEFAULT_MAX_PAGE;
+
 		if (maxPage < 1)
 			maxPage = 1;
-		
+
 		boolean maxPageReached = false;
 		int page = 1, total_result = 1;
 		JSONObject request;
 		JSONArray movie_list;
 
 		while (page <= maxPage && !maxPageReached) {
-			
+
 			try {
-				
-				request = this.getJSON(url + "&page_limit=" + page_limit+"&page=" + page);
+
+				request = this.getJSON(url + "&page_limit=" + page_limit
+						+ "&page=" + page);
 				total_result = request.optInt("total");
 				movie_list = request.optJSONArray("movies");
 				if (movie_list != null && movie_list.length() > 0) {
 					for (int i = 0; i < movie_list.length(); i++) {
-						sr.add(new RTSearch(movie_list.optJSONObject(i),MediaType.Movies));
+						sr.add(new RTSearch(movie_list.optJSONObject(i),
+								MediaType.Movies));
 					}
 
 				}
@@ -64,11 +68,12 @@ public class RottenTomatoes extends API {
 				maxPageReached = true;
 
 		}
-		
+
 		return sr;
 	}
 
-	public ArrayList<RTSearch> searchMovies(String query, int page_limit,int maxPage) {
+	public ArrayList<RTSearch> searchMovies(String query, int page_limit,
+			int maxPage) {
 		try {
 			query = URLEncoder.encode(query, "UTF-8");
 		} catch (UnsupportedEncodingException e) {
@@ -95,16 +100,17 @@ public class RottenTomatoes extends API {
 	}
 
 	public ArrayList<RTSearch> getSimilarMovies(int movieID, int limit) {
-		String url = this.baseURL + "movies/" + movieID + "/similar.json"+ this.key;
+		String url = this.baseURL + "movies/" + movieID + "/similar.json"
+				+ this.key;
 		if (limit > 0 && limit < 6)
 			url += "&limit=" + limit;
 		return this.getRequestPerLink(url, 1, 1);
 
 	}
 
-	public HashMap<String, String> getMovieInfos(int movieID){
-		String url = this.baseURL + "movies/" + movieID + ".json"+ this.key;
-		HashMap<String, String> infos = new HashMap<String,String>();
+	public HashMap<String, String> getMovieInfos(int movieID) {
+		String url = this.baseURL + "movies/" + movieID + ".json" + this.key;
+		HashMap<String, String> infos = new HashMap<String, String>();
 		try {
 			JSONObject mediajson = this.getJSON(url);
 			JSONArray genres = mediajson.optJSONArray("genres");
@@ -129,8 +135,8 @@ public class RottenTomatoes extends API {
 			infos.put("overview", mediajson.optString("synopsis", null));
 			infos.put("studio", mediajson.optString("studio", null));
 			JSONArray director = mediajson.optJSONArray("abridged_directors");
-			String dir_list="";
-			if(director !=null && director.length()>0){
+			String dir_list = "";
+			if (director != null && director.length() > 0) {
 				int i = 0;
 				for (i = 0; i < director.length() - 1; i++) {
 					g = director.optJSONObject(i);
@@ -145,12 +151,12 @@ public class RottenTomatoes extends API {
 
 				}
 			}
-			
+
 			infos.put("directors", dir_list);
-			
+
 			JSONArray cast = mediajson.optJSONArray("abridged_cast");
-			String cast_list="";
-			if(cast !=null && cast.length()>0){
+			String cast_list = "";
+			if (cast != null && cast.length() > 0) {
 				int i = 0;
 				for (i = 0; i < cast.length() - 1; i++) {
 					g = cast.optJSONObject(i);
@@ -165,40 +171,39 @@ public class RottenTomatoes extends API {
 
 				}
 			}
-			JSONObject link=mediajson.optJSONObject("links");
-			String links=null;
-			if(link!=null && link.has("alternate")){
-				links= link.optString("alternate");
+			JSONObject link = mediajson.optJSONObject("links");
+			String links = null;
+			if (link != null && link.has("alternate")) {
+				links = link.optString("alternate");
 			}
 			infos.put("actors", cast_list);
 			infos.put("homepage", links);
-			String imdb_id=null;
-			JSONObject alt_ids= mediajson.optJSONObject("alternate_ids");
-			if(alt_ids!=null){
-				imdb_id= alt_ids.getString("imdb");
+			String imdb_id = null;
+			JSONObject alt_ids = mediajson.optJSONObject("alternate_ids");
+			if (alt_ids != null) {
+				imdb_id = alt_ids.getString("imdb");
 			}
-			if(imdb_id!=null) imdb_id="tt"+imdb_id;
+			if (imdb_id != null)
+				imdb_id = "tt" + imdb_id;
 			infos.put("imdb", imdb_id);
 
-			
 		} catch (Exception e) {
 			erreur = "Impossible to process request";
 			e.printStackTrace();
 		}
-		
+
 		return infos;
 	}
 }
 
-
 class RTSearch implements MediaInfos {
 
 	int id, years;
-	String title, imdb_id, type, critic_consensus, release_date, runtime, freshness;
+	String title, imdb_id, type, critic_consensus, release_date, runtime,
+			freshness;
 	double audience_score, critics_score;
 	String poster_small, poster_original;
-	private HashMap<String, String> addInfos=null;
-	Bitmap bm;
+	private HashMap<String, String> addInfos = null;
 
 	public RTSearch(JSONObject jsObj, MediaType type) {
 		if (type != MediaType.Movies)
@@ -209,7 +214,7 @@ class RTSearch implements MediaInfos {
 		this.id = jsObj.optInt("id");
 		this.years = jsObj.optInt("year");
 		this.runtime = jsObj.optString("runtime", null);
-		this.audience_score =0;
+		this.audience_score = 0;
 		this.critics_score = 0;
 		this.freshness = null;
 		JSONObject rating = jsObj.optJSONObject("ratings");
@@ -218,7 +223,7 @@ class RTSearch implements MediaInfos {
 			this.critics_score = rating.optDouble("critics_score");
 			this.freshness = rating.optString("critics_rating", null);
 		}
-		
+
 		this.title = jsObj.optString("title", null);
 		this.critic_consensus = jsObj.optString("critics_consensus", null);
 		try {
@@ -240,13 +245,13 @@ class RTSearch implements MediaInfos {
 		} catch (Exception e) {
 			this.poster_original = null;
 		}
-		this.imdb_id=null;
-		JSONObject alt_ids= jsObj.optJSONObject("alternate_ids");
-		if(alt_ids!=null){
-			this.imdb_id= alt_ids.optString("imdb", null);
+		this.imdb_id = null;
+		JSONObject alt_ids = jsObj.optJSONObject("alternate_ids");
+		if (alt_ids != null) {
+			this.imdb_id = alt_ids.optString("imdb", null);
 		}
-		if(this.imdb_id!=null) this.imdb_id="tt"+this.imdb_id;
-		this.bm=API.getBitmapPoster(this.getOriginalPosterURL());
+		if (this.imdb_id != null)
+			this.imdb_id = "tt" + this.imdb_id;
 	}
 
 	@Override
@@ -254,16 +259,17 @@ class RTSearch implements MediaInfos {
 		return this.title;
 	}
 
-	public double getAudienceScore(){
+	public double getAudienceScore() {
 		return this.audience_score;
 	}
-	
-	public double getCriticScore(){
+
+	public double getCriticScore() {
 		return this.critics_score;
 	}
 
 	public double getScore() {
-		return this.audience_score>0?this.audience_score:(this.critics_score>0?this.critics_score:0);
+		return this.audience_score > 0 ? this.audience_score
+				: (this.critics_score > 0 ? this.critics_score : 0);
 	}
 
 	@Override
@@ -277,7 +283,7 @@ class RTSearch implements MediaInfos {
 	}
 
 	public MediaType getType() {
-		return this.isMovie()?MediaType.Movies:MediaType.TVShow;
+		return this.isMovie() ? MediaType.Movies : MediaType.TVShow;
 	}
 
 	@Override
@@ -288,52 +294,57 @@ class RTSearch implements MediaInfos {
 	public String getFirstAirDate() {
 		return this.getDate();
 	}
-	
-	public double getRuntime(){
-		if(this.runtime!=null)
+
+	public double getRuntime() {
+		if (this.runtime != null)
 			return Double.valueOf(this.runtime);
 		return -1;
 	}
 
 	@Override
-	public String getDate(){
-		return this.release_date!=null?this.release_date:(this.years!=0?+years+"":"N/A");
+	public String getDate() {
+		return this.release_date != null ? this.release_date
+				: (this.years != 0 ? +years + "" : "N/A");
 	}
-	
-	public String getReleaseDate(){
+
+	public String getReleaseDate() {
 		return this.getDate();
 	}
+
 	@Override
 	public String getOriginalPosterURL() {
 		return this.poster_original;
 	}
-	
-	public String getProfilePosterURL(){
+
+	public String getProfilePosterURL() {
 		return this.poster_small;
 	}
-	
-	public String getConsensusCritic(){
+
+	public String getConsensusCritic() {
 		return this.critic_consensus;
 	}
-	
-	public boolean isFresh(){
-		return this.freshness!=null && this.freshness.toLowerCase().indexOf("fresh")>0;
+
+	public boolean isFresh() {
+		return this.freshness != null
+				&& this.freshness.toLowerCase().indexOf("fresh") > 0;
 	}
-	
+
 	public String toString() {
-		return "\nTitle : "	+ this.getTitle() + "\nID : " + this.getID()
-				+ "\nType : " + this.getType() + "\nDate : " + this.getDate()  + "\nScore : " + this.getScore()+ "\nPoster url : "
-						+ this.getOriginalPosterURL();
+		return "\nTitle : " + this.getTitle() + "\nID : " + this.getID()
+				+ "\nType : " + this.getType() + "\nDate : " + this.getDate()
+				+ "\nScore : " + this.getScore() + "\nPoster url : "
+				+ this.getOriginalPosterURL();
 	}
 
 	@Override
 	public HashMap<String, String> getAdditionalFeatures() {
-		
-		if(addInfos==null) 	addInfos= new RottenTomatoes().getMovieInfos(this.getID());
-		return addInfos;	
+
+		if (addInfos == null)
+			addInfos = new RottenTomatoes().getMovieInfos(this.getID());
+		return addInfos;
 	}
-	
-	public ArrayList<Critics> getCritics(int limit){
+
+	public ArrayList<Critics> getCritics(int limit) {
 		return new RottenTomatoes().getRTCritics(this.id, limit);
 	}
 
@@ -344,7 +355,7 @@ class RTSearch implements MediaInfos {
 
 	@Override
 	public ArrayList<? extends MediaInfos> getSimilar() {
-		return new RottenTomatoes().getSimilarMovies(this.id,5);
+		return new RottenTomatoes().getSimilarMovies(this.id, 5);
 	}
 
 	@Override
@@ -356,20 +367,50 @@ class RTSearch implements MediaInfos {
 		return result;
 	}
 
-	public boolean equals(Object obj){
-		if(obj instanceof MediaInfos ){
+	public boolean equals(Object obj) {
+		if (obj instanceof MediaInfos) {
 			MediaInfos autres = (MediaInfos) obj;
-			if(autres.getTitle().equalsIgnoreCase(this.getTitle()) && autres.getType()==this.getType()) return true;
-			else return false;
+			if (autres.getTitle().equalsIgnoreCase(this.getTitle())
+					&& autres.getType() == this.getType())
+				return true;
+			else
+				return false;
 		}
 		return false;
 	}
 
-
 	@Override
-	public Bitmap getPoster() {
-		return bm;
+	public String getPosterURL(int i) {
+		if (i == 0)
+			return poster_small;
+
+		else
+			return poster_original;
 	}
 
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel out, int arg1) {
+		out.writeString(title);
+		out.writeString(imdb_id);
+		out.writeString(type);
+		out.writeString(critic_consensus);
+		out.writeString(release_date);
+		out.writeString(runtime);
+		out.writeString(freshness);
+		out.writeString(poster_small);
+		out.writeString(poster_original);
+
+		out.writeInt(id);
+		out.writeInt(years);
+
+		out.writeDouble(audience_score);
+		out.writeDouble(critics_score);
+		out.writeMap(addInfos);
+	}
 
 }

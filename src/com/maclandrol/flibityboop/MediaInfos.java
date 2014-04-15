@@ -1,12 +1,11 @@
 package com.maclandrol.flibityboop;
 
 import java.util.ArrayList;
+import android.os.Parcelable;
 import java.util.HashMap;
 
-import android.graphics.Bitmap;
-
-public interface MediaInfos {
-
+public interface MediaInfos extends Parcelable{
+	
 	public String getTitle();
 	public double getScore();
 	public boolean isMovie();
@@ -18,5 +17,4 @@ public interface MediaInfos {
 	public HashMap<String, String > getAdditionalFeatures();
 	public ArrayList<Critics> getCritics();
 	public ArrayList<? extends MediaInfos> getSimilar();
-	public Bitmap getPoster();
-}
+	public String getPosterURL(int i);}

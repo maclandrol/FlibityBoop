@@ -1,10 +1,7 @@
 package com.maclandrol.flibityboop;
 
-import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
-import java.net.URL;
 import java.net.URLEncoder;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -14,9 +11,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.util.Log;
+import android.os.Parcel;
 
 import com.maclandrol.flibityboop.API.MediaType;
 
@@ -44,7 +39,8 @@ public class TraktTV extends API {
 			query = query.replace(" ", "%2b");
 		} // this is important
 
-		String url = this.baseURL + "search/shows.json/" + this.key + "?query="	+ query;
+		String url = this.baseURL + "search/shows.json/" + this.key + "?query="
+				+ query;
 		if (limit > 0)
 			url += "&limit=" + limit;
 
@@ -53,15 +49,15 @@ public class TraktTV extends API {
 		if (j != null && j.length() > 0) {
 			for (int i = 0; i < j.length(); i++) {
 				show = j.optJSONObject(i);
-					try {
-						result.add(new TraktTVSearch(show, MediaType.TVShow));
-					} catch (Exception e) {
-						this.erreur = e.getMessage();
-						e.printStackTrace();
+				try {
+					result.add(new TraktTVSearch(show, MediaType.TVShow));
+				} catch (Exception e) {
+					this.erreur = e.getMessage();
+					e.printStackTrace();
 
-					}
 				}
-			
+			}
+
 		}
 		return result;
 	}
@@ -75,12 +71,12 @@ public class TraktTV extends API {
 		if (j != null && j.length() > 0) {
 			for (int i = 0; i < j.length(); i++) {
 				show = j.optJSONObject(i);
-					try {
-						result.add(new TraktTVSearch(show, MediaType.TVShow));
-					} catch (Exception e) {
-						this.erreur = e.getMessage();
-						e.printStackTrace();
-					}
+				try {
+					result.add(new TraktTVSearch(show, MediaType.TVShow));
+				} catch (Exception e) {
+					this.erreur = e.getMessage();
+					e.printStackTrace();
+				}
 			}
 		}
 		return result;
@@ -89,21 +85,23 @@ public class TraktTV extends API {
 
 	public ArrayList<Critics> getTVCritics(int tvdb_id) {
 		ArrayList<Critics> critiques = new ArrayList<Critics>();
-		String url = this.baseURL + "show/comments.json/" + this.key + "/"	+ tvdb_id;
+		String url = this.baseURL + "show/comments.json/" + this.key + "/"
+				+ tvdb_id;
 		JSONArray j = this.getJSONArray(url);
 		JSONObject show;
 		if (j != null && j.length() > 0) {
 			for (int i = 0; i < j.length(); i++) {
 				show = j.optJSONObject(i);
-					try {
-						critiques.add(new Critics(show.optJSONObject("user").optString("username"), show.optString("text")));
+				try {
+					critiques.add(new Critics(show.optJSONObject("user")
+							.optString("username"), show.optString("text")));
 
-					} catch (Exception e) {
-						this.erreur = e.getMessage();
-					}
+				} catch (Exception e) {
+					this.erreur = e.getMessage();
 				}
+			}
 		}
-		
+
 		return critiques;
 	}
 
@@ -118,7 +116,6 @@ class TraktTVSearch implements MediaInfos {
 	String air_day, air_time;
 	String first_date;
 	String genres, overview, network;
-	Bitmap bm;
 	private HashMap<String, String> addInfos = null;
 
 	public TraktTVSearch(JSONObject js, MediaType type) throws JSONException {
@@ -152,7 +149,8 @@ class TraktTVSearch implements MediaInfos {
 			e.printStackTrace();
 		}
 
-		this.first_date = new SimpleDateFormat("yyyy-MM-dd").format(new Date(js.optLong("first_aired")*1000));
+		this.first_date = new SimpleDateFormat("yyyy-MM-dd").format(new Date(js
+				.optLong("first_aired") * 1000));
 		try {
 			this.rating = js.optJSONObject("ratings").optDouble("percentage",
 					-1);
@@ -162,8 +160,7 @@ class TraktTVSearch implements MediaInfos {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		this.bm=API.getBitmapPoster(this.getOriginalPosterURL());
-		addInfos=new HashMap<String, String>();
+		addInfos = new HashMap<String, String>();
 		addInfos.put("overview", this.overview);
 		addInfos.put("genres", this.genres);
 		addInfos.put("runtime", String.valueOf(this.runtime));
@@ -172,7 +169,7 @@ class TraktTVSearch implements MediaInfos {
 		addInfos.put("homepage", js.optString("url"));
 		addInfos.put("country", js.optString("country"));
 		addInfos.put("fanart", js.optString("fanart"));
-		addInfos.put("status", js.optBoolean("ended")? "running" : "ended");
+		addInfos.put("status", js.optBoolean("ended") ? "running" : "ended");
 	}
 
 	public String getNetwork() {
@@ -212,7 +209,7 @@ class TraktTVSearch implements MediaInfos {
 	}
 
 	public MediaType getType() {
-		return this.isMovie()?MediaType.Movies:MediaType.TVShow;
+		return this.isMovie() ? MediaType.Movies : MediaType.TVShow;
 	}
 
 	public String getReleaseDate() {
@@ -263,20 +260,23 @@ class TraktTVSearch implements MediaInfos {
 	public ArrayList<Critics> getCritics() {
 		return new TraktTV().getTVCritics(this.getID());
 	}
-	
-	public ArrayList<? extends MediaInfos> getSimilar(){
+
+	public ArrayList<? extends MediaInfos> getSimilar() {
 		return new TraktTV().getSimilarShow(this.getID());
 	}
-	
-	public boolean equals(Object obj){
-		if(obj instanceof MediaInfos ){
+
+	public boolean equals(Object obj) {
+		if (obj instanceof MediaInfos) {
 			MediaInfos autres = (MediaInfos) obj;
-			if(autres.getTitle().equalsIgnoreCase(this.getTitle()) && autres.getType()==this.getType()) return true;
-			else return false;
+			if (autres.getTitle().equalsIgnoreCase(this.getTitle())
+					&& autres.getType() == this.getType())
+				return true;
+			else
+				return false;
 		}
 		return false;
 	}
-	
+
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
@@ -285,9 +285,37 @@ class TraktTVSearch implements MediaInfos {
 		return result;
 	}
 
+	public String getPosterURL(int i) {
+		return poster;
+	}
+
 	@Override
-	public Bitmap getPoster() {
-		return this.bm;
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel out, int arg1) {
+
+		out.writeString(title);
+		out.writeString(imdb_id);
+		out.writeString(type);
+		out.writeString(poster);
+		out.writeString(air_day);
+		out.writeString(overview);
+		out.writeString(air_time);
+		out.writeString(first_date);
+		out.writeString(genres);
+		out.writeString(network);
+
+		out.writeInt(year);
+		out.writeInt(runtime);
+		out.writeInt(tvdb_id);
+		out.writeInt(voteCount);
+
+		out.writeDouble(rating);
+
+		out.writeMap(addInfos);
 	}
 
 }
