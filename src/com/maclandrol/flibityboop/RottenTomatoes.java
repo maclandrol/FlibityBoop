@@ -115,7 +115,7 @@ public class RottenTomatoes extends API {
 				for (i = 0; i < genres.length() - 1; i++) {
 					g = genres.optJSONObject(i);
 					if (g != null && g.has("name")) {
-						genre_list += g.optString("name") + "/";
+						genre_list += g.optString("name") + ", ";
 					}
 
 				}
@@ -132,10 +132,10 @@ public class RottenTomatoes extends API {
 			String dir_list="";
 			if(director !=null && director.length()>0){
 				int i = 0;
-				for (i = 0; i < genres.length() - 1; i++) {
+				for (i = 0; i < director.length() - 1; i++) {
 					g = director.optJSONObject(i);
 					if (g != null && g.has("name")) {
-						dir_list += g.optString("name") + "/";
+						dir_list += g.optString("name") + ", ";
 					}
 
 				}
@@ -147,6 +147,31 @@ public class RottenTomatoes extends API {
 			}
 			
 			infos.put("directors", dir_list);
+			
+			JSONArray cast = mediajson.optJSONArray("abridged_cast");
+			String cast_list="";
+			if(cast !=null && cast.length()>0){
+				int i = 0;
+				for (i = 0; i < cast.length() - 1; i++) {
+					g = cast.optJSONObject(i);
+					if (g != null && g.has("name")) {
+						cast_list += g.optString("name") + ", ";
+					}
+
+				}
+				g = cast.optJSONObject(i);
+				if (g != null && g.has("name")) {
+					cast_list += g.optString("name");
+
+				}
+			}
+			JSONObject link=mediajson.optJSONObject("links");
+			String links=null;
+			if(link!=null && link.has("alternate")){
+				links= link.optString("alternate");
+			}
+			infos.put("actors", cast_list);
+			infos.put("homepage", links);
 			String imdb_id=null;
 			JSONObject alt_ids= mediajson.optJSONObject("alternate_ids");
 			if(alt_ids!=null){
@@ -193,7 +218,7 @@ class RTSearch implements MediaInfos {
 			this.critics_score = rating.optDouble("critics_score");
 			this.freshness = rating.optString("critics_rating", null);
 		}
-
+		
 		this.title = jsObj.optString("title", null);
 		this.critic_consensus = jsObj.optString("critics_consensus", null);
 		try {

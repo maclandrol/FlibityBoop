@@ -354,7 +354,7 @@ public class TheMovieDB extends API {
 				for (i = 0; i < genres.length() - 1; i++) {
 					g = genres.optJSONObject(i);
 					if (g != null && g.has("name")) {
-						genre_list += g.optString("name") + "/";
+						genre_list += g.optString("name") + ", ";
 					}
 
 				}

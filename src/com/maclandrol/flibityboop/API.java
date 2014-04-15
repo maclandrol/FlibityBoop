@@ -19,6 +19,7 @@ import org.json.JSONObject;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.util.Log;
 
 
@@ -78,11 +79,16 @@ public class API {
 		}
 		return webposter;
 	}
+	
 
-	public HashMap<String, String> getADDdata(String imdb_id, boolean tomatoes){
+	public HashMap<String, String> getADDdata(String imdb_id, String title, boolean tomatoes){
 		
 		JSONObject js =this.getJSON("http://www.omdbapi.com/?i="+imdb_id+"&tomatoes="+tomatoes);
 		HashMap<String, String> imdb_res= new HashMap<String, String>();
+		if(js==null || !js.optBoolean("Response")){
+			title= Uri.encode(title);
+			js=this.getJSON("http://www.omdbapi.com/?t="+title+"&tomatoes="+tomatoes);
+		}
 		if(js!=null && js.optBoolean("Response")){
 			imdb_res.put("iTitle", js.optString("Title"));
 			imdb_res.put("iYears", js.optString("Year"));
@@ -105,6 +111,7 @@ public class API {
 				imdb_res.put("rtUserRating", js.optString("tomatoUserRating"));
 				imdb_res.put("rtMeter", js.optString("tomatoMeter"));
 				imdb_res.put("rtRating", js.optString("tomatoRating"));
+				imdb_res.put("rtUserVotes", js.optString("tomatoUserReviews"));
 				imdb_res.put("rtVotes", js.optString("tomatoReviews"));
 				imdb_res.put("rtCertification", js.optString("tomatoImage"));
 				imdb_res.put("rtConsensus", js.optString("tomatoConsensus"));  
