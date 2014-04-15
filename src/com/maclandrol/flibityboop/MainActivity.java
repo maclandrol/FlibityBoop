@@ -3,7 +3,6 @@ package com.maclandrol.flibityboop;
 import java.util.ArrayList;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,8 +19,6 @@ import com.maclandrol.flibityboop.API.MediaType;
 
 public class MainActivity extends Activity {
 	private ListView myList;
-	private ArrayList<? extends MediaInfos> filminfosList;
-	private ArrayList<? extends MediaInfos> showinfosList;
 	private ArrayList<? extends MediaInfos> mediainfosList;
 	private MediaAdapter mAdapter;
     @Override
@@ -56,29 +53,17 @@ public class MainActivity extends Activity {
 			MainActivity.this.setProgressBarIndeterminateVisibility(true);
 
 		}
-
+		
 		protected ArrayList<? extends MediaInfos> doInBackground(String... params) {
 
-			RottenTomatoes RT = new RottenTomatoes();
-			TraktTV TTV = new TraktTV();
-			
-			ArrayList<RTSearch> a = null;
-			ArrayList<TraktTVSearch> b = null;			
+			TheMovieDB tmdb= new TheMovieDB();
+			ArrayList<TMDBSearch> a=null;
 			try{
-				a = RT.searchMovies(params[0], 5, 1);				
+				a= tmdb.searchMedia(MediaType.Any, params[0], 2);
 			}catch(Exception e){
 				Log.e("asyncError", e.getMessage());
 			}
-			try{
-				b = TTV.searchShow(params[0],5);
-			}catch(Exception e){
-				Log.e("asyncError", e.getMessage());
-			}
-			filminfosList = a;
-			showinfosList = b;
-			mediainfosList = Utility.entrelace(a,b);
-			
-			return mediainfosList;
+			return a;
 		}
 		
 
@@ -88,28 +73,20 @@ public class MainActivity extends Activity {
 		}
 		
 
-		protected void onPostExecute(ArrayList<? extends MediaInfos> c) {
+		protected void onPostExecute(ArrayList<? extends MediaInfos> a) {
 			MainActivity.this.setProgressBarIndeterminateVisibility(false);
 
-			if( c == null) {
+			if( a == null ) {
 				Toast.makeText(MainActivity.this, "Error", Toast.LENGTH_SHORT).show();
 				return;
 			}
-			
-			/*Intent i = new Intent(getApplicationContext(), SearchActivity.class);
-			i.putParcelableArrayListExtra("films",filminfosList);
-			i.putParcelableArrayListExtra("show",showinfosList);
-			i.putParcelableArrayListExtra("all",mediainfosList);
-			i.putExtra("media type",API.MediaType.Any );
-			
-			startActivity(i);
-			*/
-			
+			mediainfosList=a;
 			mAdapter= new MediaAdapter(getApplicationContext(),mediainfosList);
-			myList.setAdapter(mAdapter);			
+			myList.setAdapter(mAdapter);
 
-			}
+			
+		}
 
-	}
+	}	
     
 }

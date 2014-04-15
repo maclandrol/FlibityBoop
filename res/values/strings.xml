@@ -10,7 +10,9 @@
     <string name="score">0.0</string>
     <string name="search_hint">Enter search query</string>
     <string name="search">Search</string>
-    
-    
-    
+    <string name="media_detail_img">Media poster</string>
+   <string name="default_imdb_rate">9.2</string>
+    <string name="imdb_user">(1000)</string>
+    <string name="title_activity_media_details">MediaDetails</string>
+
 </resources>

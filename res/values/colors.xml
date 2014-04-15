@@ -2,4 +2,6 @@
 <resources>
     <color name="alt_back">#E6ECF5</color>
     <color name="back">#F5EFE6</color>
+    <color name="title">#090A0A</color>
+    <color name="appback">#FFF6F6</color>
 </resources>

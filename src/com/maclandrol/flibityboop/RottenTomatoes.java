@@ -9,10 +9,8 @@ import java.util.HashMap;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Parcel;
 import android.util.Log;
 
 import com.maclandrol.flibityboop.API.MediaType;
@@ -27,7 +25,7 @@ public class RottenTomatoes extends API {
 	public RottenTomatoes() {
 		super(rottenbase, rottenkey);
 	}
-	
+
 	public ArrayList<RTSearch> getRequestPerLink(String url, int page_limit,
 			int maxPage) {
 
@@ -117,7 +115,7 @@ public class RottenTomatoes extends API {
 				for (i = 0; i < genres.length() - 1; i++) {
 					g = genres.optJSONObject(i);
 					if (g != null && g.has("name")) {
-						genre_list += g.optString("name") + "/";
+						genre_list += g.optString("name") + ", ";
 					}
 
 				}
@@ -134,10 +132,10 @@ public class RottenTomatoes extends API {
 			String dir_list="";
 			if(director !=null && director.length()>0){
 				int i = 0;
-				for (i = 0; i < genres.length() - 1; i++) {
+				for (i = 0; i < director.length() - 1; i++) {
 					g = director.optJSONObject(i);
 					if (g != null && g.has("name")) {
-						dir_list += g.optString("name") + "/";
+						dir_list += g.optString("name") + ", ";
 					}
 
 				}
@@ -149,6 +147,31 @@ public class RottenTomatoes extends API {
 			}
 			
 			infos.put("directors", dir_list);
+			
+			JSONArray cast = mediajson.optJSONArray("abridged_cast");
+			String cast_list="";
+			if(cast !=null && cast.length()>0){
+				int i = 0;
+				for (i = 0; i < cast.length() - 1; i++) {
+					g = cast.optJSONObject(i);
+					if (g != null && g.has("name")) {
+						cast_list += g.optString("name") + ", ";
+					}
+
+				}
+				g = cast.optJSONObject(i);
+				if (g != null && g.has("name")) {
+					cast_list += g.optString("name");
+
+				}
+			}
+			JSONObject link=mediajson.optJSONObject("links");
+			String links=null;
+			if(link!=null && link.has("alternate")){
+				links= link.optString("alternate");
+			}
+			infos.put("actors", cast_list);
+			infos.put("homepage", links);
 			String imdb_id=null;
 			JSONObject alt_ids= mediajson.optJSONObject("alternate_ids");
 			if(alt_ids!=null){
@@ -175,7 +198,7 @@ class RTSearch implements MediaInfos {
 	double audience_score, critics_score;
 	String poster_small, poster_original;
 	private HashMap<String, String> addInfos=null;
-	
+	Bitmap bm;
 
 	public RTSearch(JSONObject jsObj, MediaType type) {
 		if (type != MediaType.Movies)
@@ -195,7 +218,7 @@ class RTSearch implements MediaInfos {
 			this.critics_score = rating.optDouble("critics_score");
 			this.freshness = rating.optString("critics_rating", null);
 		}
-
+		
 		this.title = jsObj.optString("title", null);
 		this.critic_consensus = jsObj.optString("critics_consensus", null);
 		try {
@@ -223,6 +246,7 @@ class RTSearch implements MediaInfos {
 			this.imdb_id= alt_ids.optString("imdb", null);
 		}
 		if(this.imdb_id!=null) this.imdb_id="tt"+this.imdb_id;
+		this.bm=API.getBitmapPoster(this.getOriginalPosterURL());
 	}
 
 	@Override
@@ -281,7 +305,6 @@ class RTSearch implements MediaInfos {
 	}
 	@Override
 	public String getOriginalPosterURL() {
-		//
 		return this.poster_original;
 	}
 	
@@ -344,41 +367,8 @@ class RTSearch implements MediaInfos {
 
 
 	@Override
-	public String getPosterURL(int i) {
-		if(i == 0)
-			return poster_small;
-			
-		else
-			return poster_original;
-	}
-
-	@Override
-	public int describeContents() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	
-	
-	@Override
-	public void writeToParcel(Parcel out, int arg1) {
-		out.writeString(title);
-		out.writeString(imdb_id);
-		out.writeString(type);
-		out.writeString(critic_consensus);
-		out.writeString(release_date);
-		out.writeString(runtime);
-		out.writeString(freshness);
-		out.writeString(poster_small);
-		out.writeString(poster_original);
-
-		out.writeInt(id);
-		out.writeInt(years);
-
-		out.writeDouble(audience_score);
-		out.writeDouble(critics_score);
-
-		out.writeMap(addInfos);
+	public Bitmap getPoster() {
+		return bm;
 	}
 
 

@@ -12,7 +12,9 @@ public final class R {
     }
     public static final class color {
         public static final int alt_back=0x7f040000;
+        public static final int appback=0x7f040003;
         public static final int back=0x7f040001;
+        public static final int title=0x7f040002;
     }
     public static final class dimen {
         /**  Default screen margins, per the Android Design guidelines. 
@@ -25,21 +27,40 @@ public final class R {
         public static final int activity_vertical_margin=0x7f050001;
     }
     public static final class drawable {
-        public static final int default_media=0x7f020000;
-        public static final int ic_launcher=0x7f020001;
-        public static final int like=0x7f020002;
-        public static final int movie=0x7f020003;
-        public static final int tvshow=0x7f020004;
+        public static final int certified=0x7f020000;
+        public static final int default_media=0x7f020001;
+        public static final int fresh=0x7f020002;
+        public static final int ic_launcher=0x7f020003;
+        public static final int imdb_logo=0x7f020004;
+        public static final int like=0x7f020005;
+        public static final int movie=0x7f020006;
+        public static final int movie_detail=0x7f020007;
+        public static final int rotten=0x7f020008;
+        public static final int rt_logo=0x7f020009;
+        public static final int star=0x7f02000a;
+        public static final int trakt_love=0x7f02000b;
+        public static final int tvshow=0x7f02000c;
+        public static final int user_dislike=0x7f02000d;
+        public static final int user_like=0x7f02000e;
     }
     public static final class id {
         public static final int LinearLayout1=0x7f090000;
         public static final int LinearLayout2=0x7f090001;
-        public static final int action_settings=0x7f09000d;
+        public static final int action_settings=0x7f090016;
+        public static final int d_title=0x7f09000d;
         public static final int date=0x7f090009;
+        public static final int freshness=0x7f090013;
+        public static final int imdb_rating=0x7f090010;
+        public static final int imdb_site=0x7f090012;
+        public static final int imdb_star=0x7f09000f;
+        public static final int imdb_voteCount=0x7f090011;
         public static final int mainList=0x7f090004;
         public static final int mediaList=0x7f090005;
         public static final int media_infos=0x7f090006;
+        public static final int media_poster=0x7f09000e;
         public static final int poster=0x7f090007;
+        public static final int rt_rate=0x7f090015;
+        public static final int rt_vote=0x7f090014;
         public static final int score=0x7f09000a;
         public static final int score_icon=0x7f09000b;
         public static final int search_bar=0x7f090002;
@@ -50,20 +71,27 @@ public final class R {
     public static final class layout {
         public static final int activity_main=0x7f030000;
         public static final int film_display=0x7f030001;
-        public static final int searchresults=0x7f030002;
+        public static final int media_details=0x7f030002;
     }
     public static final class menu {
         public static final int main=0x7f080000;
+        public static final int media_details=0x7f080001;
     }
     public static final class string {
         public static final int action_settings=0x7f060001;
         public static final int app_name=0x7f060000;
         public static final int date=0x7f060005;
+        public static final int default_imdb_rate=0x7f06000a;
+        public static final int freshness=0x7f06000e;
         public static final int hello_world=0x7f060002;
         public static final int image_default=0x7f060003;
+        public static final int imdb=0x7f06000d;
+        public static final int imdb_user=0x7f06000b;
+        public static final int media_detail_img=0x7f060009;
         public static final int score=0x7f060006;
         public static final int search=0x7f060008;
         public static final int search_hint=0x7f060007;
+        public static final int title_activity_media_details=0x7f06000c;
         public static final int titre=0x7f060004;
     }
     public static final class style {
