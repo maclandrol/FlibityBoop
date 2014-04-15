@@ -4,8 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import android.graphics.Bitmap;
+import android.os.Parcelable;
 
-public interface MediaInfos {
+public interface MediaInfos extends Parcelable{
 
 	public String getTitle();
 	public double getScore();
@@ -18,5 +19,6 @@ public interface MediaInfos {
 	public HashMap<String, String > getAdditionalFeatures();
 	public ArrayList<Critics> getCritics();
 	public ArrayList<? extends MediaInfos> getSimilar();
-	public Bitmap getPoster();
+	public String getPosterURL(int i);
+	
 }
