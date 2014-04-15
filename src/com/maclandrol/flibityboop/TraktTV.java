@@ -16,6 +16,7 @@ import org.json.JSONObject;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Parcel;
 import android.util.Log;
 
 import com.maclandrol.flibityboop.API.MediaType;
@@ -118,7 +119,6 @@ class TraktTVSearch implements MediaInfos {
 	String air_day, air_time;
 	String first_date;
 	String genres, overview, network;
-	Bitmap bm;
 	private HashMap<String, String> addInfos = null;
 
 	public TraktTVSearch(JSONObject js, MediaType type) throws JSONException {
@@ -162,7 +162,6 @@ class TraktTVSearch implements MediaInfos {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		this.bm=API.getBitmapPoster(this.getOriginalPosterURL());
 		addInfos=new HashMap<String, String>();
 		addInfos.put("overview", this.overview);
 		addInfos.put("genres", this.genres);
@@ -286,8 +285,38 @@ class TraktTVSearch implements MediaInfos {
 	}
 
 	@Override
-	public Bitmap getPoster() {
-		return this.bm;
+	public String getPosterURL(int i) {
+		return poster;
+	}
+
+	@Override
+	public int describeContents() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel out, int arg1) {
+		// TODO Auto-generated method stub
+		out.writeString(title);
+		out.writeString(imdb_id);
+		out.writeString(type);
+		out.writeString(poster);
+		out.writeString(air_day);
+		out.writeString(overview);
+		out.writeString(air_time);
+		out.writeString(first_date);
+		out.writeString(genres);
+		out.writeString(network);
+
+		out.writeInt(year);
+		out.writeInt(runtime);
+		out.writeInt(tvdb_id);
+		out.writeInt(voteCount);
+
+		out.writeDouble(rating);
+
+		out.writeMap(addInfos);		
 	}
 
 }

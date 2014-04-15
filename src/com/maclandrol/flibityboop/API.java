@@ -2,6 +2,8 @@ package com.maclandrol.flibityboop;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.util.HashMap;
 
 import org.apache.http.HttpEntity;
@@ -61,34 +63,43 @@ public class API {
 	
 	public static Bitmap getBitmapPoster(String poster_url) {
 		Bitmap webposter = null;
+		
 		Log.d("url", poster_url);
-		try {
-			InputStream in = new java.net.URL(poster_url).openStream();
-			BufferedInputStream buf = new BufferedInputStream(in);
-
-			webposter = BitmapFactory.decodeStream(buf);
-			if (in != null) {
-				in.close();
+		//try {
+			
+			try {
+				InputStream in = new java.net.URL(poster_url).openStream();
+				BufferedInputStream buf = new BufferedInputStream(in); 
+				webposter = BitmapFactory.decodeStream(buf);
+				
+				 if (in != null) {
+				 
+					in.close();
+					Log.d("nullfound","input stream vide");
+				}
+				if (buf != null) {
+					buf.close();
+					Log.d("nullfound","buff stream vide");
+				}
+			} catch (MalformedURLException e) {
+				// TODO Auto-generated catch block
+				Log.e("url","malformedURL");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				Log.e("Error", "");
 			}
-			if (buf != null) {
-				buf.close();
-			}
-		} catch (Exception e) {
-			Log.e("Error", e.getMessage());
-			e.printStackTrace();
-		}
+			
+			/*
+		} catch (Exception erreur) {
+			Log.e("Error", "bitmap factory exception");
+		}*/
 		return webposter;
 	}
-	
 
-	public HashMap<String, String> getADDdata(String imdb_id, String title, boolean tomatoes){
+	public HashMap<String, String> getADDdata(String imdb_id, boolean tomatoes){
 		
 		JSONObject js =this.getJSON("http://www.omdbapi.com/?i="+imdb_id+"&tomatoes="+tomatoes);
 		HashMap<String, String> imdb_res= new HashMap<String, String>();
-		if(js==null || !js.optBoolean("Response")){
-			title= Uri.encode(title);
-			js=this.getJSON("http://www.omdbapi.com/?t="+title+"&tomatoes="+tomatoes);
-		}
 		if(js!=null && js.optBoolean("Response")){
 			imdb_res.put("iTitle", js.optString("Title"));
 			imdb_res.put("iYears", js.optString("Year"));
@@ -111,7 +122,6 @@ public class API {
 				imdb_res.put("rtUserRating", js.optString("tomatoUserRating"));
 				imdb_res.put("rtMeter", js.optString("tomatoMeter"));
 				imdb_res.put("rtRating", js.optString("tomatoRating"));
-				imdb_res.put("rtUserVotes", js.optString("tomatoUserReviews"));
 				imdb_res.put("rtVotes", js.optString("tomatoReviews"));
 				imdb_res.put("rtCertification", js.optString("tomatoImage"));
 				imdb_res.put("rtConsensus", js.optString("tomatoConsensus"));  

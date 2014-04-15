@@ -3,7 +3,6 @@ package com.maclandrol.flibityboop;
 import java.util.ArrayList;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,7 +17,7 @@ import android.widget.Toast;
 import com.example.flibityboop.R;
 import com.maclandrol.flibityboop.API.MediaType;
 
-public class MainActivity extends Activity {
+public class MainActivity2 extends Activity {
 	private ListView myList;
 	private ArrayList<? extends MediaInfos> filminfosList;
 	private ArrayList<? extends MediaInfos> showinfosList;
@@ -50,13 +49,14 @@ public class MainActivity extends Activity {
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
+    
     private class DownloadLoginTask extends AsyncTask<String, String, ArrayList<? extends MediaInfos>> {
 	
 		protected void onPreExecute() {
-			MainActivity.this.setProgressBarIndeterminateVisibility(true);
+			MainActivity2.this.setProgressBarIndeterminateVisibility(true);
 
 		}
-
+		
 		protected ArrayList<? extends MediaInfos> doInBackground(String... params) {
 
 			RottenTomatoes RT = new RottenTomatoes();
@@ -65,12 +65,12 @@ public class MainActivity extends Activity {
 			ArrayList<RTSearch> a = null;
 			ArrayList<TraktTVSearch> b = null;			
 			try{
-				a = RT.searchMovies(params[0], 5, 1);				
+				a = RT.searchMovies(params[0], 30, 1);				
 			}catch(Exception e){
 				Log.e("asyncError", e.getMessage());
 			}
 			try{
-				b = TTV.searchShow(params[0],5);
+				b = TTV.searchShow(params[0],30);
 			}catch(Exception e){
 				Log.e("asyncError", e.getMessage());
 			}
@@ -89,26 +89,16 @@ public class MainActivity extends Activity {
 		
 
 		protected void onPostExecute(ArrayList<? extends MediaInfos> c) {
-			MainActivity.this.setProgressBarIndeterminateVisibility(false);
+			MainActivity2.this.setProgressBarIndeterminateVisibility(false);
 
 			if( c == null) {
-				Toast.makeText(MainActivity.this, "Error", Toast.LENGTH_SHORT).show();
+				Toast.makeText(MainActivity2.this, "Error", Toast.LENGTH_SHORT).show();
 				return;
 			}
 			
-			/*Intent i = new Intent(getApplicationContext(), SearchActivity.class);
-			i.putParcelableArrayListExtra("films",filminfosList);
-			i.putParcelableArrayListExtra("show",showinfosList);
-			i.putParcelableArrayListExtra("all",mediainfosList);
-			i.putExtra("media type",API.MediaType.Any );
-			
-			startActivity(i);
-			*/
-			
 			mAdapter= new MediaAdapter(getApplicationContext(),mediainfosList);
 			myList.setAdapter(mAdapter);			
-
-			}
+		}
 
 	}
     

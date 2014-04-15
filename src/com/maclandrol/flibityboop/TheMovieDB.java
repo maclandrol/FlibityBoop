@@ -12,8 +12,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Parcel;
 import android.util.Log;
 
 import com.maclandrol.flibityboop.API.MediaType;
@@ -25,16 +27,9 @@ public class TheMovieDB extends API {
 	public static final String img_URL = "http://image.tmdb.org/t/p/";
 
 	// format possible des posters
-	static HashSet<Integer> poster_size = new HashSet<Integer>() {
-		{
-			add(92);
-			add(154);
-			add(185);
-			add(342);
-			add(500);
-			add(780);
-		}
-	};
+	static int[] poster_size = {92,154,185,342,500,780};
+
+
 
 	// liste de tous les genre possible. Mieux en durs (encore mieux dans une
 	// base de donnée)
@@ -354,7 +349,7 @@ public class TheMovieDB extends API {
 				for (i = 0; i < genres.length() - 1; i++) {
 					g = genres.optJSONObject(i);
 					if (g != null && g.has("name")) {
-						genre_list += g.optString("name") + ", ";
+						genre_list += g.optString("name") + "/";
 					}
 
 				}
@@ -456,7 +451,6 @@ class TMDBSearch implements MediaInfos{
 	int id, voteCount;
 	double averageVote, popularity;
 	String first_date;
-	Bitmap bm;
 	private HashMap<String, String> addInfos=null;
 
 	public TMDBSearch(JSONObject js, MediaType type) throws JSONException {
@@ -477,7 +471,6 @@ class TMDBSearch implements MediaInfos{
 			this.first_date = js.getString("first_air_date");
 			this.type = "show";
 		}
-		this.bm=API.getBitmapPoster(this.getPosterURL(92));
 	}
 
 	public boolean isMovie() {
@@ -536,10 +529,20 @@ class TMDBSearch implements MediaInfos{
 	}
 
 	public String getPosterURL(int size) {
-		if (TheMovieDB.poster_size.contains(new Integer(size)))
-			return TheMovieDB.img_URL + "w" + size + this.poster;
-		else
+		switch(size){
+		case 0:
+			return TheMovieDB.img_URL + "w" + TheMovieDB.poster_size[0] + this.poster;
+		case 1:
+			return TheMovieDB.img_URL + "w" + TheMovieDB.poster_size[1] + this.poster;
+		case 2:
+			return TheMovieDB.img_URL + "w" + TheMovieDB.poster_size[2] + this.poster;
+		case 3:
+			return TheMovieDB.img_URL + "w" + TheMovieDB.poster_size[3] + this.poster;
+		case 4:
+			return TheMovieDB.img_URL + "w" + TheMovieDB.poster_size[4] + this.poster;
+		default:
 			return getOriginalPosterURL();
+		}
 	}
 
 	public String toString() {
@@ -583,9 +586,26 @@ class TMDBSearch implements MediaInfos{
 		return result;
 	}
 
+
 	@Override
-	public Bitmap getPoster() {
-		return this.bm;
+	public int describeContents() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel out, int arg1) {
+		
+		out.writeString(poster);
+		out.writeString(ori_title);
+		out.writeString(title);
+		out.writeString(type);
+		out.writeString(first_date);
+		out.writeInt(id);
+		out.writeInt(voteCount);
+		out.writeDouble(averageVote);
+		out.writeDouble(popularity);
+		out.writeMap(addInfos);
 	}
 	
 
