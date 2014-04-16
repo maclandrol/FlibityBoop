@@ -16,8 +16,6 @@ import java.util.WeakHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import com.example.flibityboop.R;
-
 import android.os.Handler;
 import android.content.Context;
 import android.graphics.Bitmap;

@@ -1,7 +1,10 @@
 package com.maclandrol.flibityboop;
 
 import android.os.Parcel;
+import android.os.Parcelable;
+import android.os.Parcelable.Creator;
 import android.content.Context;
+
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -254,6 +257,27 @@ class RTSearch implements MediaInfos {
 			this.imdb_id = "tt" + this.imdb_id;
 	}
 
+	public RTSearch(Parcel source) {
+		
+		title = source.readString();
+		imdb_id = source.readString();
+		type = source.readString();
+		critic_consensus = source.readString();
+		release_date = source.readString();
+		runtime = source.readString();
+		freshness = source.readString();
+		poster_small = source.readString();
+		poster_original = source.readString();
+		
+		id = source.readInt();
+		years = source.readInt();
+		
+		audience_score = source.readDouble();
+		critics_score = source.readDouble();
+
+		addInfos = source.readHashMap(null);
+	}
+
 	@Override
 	public String getTitle() {
 		return this.title;
@@ -412,5 +436,22 @@ class RTSearch implements MediaInfos {
 		out.writeDouble(critics_score);
 		out.writeMap(addInfos);
 	}
+	
+	public static final Parcelable.Creator<RTSearch> CREATOR = new Creator<RTSearch>(){
+
+		@Override
+		public RTSearch createFromParcel(Parcel source) {
+			// TODO Auto-generated method stub
+			return new RTSearch(source);
+		}
+
+		@Override
+		public RTSearch[] newArray(int size) {
+			// TODO Auto-generated method stub
+			return new RTSearch[size];
+		}
+		
+		
+	};
 
 }

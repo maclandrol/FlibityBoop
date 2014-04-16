@@ -14,7 +14,6 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.example.flibityboop.R;
 import com.maclandrol.flibityboop.API.MediaType;
 
 public class MainActivity2 extends Activity {

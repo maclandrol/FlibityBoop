@@ -12,6 +12,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.os.Parcel;
+import android.os.Parcelable;
 
 import com.maclandrol.flibityboop.API.MediaType;
 
@@ -172,6 +173,29 @@ class TraktTVSearch implements MediaInfos {
 		addInfos.put("status", js.optBoolean("ended") ? "running" : "ended");
 	}
 
+	public TraktTVSearch(Parcel source) {
+		
+		title = source.readString();
+		imdb_id = source.readString();
+		type = source.readString();
+		poster = source.readString();
+		air_day = source.readString();
+		overview = source.readString();
+		air_time = source.readString();
+		first_date = source.readString();
+		genres = source.readString();
+		network = source.readString();
+
+		year = source.readInt();
+		runtime = source.readInt();
+		tvdb_id = source.readInt();
+		voteCount = source.readInt();
+
+		rating = source.readDouble();
+
+		addInfos = source.readHashMap(null);
+	}
+
 	public String getNetwork() {
 		return this.network;
 	}
@@ -317,5 +341,22 @@ class TraktTVSearch implements MediaInfos {
 
 		out.writeMap(addInfos);
 	}
+	
+	public static final Parcelable.Creator<TraktTVSearch> CREATOR = new Creator<TraktTVSearch>(){
+
+		@Override
+		public TraktTVSearch createFromParcel(Parcel source) {
+			// TODO Auto-generated method stub
+			return new TraktTVSearch(source);
+		}
+
+		@Override
+		public TraktTVSearch[] newArray(int size) {
+			// TODO Auto-generated method stub
+			return new TraktTVSearch[size];
+		}
+		
+		
+	};
 
 }

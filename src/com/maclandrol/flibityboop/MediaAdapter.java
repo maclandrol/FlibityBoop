@@ -12,7 +12,6 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.flibityboop.R;
 
 public class MediaAdapter extends BaseAdapter {
 	ImageLoader imageLoader = null;

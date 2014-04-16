@@ -15,7 +15,6 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.example.flibityboop.R;
 import com.maclandrol.flibityboop.API.MediaType;
 
 public class MainActivity extends Activity {
@@ -96,17 +95,16 @@ public class MainActivity extends Activity {
 				return;
 			}
 			
-			/*Intent i = new Intent(getApplicationContext(), SearchActivity.class);
+			Intent i = new Intent(getApplicationContext(), SearchActivity.class);
 			i.putParcelableArrayListExtra("films",filminfosList);
-			i.putParcelableArrayListExtra("show",showinfosList);
-			i.putParcelableArrayListExtra("all",mediainfosList);
+			i.putParcelableArrayListExtra("shows",showinfosList);
 			i.putExtra("media type",API.MediaType.Any );
 			
 			startActivity(i);
-			*/
 			
-			mAdapter= new MediaAdapter(getApplicationContext(),mediainfosList);
-			myList.setAdapter(mAdapter);			
+			
+			//mAdapter= new MediaAdapter(getApplicationContext(),mediainfosList);
+			//myList.setAdapter(mAdapter);			
 
 			}
 

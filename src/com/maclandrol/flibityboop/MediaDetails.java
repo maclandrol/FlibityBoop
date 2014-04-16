@@ -1,8 +1,5 @@
 package com.maclandrol.flibityboop;
 
-import com.example.flibityboop.R;
-import com.example.flibityboop.R.layout;
-import com.example.flibityboop.R.menu;
 
 import android.os.Bundle;
 import android.app.Activity;
