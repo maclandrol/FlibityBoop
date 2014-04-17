@@ -5,6 +5,7 @@ import java.util.List;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,11 +62,11 @@ public class MediaAdapter extends BaseAdapter {
 		else
 			date.setText("N/A");
 		ImageView type = (ImageView) view.findViewById(R.id.type_icon);
-		type.setImageResource(media.isMovie() ? R.drawable.movie
-				: R.drawable.tvshow);
+		type.setImageResource(media.isMovie() ? R.drawable.movie: R.drawable.tvshow);
+		Log.d("url", media.getOriginalPosterURL());
 		ImageView poster = (ImageView) view.findViewById(R.id.poster);
 
-		imageLoader.DisplayImage(media.getOriginalPosterURL(), poster);
+		imageLoader.DisplayImage(media.getPosterURL(1), poster);
 		if (position % 2 == 0)
 			view.setBackgroundColor(_context.getResources().getColor(
 					R.color.alt_back));
