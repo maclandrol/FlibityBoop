@@ -11,6 +11,8 @@ import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -18,6 +20,16 @@ import android.widget.Toast;
 import com.maclandrol.flibityboop.API.MediaType;
 
 public class MainActivity extends Activity {
+	private class ListOnItemClick implements OnItemClickListener
+	{
+		@Override
+		public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
+				Intent i = new Intent(MainActivity.this, MediaDetails.class);
+				startActivity(i);
+
+			
+		}
+	}
 	private ListView myList;
 	private ArrayList<? extends MediaInfos> filminfosList;
 	private ArrayList<? extends MediaInfos> showinfosList;
@@ -39,6 +51,8 @@ public class MainActivity extends Activity {
 
 			}
 		});
+		myList.setOnItemClickListener(new ListOnItemClick());
+
 
     }
 
