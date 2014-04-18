@@ -3,7 +3,8 @@ package com.maclandrol.flibityboop;
 import java.util.List;
 
 import android.content.Context;
-import android.util.Log;
+import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +12,9 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class MediaAdapter extends BaseAdapter {
+
+public class MediaAdapter extends BaseAdapter {	
+	
 	ImageLoader imageLoader = null;
 	private Context _context;
 	private List<? extends MediaInfos> _data;
@@ -58,12 +61,13 @@ public class MediaAdapter extends BaseAdapter {
 		else
 			date.setText("N/A");
 		ImageView type = (ImageView) view.findViewById(R.id.type_icon);
-		type.setImageResource(media.isMovie() ? R.drawable.movie: R.drawable.tvshow);
-		Log.d("url", media.getOriginalPosterURL());
-		ImageView poster = (ImageView) view.findViewById(R.id.poster);
+		type.setImageResource(media.isMovie() ? R.drawable.movie
+				: R.drawable.tvshow);
+		ImageView poster= (ImageView) view.findViewById(R.id.poster);
 
-		imageLoader.DisplayImage(media.getPosterURL(1), poster);
-		if (position % 2 == 0)
+		imageLoader.DisplayImage(media.getOriginalPosterURL(), poster);
+
+		if (media.isMovie())
 			view.setBackgroundColor(_context.getResources().getColor(
 					R.color.alt_back));
 		else

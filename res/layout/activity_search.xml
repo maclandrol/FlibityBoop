@@ -1,16 +1,75 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/container"
+    android:id="@+id/searchLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.maclandrol.flibityboop.SearchActivity"
     tools:ignore="MergeRootFrame" >
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dip"
+		android:gravity="right" 
+		android:layout_marginTop="5dip"
+		android:layout_marginBottom="10dip">
+
+        <ProgressBar
+            android:id="@+id/searchToggleProgress2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:padding="5dp"
+            android:visibility="visible" />
+        
+        <ToggleButton
+            android:id="@+id/searchToggleMovies"
+            android:layout_width="40dip"
+            android:layout_height="match_parent"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/search_movie_check"
+            android:checked="true"
+            android:onClick="onMovieToggleClicked"
+            android:textOff=""
+            android:padding="5dp"
+            android:textOn="" />
+
+        <ToggleButton
+            android:id="@+id/searchToggleTVShows"
+            android:layout_width="40dip"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/search_show_check"
+            android:checked="true"
+            android:onClick="onShowToggleClicked"
+            android:textOff=""
+            android:padding="5dp"
+            android:textOn="" />
+
+    </LinearLayout>
+
     <ListView
         android:id="@+id/searchList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
-
     </ListView>
+
+    </LinearLayout>
+    
+    <TextView
+        android:id="@+id/noResult"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="center"
+        android:text="@string/noResult"
+        android:textSize="@dimen/font"
+        android:visibility="invisible" />
+    
 
 </FrameLayout>
