@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.flibityboop"
+    package="com.maclandrol.flibityboop"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -28,6 +28,10 @@
         <activity
             android:name="com.maclandrol.flibityboop.MediaDetails"
             android:label="@string/title_activity_media_details" >
+        </activity>
+        <activity
+            android:name="com.maclandrol.flibityboop.SearchActivity"
+            android:label="@string/title_activity_search" >
         </activity>
     </application>
 

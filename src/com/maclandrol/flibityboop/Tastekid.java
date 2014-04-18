@@ -9,7 +9,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.maclandrol.flibityboop.API.MediaType;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 ///CLASSE TASTEKID API!!
 public class Tastekid extends API {
@@ -36,9 +37,11 @@ public class Tastekid extends API {
 		JSONObject series = getJSONSeries(name, qType);
 
 		try {
-			JSONArray serie_result = series.getJSONObject("Similar").optJSONArray("Results");
+			JSONArray serie_result = series.getJSONObject("Similar")
+					.optJSONArray("Results");
 			for (int i = 0; i < serie_result.length(); i++) {
-				movies.getJSONObject("Similar").accumulate("Results", serie_result.get(i));
+				movies.getJSONObject("Similar").accumulate("Results",
+						serie_result.get(i));
 			}
 
 		} catch (JSONException e) {
@@ -90,9 +93,9 @@ public class Tastekid extends API {
 	// Cette methode retourne les infos sur le query (le titre cherché)
 	// NB: xa prends un JSON en argument et non un name, donc faire getJSON****
 	// avant
-	public Tastekid.TKSearchResult getMediaInfos(JSONObject jsList) {
+	public TKSearchResult getMediaInfos(JSONObject jsList) {
 
-		Tastekid.TKSearchResult current = null;
+		TKSearchResult current = null;
 
 		JSONArray jsMediaList;
 		try {
@@ -100,7 +103,6 @@ public class Tastekid extends API {
 			JSONObject jsMedia = jsMediaList.getJSONObject(0);
 			current = this.GetMediaFeatures(jsMedia);
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return current;
@@ -108,9 +110,10 @@ public class Tastekid extends API {
 
 	// Cette méthode retourne les resultats des recommendation obtenue pour la
 	// requete:
-	public ArrayList<Tastekid.TKSearchResult> getRecomMediaInfos(JSONObject jsList) {
+	public ArrayList<TKSearchResult> getRecomMediaInfos(
+			JSONObject jsList) {
 
-		ArrayList<Tastekid.TKSearchResult> currents = new ArrayList<Tastekid.TKSearchResult>();
+		ArrayList<TKSearchResult> currents = new ArrayList<TKSearchResult>();
 		try {
 			JSONArray jsMediaList = jsList.getJSONObject("Similar")
 					.getJSONArray("Results");
@@ -132,71 +135,107 @@ public class Tastekid extends API {
 
 	// Methode privée pour retourner un objet de type Tastekid.SearchResult à
 	// partir d'un JSON
-	private Tastekid.TKSearchResult GetMediaFeatures(JSONObject jsMedia)
-			throws ParseException, JSONException {
-		return new Tastekid.TKSearchResult(jsMedia.getString("wTeaser"),
-				jsMedia.getString("Type"), jsMedia.getString("Name"),
-				jsMedia.getString("wUrl"), jsMedia.getString("yTitle"),
-				jsMedia.getString("yUrl"));
+	private TKSearchResult GetMediaFeatures(JSONObject jsMedia){
+		return new TKSearchResult(jsMedia.optString("wTeaser"),
+				jsMedia.optString("Type"), jsMedia.optString("Name"),
+				jsMedia.optString("wUrl"), jsMedia.optString("yTitle"),
+				jsMedia.optString("yUrl"));
 	}
 
-	// Cette classe contient les informations et les méthodes propres aux medias
-	// retournés par tastekid
-	class TKSearchResult {
-		String summary, type, title, webpage, ytbtitle, ytblink;
+}
 
-		public TKSearchResult(String summary, String type, String title,
-				String webpage, String ytbtitle, String ytblink) {
-			this.type = type;
-			this.summary = summary;// .replaceAll("\\", "");
-			this.title = title;
-			this.webpage = webpage;
-			this.ytblink = ytblink;
-			this.ytbtitle = ytbtitle;
-		}
+// Cette classe contient les informations et les méthodes propres aux medias
+// retournés par tastekid
+class TKSearchResult implements Parcelable {
+	String summary, type, title, webpage, ytbtitle, ytblink;
 
-		public TKSearchResult() {
-			this.summary = null;
-			this.type = null;
-			this.title = null;
-			this.webpage = null;
-			this.ytblink = null;
-			this.ytbtitle = null;
-		}
-
-		public String getSummary() {
-			return this.summary;
-		}
-
-		public boolean isMovie() {
-			return this.type.equalsIgnoreCase("movie");
-		}
-
-		public boolean isShow() {
-			return this.type.equalsIgnoreCase("show");
-		}
-
-		public String getType() {
-			return this.type;
-		}
-
-		public String getTitle() {
-			return this.title;
-		}
-
-		public String getPage() {
-			return this.webpage;
-		}
-
-		public String getYoutubeLink() {
-			return this.ytblink;
-		}
-
-		public String toString() {
-			return "Type : " + this.type + "\nTitle : " + this.title
-					+ "\nWeb Page : " + this.webpage + "\nYoutube Trailer : "
-					+ this.ytblink;
-		}
+	public TKSearchResult(String summary, String type, String title,
+			String webpage, String ytbtitle, String ytblink) {
+		this.type = type;
+		this.summary = summary;// .replaceAll("\\", "");
+		this.title = title;
+		this.webpage = webpage;
+		this.ytblink = ytblink;
+		this.ytbtitle = ytbtitle;
 	}
+
+	public TKSearchResult(Parcel source) {
+		this.summary = source.readString();
+		this.type = source.readString();
+		;
+		this.title = source.readString();
+		;
+		this.webpage = source.readString();
+		;
+		this.ytblink = source.readString();
+		;
+		this.ytbtitle = source.readString();
+		;
+	}
+
+	public String getSummary() {
+		return this.summary;
+	}
+
+	public boolean isMovie() {
+		return this.type.equalsIgnoreCase("movie");
+	}
+
+	public boolean isShow() {
+		return this.type.equalsIgnoreCase("show");
+	}
+
+	public String getType() {
+		return this.type;
+	}
+
+	public String getTitle() {
+		return this.title;
+	}
+
+	public String getPage() {
+		return this.webpage;
+	}
+
+	public String getYoutubeLink() {
+		return this.ytblink;
+	}
+
+	public String toString() {
+		return "Type : " + this.type + "\nTitle : " + this.title
+				+ "\nWeb Page : " + this.webpage + "\nYoutube Trailer : "
+				+ this.ytblink;
+	}
+
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+
+		dest.writeString(summary);
+		dest.writeString(type);
+		dest.writeString(title);
+		dest.writeString(webpage);
+		dest.writeString(ytbtitle);
+		dest.writeString(ytblink);
+
+	}
+
+	public static final Parcelable.Creator<TKSearchResult> CREATOR = new Creator<TKSearchResult>() {
+
+		@Override
+		public TKSearchResult createFromParcel(Parcel source) {
+			return new TKSearchResult(source);
+		}
+
+		@Override
+		public TKSearchResult[] newArray(int size) {
+			return new TKSearchResult[size];
+		}
+
+	};
 
 }

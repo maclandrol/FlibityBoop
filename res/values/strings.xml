@@ -5,28 +5,28 @@
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     <string name="image_default">Default image!</string>
-    <string name="titre">What\'s that shit? (2014)</string>
+    <string name="titre">Titre (Year)</string>
     <string name="score">0.0</string>
     <string name="search_hint">Enter search query</string>
     <string name="search">Search</string>
     <string name="media_detail_img">Media poster</string>
-    <string name="imdb_rate">0.8</string>
-    <string name="rt_rate">7%</string>
-    <string name="rtu_rate">11%</string>
-    <string name="imdb_count">(1000)</string>
-    <string name="rt_count">(1000)</string>
-    <string name="rtu_count">(1000)</string>
+    <string name="imdb_rate">\?</string>
+    <string name="NA">N/A</string>
+    <string name="imdb_count"></string>
+    <string name="rt_count"></string>
+    <string name="def_rate"> - </string>
+    <string name="rtu_count"></string>
     <string name="runtime_text"><u><b>Runtime:</b></u></string>
     <string name="date_text"><u><b>Date:</b></u></string>
     <string name="date">"????-??-??"</string>
     <string name="add_to_fav">Add to favorite:</string>
-    <string name="default_runtime">- min</string>
     <string name="overview_text"><u><b>Overview</b></u></string>
     <string name="critic_text"><u><b>They said</b></u></string>
     <string name="cast_text"><u><b>Cast:</b></u></string>
     <string name="author_text"><u><b>Director:</b></u></string>
     <string name="similar_media"><u><b>You may like</b></u></string>
     <string name="title_activity_media_details">MediaDetails</string>
+    <string name="title_activity_search">SearchActivity</string>
     <string name="indisponible">Not available!</string>
     <string name="trailer_text"><u><b>Trailer:</b></u></string>
     <string name="web_link"><u><b>WebLink:</b></u></string>
@@ -35,5 +35,6 @@
     <string name="details_text"><u><b>Detailed Informations</b></u></string>
     <string name="comment1">This movie sucks!!</string>
     <string name="show_more">more</string>
+    <string name="error">Media not found!, maybe it\'s your fault, maybe ours &#8230;</string>
 
 </resources>
