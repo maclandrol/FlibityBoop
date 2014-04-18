@@ -11,6 +11,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -175,6 +176,7 @@ class TraktTVSearch implements MediaInfos {
 
 	public TraktTVSearch(Parcel source) {
 		
+		source.readInt();
 		title = source.readString();
 		imdb_id = source.readString();
 		type = source.readString();
@@ -192,8 +194,11 @@ class TraktTVSearch implements MediaInfos {
 		voteCount = source.readInt();
 
 		rating = source.readDouble();
-
-		addInfos = source.readHashMap(null);
+		Bundle bundle = source.readBundle();
+		@SuppressWarnings("unchecked")
+		HashMap<String, String> serializable = (HashMap<String, String>)bundle.getSerializable("infosMap");
+		addInfos = serializable; 
+		
 	}
 
 	public String getNetwork() {
@@ -315,12 +320,13 @@ class TraktTVSearch implements MediaInfos {
 
 	@Override
 	public int describeContents() {
-		return 0;
+		return 2;
 	}
 
 	@Override
 	public void writeToParcel(Parcel out, int arg1) {
-
+		
+		out.writeInt(describeContents());
 		out.writeString(title);
 		out.writeString(imdb_id);
 		out.writeString(type);
@@ -338,21 +344,20 @@ class TraktTVSearch implements MediaInfos {
 		out.writeInt(voteCount);
 
 		out.writeDouble(rating);
-
-		out.writeMap(addInfos);
+		Bundle bundle = new Bundle();
+		bundle.putSerializable("infosMap", addInfos);
+		out.writeBundle(bundle);
 	}
 	
 	public static final Parcelable.Creator<TraktTVSearch> CREATOR = new Creator<TraktTVSearch>(){
 
 		@Override
 		public TraktTVSearch createFromParcel(Parcel source) {
-			// TODO Auto-generated method stub
 			return new TraktTVSearch(source);
 		}
 
 		@Override
 		public TraktTVSearch[] newArray(int size) {
-			// TODO Auto-generated method stub
 			return new TraktTVSearch[size];
 		}
 		

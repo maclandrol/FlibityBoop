@@ -3,9 +3,11 @@ package com.maclandrol.flibityboop;
 import org.json.JSONObject;
 
 import android.net.Uri;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.webkit.URLUtil;
 
-public class Critics {
+public class Critics implements Parcelable {
 	String author, comment, url, date;
 
 	public Critics(String author, String comment, String url, String date) {
@@ -15,6 +17,7 @@ public class Critics {
 		this.url = url;
 		this.date = date;
 	}
+	
 
 	public Critics(JSONObject c) {
 		// setting author
@@ -56,6 +59,14 @@ public class Critics {
 		this(author, comment, null, null);
 	}
 
+	public Critics(Parcel source) {
+		this.author= source.readString();
+		this.comment = source.readString();
+		this.url = source.readString();
+		this.date = source.readString();
+	}
+
+
 	public boolean isPrintable() {
 		return this.author != null && this.comment != null;
 	}
@@ -85,4 +96,33 @@ public class Critics {
 			return "\nAuthor : "+this.author +"\nComment : "+this.comment;
 		return "";
 	}
+
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeString(author);
+		dest.writeString(comment);
+		dest.writeString(url);
+		dest.writeString(date);
+	}
+	
+	public static final Parcelable.Creator<Critics> CREATOR = new Creator<Critics>(){
+
+		@Override
+		public Critics createFromParcel(Parcel source) {
+			// TODO Auto-generated method stub
+			return new Critics(source);
+		}
+
+		@Override
+		public Critics[] newArray(int size) {
+			return new Critics[size];
+		}
+		
+		
+	};
 }

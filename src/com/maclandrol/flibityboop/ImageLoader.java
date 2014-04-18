@@ -1,6 +1,4 @@
 package com.maclandrol.flibityboop;
-//ty stranger
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -15,6 +13,8 @@ import java.util.Map;
 import java.util.WeakHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import com.maclandrol.flibityboop.R;
 
 import android.os.Handler;
 import android.content.Context;
@@ -33,6 +33,12 @@ public class ImageLoader {
     public ImageLoader(Context context){
         fileCache=new FileCache(context);
         executorService=Executors.newFixedThreadPool(5);
+    }
+    
+    public ImageLoader(Context context, long cacheLimit){
+        fileCache=new FileCache(context);
+        executorService=Executors.newFixedThreadPool(5);
+        memoryCache.setLimit(cacheLimit);
     }
     
     final int stub_id=R.drawable.default_media;

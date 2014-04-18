@@ -2,10 +2,7 @@ package com.maclandrol.flibityboop;
 
 import java.util.ArrayList;
 
-import com.maclandrol.flibityboop.API.MediaType;
-
 import android.app.Activity;
-import android.app.ActionBar;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,11 +11,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
-import android.os.Build;
+
+import com.maclandrol.flibityboop.API.MediaType;
 
 public class SearchActivity extends Activity {
-	
+
 	private ListView myList;
 	private ArrayList<? extends MediaInfos> filminfosList;
 	private ArrayList<? extends MediaInfos> showinfosList;
@@ -26,46 +26,58 @@ public class SearchActivity extends Activity {
 	private MediaType type;
 	private MediaAdapter mAdapter;
 
+	private class ListOnItemClick implements OnItemClickListener {
+		@Override
+		public void onItemClick(AdapterView<?> adapter, View view,
+				int position, long id) {
+			Intent i = new Intent(SearchActivity.this, MediaDetails.class);
+			i.putExtra("media", mediainfosList.get(position));
+			startActivity(i);
+
+		}
+	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_search);
+		setContentView(R.layout.fragment_search);
 
 		if (savedInstanceState == null) {
 			getFragmentManager().beginTransaction()
 					.add(R.id.container, new PlaceholderFragment()).commit();
 		}
-		
-	    setContentView(R.layout.activity_search);
-		myList = (ListView)findViewById(R.id.searchList);
-			
+
+		setContentView(R.layout.activity_search);
+		myList = (ListView) findViewById(R.id.searchList);
+
 		Intent i = getIntent();
 
-		if (i != null){
+		if (i != null) {
 			filminfosList = i.getParcelableArrayListExtra("films");
 			showinfosList = i.getParcelableArrayListExtra("shows");
 			mediainfosList = Utils.entrelace(filminfosList, showinfosList);
 			type = (MediaType) i.getExtras().get("media type");
 		}
 
-		if(type == MediaType.TVShow)
-			mAdapter= new MediaAdapter(getApplicationContext(),showinfosList);
-			
+		if (type == MediaType.TVShow)
+			mAdapter = new MediaAdapter(getApplicationContext(), showinfosList);
+
 		else if (type == MediaType.Movies)
-			mAdapter= new MediaAdapter(getApplicationContext(),filminfosList);
-				
+			mAdapter = new MediaAdapter(getApplicationContext(), filminfosList);
+
 		else
-			mAdapter= new MediaAdapter(getApplicationContext(),mediainfosList);
-	
+			mAdapter = new MediaAdapter(getApplicationContext(), mediainfosList);
+
 		myList.setAdapter(mAdapter);
-	    
+		myList.setOnItemClickListener(new ListOnItemClick());
+
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.search, menu);
+		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
 

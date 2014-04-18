@@ -3,8 +3,6 @@ package com.maclandrol.flibityboop;
 import java.util.List;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 
 public class MediaAdapter extends BaseAdapter {
 	ImageLoader imageLoader = null;

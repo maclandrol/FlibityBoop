@@ -8,4 +8,6 @@
     <color name="cat_title">#455</color>
     <color name="rate">#F66666</color>
     <color name="black">#000</color>
+    <color name="error_color">#DB3030</color>
+   
 </resources>

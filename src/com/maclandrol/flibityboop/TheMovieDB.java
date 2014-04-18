@@ -1,22 +1,17 @@
 package com.maclandrol.flibityboop;
 
-import android.content.Context;
-import android.os.Parcel;
-import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.util.Log;
+import android.os.Bundle;
+import android.os.Parcel;
 
 import com.maclandrol.flibityboop.API.MediaType;
 
@@ -27,7 +22,7 @@ public class TheMovieDB extends API {
 	public static final String img_URL = "http://image.tmdb.org/t/p/";
 
 	// format possible des posters
-	static int[] poster_size = {92,154,185,342,500,780};
+	static int[] poster_size = { 92, 154, 185, 342, 500, 780 };
 
 	// liste de tous les genre possible. Mieux en durs (encore mieux dans une
 	// base de donnée)
@@ -74,13 +69,13 @@ public class TheMovieDB extends API {
 	};
 
 	// default and uniq contructor
-	public TheMovieDB () {
+	public TheMovieDB() {
 		super(tmdbAPI, tmdbKey);
 	}
 
 	// Methode privée pour decoder un json de themoviedb
-	private ArrayList<TMDBSearch> decodeJSONArray(
-			JSONArray result, MediaType type) {
+	private ArrayList<TMDBSearch> decodeJSONArray(JSONArray result,
+			MediaType type) {
 		ArrayList<TMDBSearch> sr = new ArrayList<TMDBSearch>();
 		for (int i = 0; i < result.length(); i++) {
 			try {
@@ -116,7 +111,8 @@ public class TheMovieDB extends API {
 		return sr;
 	}
 
-	private ArrayList<TMDBSearch> getRequestPerLink(String url, MediaType type, int maxPage) {
+	private ArrayList<TMDBSearch> getRequestPerLink(String url, MediaType type,
+			int maxPage) {
 
 		ArrayList<TMDBSearch> sr = new ArrayList<TMDBSearch>();
 		int page = 1;
@@ -158,7 +154,8 @@ public class TheMovieDB extends API {
 	// l'API est mal faite et retourne toujours la premiere page (soit au plus
 	// 10 resultat). Je fais des requetes supp pour completer les recherches
 	// This can be greedy in time
-	public ArrayList<TMDBSearch> discoverMedia(MediaType type,	double minVote, int minCount, int maxPage) {
+	public ArrayList<TMDBSearch> discoverMedia(MediaType type, double minVote,
+			int minCount, int maxPage) {
 
 		ArrayList<TMDBSearch> sr = new ArrayList<TMDBSearch>();
 
@@ -196,7 +193,7 @@ public class TheMovieDB extends API {
 	}
 
 	// GetTopRated
-	public ArrayList<TMDBSearch> getTopRatedMedia(MediaType type,int maxPage) {
+	public ArrayList<TMDBSearch> getTopRatedMedia(MediaType type, int maxPage) {
 
 		ArrayList<TMDBSearch> sr = new ArrayList<TMDBSearch>();
 		if (type != MediaType.Any) {
@@ -211,7 +208,7 @@ public class TheMovieDB extends API {
 
 	}
 
-	//Get Movie in theather
+	// Get Movie in theather
 	public ArrayList<TMDBSearch> getInTheaterMovies(int maxPage) {
 
 		String url = this.baseURL + "movie/now_playing" + this.key;
@@ -219,15 +216,15 @@ public class TheMovieDB extends API {
 
 	}
 
-	//Get TV on air
+	// Get TV on air
 	public ArrayList<TMDBSearch> getOnAirTV(int maxPage) {
 
 		String url = this.baseURL + "tv/on_the_air" + this.key;
 		return getRequestPerLink(url, MediaType.TVShow, maxPage);
 
 	}
-	
-	//getAiringToday TV
+
+	// getAiringToday TV
 	public ArrayList<TMDBSearch> getAiringToday(int maxPage) {
 
 		String url = this.baseURL + "tv/airing_today" + this.key;
@@ -235,7 +232,7 @@ public class TheMovieDB extends API {
 
 	}
 
-	//getUPcomings movies
+	// getUPcomings movies
 	public ArrayList<TMDBSearch> getUpcomingMovies(int maxPage) {
 
 		String url = this.baseURL + "movie/upcoming" + this.key;
@@ -331,7 +328,7 @@ public class TheMovieDB extends API {
 
 	public HashMap<String, String> getMediaByID(MediaType type, int id) {
 
-		String url = this.baseURL + type.toString() +"/"+ id + this.key;
+		String url = this.baseURL + type.toString() + "/" + id + this.key;
 		HashMap<String, String> features = new HashMap<String, String>();
 		try {
 			JSONObject mediajson = this.getJSON(url);
@@ -391,8 +388,8 @@ public class TheMovieDB extends API {
 		return features;
 	}
 
-	public ArrayList<TMDBSearch> getSimilarMovie(int movieID,
-			int maxPage, double minVote, int minVoteCount) {
+	public ArrayList<TMDBSearch> getSimilarMovie(int movieID, int maxPage,
+			double minVote, int minVoteCount) {
 
 		String url = this.baseURL + "movie/" + movieID + "/similar_movies"
 				+ this.key;
@@ -412,8 +409,8 @@ public class TheMovieDB extends API {
 
 	// Recherche d'un media, en fonction du type, du titre et aussi, du nombre
 	// max de page a visiter
-	public ArrayList<TMDBSearch> searchMedia(MediaType type,
-			String name, int maxPage) {
+	public ArrayList<TMDBSearch> searchMedia(MediaType type, String name,
+			int maxPage) {
 
 		try {
 			name = URLEncoder.encode(name, "UTF-8");
@@ -442,14 +439,13 @@ public class TheMovieDB extends API {
 	// des attribut diffrents
 }
 
-
-class TMDBSearch implements MediaInfos{
+class TMDBSearch implements MediaInfos {
 
 	String poster, ori_title, title, type;
 	int id, voteCount;
 	double averageVote, popularity;
 	String first_date;
-	private HashMap<String, String> addInfos=null;
+	private HashMap<String, String> addInfos = null;
 
 	public TMDBSearch(JSONObject js, MediaType type) throws JSONException {
 
@@ -457,7 +453,7 @@ class TMDBSearch implements MediaInfos{
 		this.popularity = js.getDouble("popularity");
 		this.id = (int) js.getLong("id");
 		this.voteCount = (int) js.getLong("vote_count");
-		this.averageVote =  js.getDouble("vote_average");
+		this.averageVote = js.getDouble("vote_average");
 		if (type == MediaType.Movies) {
 			this.ori_title = js.getString("original_title");
 			this.title = js.getString("title");
@@ -480,9 +476,9 @@ class TMDBSearch implements MediaInfos{
 	}
 
 	public MediaType getType() {
-		return this.isMovie()?MediaType.Movies:MediaType.TVShow;
+		return this.isMovie() ? MediaType.Movies : MediaType.TVShow;
 	}
-	
+
 	public String getReleaseDate() {
 		return this.getDate();
 	}
@@ -490,8 +486,8 @@ class TMDBSearch implements MediaInfos{
 	public String getFirstAirDate() {
 		return this.getDate();
 	}
-	
-	public String getDate(){
+
+	public String getDate() {
 		return this.first_date;
 	}
 
@@ -504,14 +500,14 @@ class TMDBSearch implements MediaInfos{
 	}
 
 	public double getScore() {
-		return this.averageVote*10;
+		return this.averageVote * 10;
 	}
 
 	public double getPopularity() {
 		return this.popularity;
 	}
-	
-	public String getTitle(){
+
+	public String getTitle() {
 		return this.getTitle(false);
 	}
 
@@ -527,55 +523,67 @@ class TMDBSearch implements MediaInfos{
 	}
 
 	public String getPosterURL(int size) {
-		switch(size){
-				case 0:
-					return TheMovieDB.img_URL + "w" + TheMovieDB.poster_size[0] + this.poster;
-				case 1:
-					return TheMovieDB.img_URL + "w" + TheMovieDB.poster_size[1] + this.poster;
-				case 2:
-					return TheMovieDB.img_URL + "w" + TheMovieDB.poster_size[2] + this.poster;
-				case 3:
-					return TheMovieDB.img_URL + "w" + TheMovieDB.poster_size[3] + this.poster;
-				case 4:
-					return TheMovieDB.img_URL + "w" + TheMovieDB.poster_size[4] + this.poster;
-				default:
-		 			return getOriginalPosterURL();
-				}
-		 	}
+		switch (size) {
+		case 0:
+			return TheMovieDB.img_URL + "w" + TheMovieDB.poster_size[0]
+					+ this.poster;
+		case 1:
+			return TheMovieDB.img_URL + "w" + TheMovieDB.poster_size[1]
+					+ this.poster;
+		case 2:
+			return TheMovieDB.img_URL + "w" + TheMovieDB.poster_size[2]
+					+ this.poster;
+		case 3:
+			return TheMovieDB.img_URL + "w" + TheMovieDB.poster_size[3]
+					+ this.poster;
+		case 4:
+			return TheMovieDB.img_URL + "w" + TheMovieDB.poster_size[4]
+					+ this.poster;
+		default:
+			return getOriginalPosterURL();
+		}
+	}
 
 	public String toString() {
-		return "\nTitle : "	+ this.getTitle() + "\nID : " + this.getID()
-				+ "\nType : " + this.getType() + "\nDate : " + this.getDate()  + "\nScore : " + this.getScore()+ "\nPoster url : "
-						+ this.getOriginalPosterURL();
+		return "\nTitle : " + this.getTitle() + "\nID : " + this.getID()
+				+ "\nType : " + this.getType() + "\nDate : " + this.getDate()
+				+ "\nScore : " + this.getScore() + "\nPoster url : "
+				+ this.getOriginalPosterURL();
 	}
 
 	@Override
 	public HashMap<String, String> getAdditionalFeatures() {
-		if(addInfos==null){
-			addInfos=new TheMovieDB().getMediaByID(this.isMovie()?MediaType.Movies:MediaType.TVShow, this.id);
+		if (addInfos == null) {
+			addInfos = new TheMovieDB().getMediaByID(
+					this.isMovie() ? MediaType.Movies : MediaType.TVShow,
+					this.id);
 		}
 		return addInfos;
 	}
 
 	@Override
 	public ArrayList<Critics> getCritics() {
-		return new TheMovieDB().getMovieReviews(this.id, 1 );
+		return new TheMovieDB().getMovieReviews(this.id, 1);
 	}
 
 	@Override
 	public ArrayList<? extends MediaInfos> getSimilar() {
-		return this.isMovie()? new TheMovieDB().getSimilarMovie(this.id, 2, 2.0, 1):null;
+		return this.isMovie() ? new TheMovieDB().getSimilarMovie(this.id, 2,
+				2.0, 1) : null;
 	}
-	
-	public boolean equals(Object obj){
-		if(obj instanceof MediaInfos ){
+
+	public boolean equals(Object obj) {
+		if (obj instanceof MediaInfos) {
 			MediaInfos autres = (MediaInfos) obj;
-			if(autres.getTitle().equalsIgnoreCase(this.getTitle()) && autres.getType()==this.getType()) return true;
-			else return false;
+			if (autres.getTitle().equalsIgnoreCase(this.getTitle())
+					&& autres.getType() == this.getType())
+				return true;
+			else
+				return false;
 		}
 		return false;
 	}
-	
+
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
@@ -584,24 +592,26 @@ class TMDBSearch implements MediaInfos{
 		return result;
 	}
 
-		@Override
-		public int describeContents() {
-	
-			return 0;
-		}
-	
+	@Override
+	public int describeContents() {
+
+		return 0;
+	}
+
 	public void writeToParcel(Parcel out, int arg1) {
-			
-			out.writeString(poster);
-			out.writeString(ori_title);
-			out.writeString(title);
-			out.writeString(type);
-			out.writeString(first_date);
-			out.writeInt(id);
-			out.writeInt(voteCount);
-			out.writeDouble(averageVote);
-			out.writeDouble(popularity);
-			out.writeMap(addInfos);
-	 	}
+
+		out.writeString(poster);
+		out.writeString(ori_title);
+		out.writeString(title);
+		out.writeString(type);
+		out.writeString(first_date);
+		out.writeInt(id);
+		out.writeInt(voteCount);
+		out.writeDouble(averageVote);
+		out.writeDouble(popularity);
+		Bundle bundle = new Bundle();
+		bundle.putSerializable("map", addInfos);
+		out.writeBundle(bundle);
+	}
 
 }

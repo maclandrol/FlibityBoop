@@ -1,11 +1,5 @@
 package com.maclandrol.flibityboop;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-import android.os.Parcelable.Creator;
-import android.content.Context;
-
-import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -14,9 +8,9 @@ import java.util.HashMap;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.util.Log;
+import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import com.maclandrol.flibityboop.API.MediaType;
 
@@ -258,7 +252,7 @@ class RTSearch implements MediaInfos {
 	}
 
 	public RTSearch(Parcel source) {
-		
+		source.readInt();
 		title = source.readString();
 		imdb_id = source.readString();
 		type = source.readString();
@@ -268,14 +262,17 @@ class RTSearch implements MediaInfos {
 		freshness = source.readString();
 		poster_small = source.readString();
 		poster_original = source.readString();
-		
+
 		id = source.readInt();
 		years = source.readInt();
-		
+
 		audience_score = source.readDouble();
 		critics_score = source.readDouble();
 
-		addInfos = source.readHashMap(null);
+		Bundle bundle = source.readBundle();
+		@SuppressWarnings("unchecked")
+		HashMap<String, String> serializable = (HashMap<String, String>)bundle.getSerializable("infosMap");
+		addInfos = serializable; 
 	}
 
 	@Override
@@ -414,11 +411,12 @@ class RTSearch implements MediaInfos {
 
 	@Override
 	public int describeContents() {
-		return 0;
+		return 1;
 	}
 
 	@Override
 	public void writeToParcel(Parcel out, int arg1) {
+		out.writeInt(describeContents());
 		out.writeString(title);
 		out.writeString(imdb_id);
 		out.writeString(type);
@@ -434,24 +432,23 @@ class RTSearch implements MediaInfos {
 
 		out.writeDouble(audience_score);
 		out.writeDouble(critics_score);
-		out.writeMap(addInfos);
+		Bundle bundle = new Bundle();
+		bundle.putSerializable("infosMap", addInfos);
+		out.writeBundle(bundle);
 	}
-	
-	public static final Parcelable.Creator<RTSearch> CREATOR = new Creator<RTSearch>(){
+
+	public static final Parcelable.Creator<RTSearch> CREATOR = new Creator<RTSearch>() {
 
 		@Override
 		public RTSearch createFromParcel(Parcel source) {
-			// TODO Auto-generated method stub
 			return new RTSearch(source);
 		}
 
 		@Override
 		public RTSearch[] newArray(int size) {
-			// TODO Auto-generated method stub
 			return new RTSearch[size];
 		}
-		
-		
+
 	};
 
 }
