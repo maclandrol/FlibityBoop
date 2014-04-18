@@ -31,9 +31,9 @@
     <string name="trailer_text"><u><b>Trailer:</b></u></string>
     <string name="web_link"><u><b>WebLink:</b></u></string>
     <string name="cc">This film is some serious shit!</string>
-    <string name="author1">AssPuller85:</string>
+    <string name="author">- AssPuller85</string>
     <string name="details_text"><u><b>Detailed Informations</b></u></string>
-    <string name="comment1">This movie sucks!!</string>
+    <string name="comment">This movie sucks!! I\'ll not recommend it even to my greatest enemy, i sure, but you know, who care</string>
     <string name="show_more">more</string>
     <string name="error">Media not found!, maybe it\'s your fault, maybe ours &#8230;</string>
 
