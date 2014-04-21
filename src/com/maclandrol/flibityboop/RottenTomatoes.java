@@ -195,6 +195,7 @@ public class RottenTomatoes extends API {
 
 class RTSearch implements MediaInfos {
 
+	private static final long serialVersionUID = -4764592788822302046L;
 	int id, years;
 	String title, imdb_id, type, critic_consensus, release_date, runtime,
 			freshness;
