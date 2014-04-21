@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="6dp"
+    android:orientation="vertical"
+    android:paddingLeft="30dp" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:baselineAligned="false"
+        android:orientation="horizontal" >
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="4dp"
+            android:layout_weight="1.0"
+            android:padding="5dp" >
+
+            <ImageView
+                android:id="@+id/poster_fav"
+                android:layout_width="85dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginRight="10dp"
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/image_default"
+                android:scaleType="centerCrop"
+                android:src="@drawable/default_media" />
+
+            <TextView
+                android:id="@+id/title_fav"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:layout_toRightOf="@+id/poster_fav"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="@string/titre"
+                android:textColor="#AAA"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/date_fav"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/title_fav"
+                android:layout_below="@+id/title_fav"
+                android:layout_marginBottom="4dp"
+                android:layout_toRightOf="@+id/poster_fav"
+                android:text="@string/date"
+                android:textColor="#AAA"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/score_fav"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/title_fav"
+                android:layout_below="@+id/date_fav"
+                android:layout_marginBottom="4dp"
+                android:layout_toRightOf="@+id/poster_fav"
+                android:text="@string/score"
+                android:textColor="#AAA"
+                android:textSize="15sp" />
+
+            <ImageView
+                android:id="@+id/score_icon_fav"
+                android:layout_width="20dp"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/score_fav"
+                android:layout_alignTop="@+id/score_fav"
+                android:layout_marginLeft="3dp"
+                android:layout_toRightOf="@+id/score_fav"
+                android:contentDescription="@string/image_default"
+                android:src="@drawable/like" />
+            
+               <TextView
+                android:id="@+id/rel_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/title_fav"
+                android:layout_toRightOf="@+id/poster_fav"
+                android:layout_below="@+id/score_fav"
+                android:layout_marginTop="5dp"
+                android:textStyle="italic"
+                android:textColor="#AAA"
+                android:textSize="15sp" />
+            
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginRight="10dp"
+            android:gravity="right"
+            android:orientation="vertical"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp" >
+
+            <ImageView
+                android:id="@+id/type_icon_fav"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_alignRight="@+id/seen_fav"
+                android:layout_marginBottom="10dp"
+                android:contentDescription="@string/image_default"
+                android:src="@drawable/movie" />
+
+            <ImageButton
+                android:id="@+id/del_fav"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignRight="@+id/seen_fav"
+                android:layout_below="@+id/type_icon_fav"
+                android:layout_marginBottom="10dp"
+                android:background="#CCC"
+                android:contentDescription="@string/error"
+                android:padding="5dp"
+                android:src="@drawable/ic_action_delete" />
+
+            <CheckBox
+                android:id="@+id/seen_fav"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/del_fav"
+                android:contentDescription="@string/error"
+                android:text="@string/show_seen" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/black" />
+
+</LinearLayout>

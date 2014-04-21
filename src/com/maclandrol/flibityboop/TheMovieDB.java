@@ -27,6 +27,11 @@ public class TheMovieDB extends API {
 	// liste de tous les genre possible. Mieux en durs (encore mieux dans une
 	// base de donnée)
 	private static HashMap<String, Integer> genres = new HashMap<String, Integer>() {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
 		{
 			put("action", 28);
 			put("adventure", 12);
@@ -441,6 +446,7 @@ public class TheMovieDB extends API {
 
 class TMDBSearch implements MediaInfos {
 
+	private static final long serialVersionUID = 5773288890801480572L;
 	String poster, ori_title, title, type;
 	int id, voteCount;
 	double averageVote, popularity;

@@ -3,110 +3,101 @@ package com.maclandrol.flibityboop;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-// android.v4.
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+import android.os.Parcelable;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.ToggleButton;
+// android.v4.
 
 public class MediaDetails extends BaseActivity {
 	Media m = null;
 	MediaInfos mInfos = null;
+	ArrayList<MediaInfos> similar = null;
 	int critics_pos = 0;
-	CriticFragment cf=null;
+	CriticFragment cf = null;
 	ImageLoader imLoader = null;
+	ToggleButton fav ;
+	ContentResolver resolver;
+
 	FragmentManager fm;
 
 	static ProgressDialog progressDiag;
 
-	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Intent i = getIntent();
 		fm = getFragmentManager();
+		resolver= this.getContentResolver();
+		setContentView(R.layout.media_details);
+		imLoader = new ImageLoader(getApplicationContext());
+		fav= (ToggleButton)findViewById(R.id.fav);
+			
+		if (savedInstanceState != null) {
+			this.critics_pos = savedInstanceState.getInt("critic");
+			this.m = savedInstanceState.getParcelable("media");
+			this.mInfos = savedInstanceState.getParcelable("mediainfo");
+			this.similar = savedInstanceState.getParcelableArrayList("similar");
+			// Toast.makeText(getApplicationContext(), "instance saved",
+			// Toast.LENGTH_LONG).show();
 
-		if (savedInstanceState == null) {
+			showMedia(m);
+		} else {
 			if (i != null) {
 				mInfos = i.getParcelableExtra("media");
-				imLoader = new ImageLoader(getApplicationContext());
-
+				if (mInfos != null && mInfos instanceof MediaInfos) {
+				}
+				new LoadMedia().execute(mInfos);
 			}
 		}
-		setContentView(R.layout.media_details);
-		if (mInfos != null && mInfos instanceof MediaInfos) {
-			new LoadMedia().execute(mInfos);
-		}
 
-		TextView t = (TextView) findViewById(R.id.d_title);
-		if (this.m != null)
-			t.setText("thunder");
-		if (mInfos != null && mInfos instanceof MediaInfos) {
-
-		}
 	}
 
-	class LoadMedia extends AsyncTask<MediaInfos, Void, Media> {
-
-		@Override
-		protected void onPostExecute(Media result) {
-			MediaDetails.progressDiag.dismiss();
-			TextView error = (TextView) findViewById(R.id.error_text);
-			MediaDetails.this.m = result;
-
-			if (result != null) {
-				// Resultat trouvé, afficher ce résultat
-				error.setVisibility(View.GONE);
-				MediaDetails.this.showMedia(result);
-				findViewById(R.id.view_content).setVisibility(View.VISIBLE);
-			} else {
-				// Erreur, aucun media trouvé, afficher ce message d'erreur
-				error.setText("We are so sorry that we couldn't find your media, The truth is our 4 APIs sucks!");
-				error.setBackgroundResource(R.color.error_color);
-
-			}
-
-		}
-
-		@Override
-		protected void onPreExecute() {
-			super.onPreExecute();
-			// Demarrer le progress dialog pour l'attente
-			((TextView) findViewById(R.id.error_text)).setText("");
-			MediaDetails.progressDiag = ProgressDialog.show(MediaDetails.this,
-					null, "You stink, Loser!");// "Getting media infos");
-		}
-
-		@Override
-		protected Media doInBackground(MediaInfos... params) {
-			Media media = null;
-			// Aller chercher le media
-			try {
-				media = new Media(params[0]);
-			} catch (Exception e) {
-				Log.e("Media", "Impossible d'acceder aux media");
-			}
-			Media.afficheMedia(media);
-			return media;
-		}
-
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putParcelable("mediainfo", this.mInfos);
+		outState.putParcelable("media", this.m);
+		outState.putInt("critic", this.critics_pos);
+		outState.putParcelableArrayList("similar", this.similar);
 	}
 
 	public void showMedia(Media result) {
 
+		int in_db= resolver.query(MediaContentProvider.CONTENT_URI, null, DBHelperMedia.M_ID+" LIKE ?", new String [] {Integer.toString(mInfos.hashCode())}, null).getCount();
+		fav.setChecked(in_db>0);
+		fav.setTextOn("YES");
+		fav.setTextOff("NO");
+		fav.setOnCheckedChangeListener(new OnCheckedChangeListener(){
+			@Override
+			public void onCheckedChanged(CompoundButton tb,	boolean isChecked) {
+				if(isChecked)
+					MediaDetails.this.addToDB(mInfos, false);
+				else
+					MediaDetails.this.delFromDB(mInfos);
+								
+			}
+		
+		});
+		
 		// Mettre les informations basique du media
 		TextView t = (TextView) findViewById(R.id.d_title);
 		TextView rt_rate = (TextView) findViewById(R.id.rt_rate);
@@ -135,6 +126,31 @@ public class MediaDetails extends BaseActivity {
 			rtu_vote.setVisibility(View.GONE);
 			rtu_rate.setVisibility(View.GONE);
 			findViewById(R.id.user_freshness).setVisibility(View.GONE);
+			try{
+				String date =((TraktTVSearch)mInfos).getAirDay()+", "+((TraktTVSearch)mInfos).getAirTime();
+				TextView time =(TextView)findViewById(R.id.airtime);
+				time.setText(date);
+				findViewById(R.id.fixed_airtime_text).setVisibility(View.VISIBLE);
+			}catch(Exception e){
+				Log.d("media", "Not TraktTV exception");
+			}
+			
+			String network = result.addInfos.get("network");
+			if(network!=null){
+				TextView ntw=(TextView)findViewById(R.id.network);
+				ntw.setText(network);
+				findViewById(R.id.fixed_network_text).setVisibility(View.VISIBLE);
+
+			}
+			
+			String status = result.addInfos.get("status");
+			if(status!=null){
+				TextView ntw=(TextView)findViewById(R.id.status);
+				ntw.setText(status);
+				findViewById(R.id.fixed_status_text).setVisibility(View.VISIBLE);
+
+			}
+
 
 		} else {
 			// Cas d'un film, il faut aller chercher les scores de
@@ -158,7 +174,6 @@ public class MediaDetails extends BaseActivity {
 			ImageView rt_fresh = (ImageView) findViewById(R.id.freshness);
 			ImageView user_fresh = (ImageView) findViewById(R.id.user_freshness);
 			String cert = result.getRTCertification();
-
 			if (cert.contains("cert")) {
 				rt_fresh.setImageResource(R.drawable.certified);
 			} else if (cert.contains("fresh")) {
@@ -212,7 +227,8 @@ public class MediaDetails extends BaseActivity {
 		}
 
 		// On va chercher les recommendations ici
-		ArrayList<MediaInfos> sim = result.getRecommendations();
+		ArrayList<MediaInfos> sim = this.similar; // inutile de le recopier mais
+													// bof...
 		if (sim == null || sim.isEmpty()) {
 			findViewById(R.id.similar_show_list).setVisibility(View.GONE);
 			findViewById(R.id.you_may_like).setVisibility(View.GONE);
@@ -223,34 +239,28 @@ public class MediaDetails extends BaseActivity {
 		// le bouton more.
 		// Au besoin cacher le layout parent en entier
 		else {
-			TextView more = (TextView)findViewById(R.id.show_more);
-			
-			final ArrayList<MediaInfos>sim_films= new ArrayList<MediaInfos>();
-			final ArrayList<MediaInfos>sim_shows= new ArrayList<MediaInfos>();
+			TextView more = (TextView) findViewById(R.id.show_more);
 
-			for(int i=0; i<sim.size();i++){
-				
+			final ArrayList<MediaInfos> sim_films = new ArrayList<MediaInfos>();
+			final ArrayList<MediaInfos> sim_shows = new ArrayList<MediaInfos>();
+
+			for (int i = 0; i < sim.size(); i++) {
+
 				MediaInfos sim_media = sim.get(i);
-				if(sim_media.isMovie())
+				if (sim_media.isMovie())
 					sim_films.add(sim_media);
 				else
 					sim_shows.add(sim_media);
 			}
-			more.setOnClickListener(new OnClickListener(){
+			more.setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
-					Intent i = new Intent(getApplicationContext(), SearchActivity.class);
-					i.putParcelableArrayListExtra("films", sim_films);
-					i.putParcelableArrayListExtra("shows", sim_shows);
-					i.putExtra("media type", API.MediaType.Any);
-					i.putExtra("origin", "Mediadetails");
-
-					startActivity(i);
+					onSearchRequested();
 				}
-				
+
 			});
-			
+
 			Collections.shuffle(sim);
 			if (sim.size() < 3)
 				more.setVisibility(View.INVISIBLE);
@@ -285,7 +295,6 @@ public class MediaDetails extends BaseActivity {
 				i++;
 
 			}
-			
 
 			for (int j = i + 1; j < 4; j++) {
 				if (j == 1)
@@ -298,6 +307,8 @@ public class MediaDetails extends BaseActivity {
 			}
 
 		}
+
+		// La liste des critiques ici, le plus important c'est la position.
 		final ArrayList<Critics> c = result.getCriticsList();
 		if (c == null || c.isEmpty()) {
 			findViewById(R.id.critics).setVisibility(View.GONE);
@@ -306,30 +317,29 @@ public class MediaDetails extends BaseActivity {
 		} else {
 			ImageButton next = (ImageButton) findViewById(R.id.next_critic);
 			ImageButton previous = (ImageButton) findViewById(R.id.previous_critic);
-			
+
 			String cc = result.getCriticsConsensus();
-			if(cc==null || cc.contains("N/A")){
+			if (cc == null || cc.contains("N/A")) {
 				findViewById(R.id.c_consensus).setVisibility(View.GONE);
-			}
-			else{
-				((TextView)findViewById(R.id.c_consensus)).setText("\""+cc+"\"");
+			} else {
+				((TextView) findViewById(R.id.c_consensus)).setText("\"" + cc
+						+ "\"");
 
 			}
-			cf= CriticFragment.newInstance(critics_pos, c.get(critics_pos));
-		    fm.beginTransaction().add(R.id.comments, cf ).commit();
+			cf = CriticFragment.newInstance(critics_pos, c.get(critics_pos));
+			fm.beginTransaction().add(R.id.comments, cf).commit();
 
-		    if(c.size()==1){
-		    	next.setVisibility(View.INVISIBLE);
-		    	previous.setVisibility(View.INVISIBLE);
-		    }
+			if (c.size() == 1) {
+				next.setVisibility(View.INVISIBLE);
+				previous.setVisibility(View.INVISIBLE);
+			}
 			next.setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
 					int pos = (critics_pos + 1) % c.size();
 					if (pos != critics_pos)
-						showFragment(CriticFragment.newInstance(pos,c.get(pos) ));
-
+						showFragment(CriticFragment.newInstance(pos, c.get(pos)));
 
 				}
 
@@ -343,7 +353,7 @@ public class MediaDetails extends BaseActivity {
 							- 1;
 					if (pos != critics_pos)
 
-						showFragment(CriticFragment.newInstance(pos,c.get(pos) ));
+						showFragment(CriticFragment.newInstance(pos, c.get(pos)));
 
 				}
 
@@ -356,17 +366,105 @@ public class MediaDetails extends BaseActivity {
 	private void showFragment(CriticFragment fragment) {
 		if (fragment == null)
 			return;
-		this.critics_pos = fragment.getArguments().getInt("position",0);
-		// Begin a fragment transaction.
+		this.critics_pos = fragment.getArguments().getInt("position", 0);
+
 		FragmentTransaction ft = fm.beginTransaction();
-		// We can also animate the changing of fragment.
-		/*ft.setCustomAnimations(android.R.anim.slide_in_left,
-				android.R.anim.slide_out_right);*/
-		// Replace current fragment by the new one.
+
+		// Fragment animation, ne marche pas
+		// ft.setCustomAnimations(android.R.anim.fade_in,
+		// android.R.anim.fade_out,android.R.anim.fade_out,
+		// android.R.anim.fade_in);
+
+		// Remplacer par le prochain fragment critique
 		ft.replace(R.id.comments, fragment);
 
 		// Commit changes.
 		ft.commit();
+	}
+
+	public boolean onSearchRequested() {
+		Bundle appData = new Bundle();
+		appData.putString("origin", "noRequest");
+		appData.putString("titre", this.mInfos.getTitle());
+		ArrayList<MediaInfos> sim_films = new ArrayList<MediaInfos>();
+		ArrayList<MediaInfos> sim_shows = new ArrayList<MediaInfos>();
+
+		for (int i = 0; i < this.similar.size(); i++) {
+			MediaInfos sim_media = this.similar.get(i);
+			if (sim_media.isMovie())
+				sim_films.add(sim_media);
+			else
+				sim_shows.add(sim_media);
+		}
+		appData.putParcelableArrayList("movies", sim_films);
+		appData.putParcelableArrayList("shows", sim_shows);
+		Intent i = new Intent(getApplicationContext(), SearchActivity.class);
+		i.putExtra("Similar", appData);
+		startActivity(i);
+		return true;
+	}
+
+	// List des classes
+	class LoadMedia extends AsyncTask<MediaInfos, Void, Media> {
+
+		@Override
+		protected void onPostExecute(Media result) {
+			MediaDetails.progressDiag.dismiss();
+			TextView error = (TextView) findViewById(R.id.error_text);
+			MediaDetails.this.m = result;
+
+			if (result != null) {
+				// Resultat trouvé, afficher ce résultat
+				error.setVisibility(View.GONE);
+				MediaDetails.this.similar = result.getRecommendations();
+				MediaDetails.this.showMedia(result);
+				findViewById(R.id.view_content).setVisibility(View.VISIBLE);
+			} else {
+				// Erreur, aucun media trouvé, afficher ce message d'erreur
+				error.setText("We are so sorry that we couldn't find your media, The truth is our 4 APIs sucks!");
+				error.setBackgroundResource(R.color.error_color);
+
+			}
+
+		}
+
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			// Demarrer le progress dialog pour l'attente
+			((TextView) findViewById(R.id.error_text)).setText("");
+			MediaDetails.progressDiag = ProgressDialog.show(MediaDetails.this,
+					null, "Getting media infos");
+		}
+
+		@Override
+		protected Media doInBackground(MediaInfos... params) {
+			Media media = null;
+			// Aller chercher le media
+			try {
+				media = new Media(params[0]);
+			} catch (Exception e) {
+				Log.e("Media", "Impossible d'acceder aux media");
+			}
+			Media.afficheMedia(media);
+			return media;
+		}
+
+	}
+
+	private class MediaDetailsIntentListener implements OnClickListener {
+		MediaInfos m;
+
+		public MediaDetailsIntentListener(MediaInfos m) {
+			this.m = m;
+		}
+
+		@Override
+		public void onClick(View v) {
+			Intent i = new Intent(MediaDetails.this, MediaDetails.class);
+			i.putExtra("media", (Parcelable)m);
+			startActivity(i);
+		}
 	}
 
 	// Cette classe permet de demarrer une activité web
@@ -384,21 +482,6 @@ public class MediaDetails extends BaseActivity {
 		}
 	}
 
-	private class MediaDetailsIntentListener implements OnClickListener {
-		MediaInfos m;
-
-		public MediaDetailsIntentListener(MediaInfos m) {
-			this.m = m;
-		}
-
-		@Override
-		public void onClick(View v) {
-			Intent i = new Intent(MediaDetails.this, MediaDetails.class);
-			i.putExtra("media", m);
-			startActivity(i);
-		}
-	}
-
 	public static class CriticFragment extends Fragment {
 
 		public static CriticFragment newInstance(int pos, Critics c) {
@@ -406,7 +489,7 @@ public class MediaDetails extends BaseActivity {
 
 			Bundle b = new Bundle();
 			b.putInt("position", pos);
-			b.putParcelable("critique",c);
+			b.putParcelable("critique", c);
 			myFragment.setArguments(b);
 			return myFragment;
 		}
@@ -416,7 +499,8 @@ public class MediaDetails extends BaseActivity {
 				Bundle savedInstanceState) {
 			View view = inflater.inflate(R.layout.critic_fragment, container,
 					false);
-			Critics c= (Critics)(this.getArguments().getParcelable("critique"));
+			Critics c = (Critics) (this.getArguments()
+					.getParcelable("critique"));
 			TextView aut = (TextView) view.findViewById(R.id.aut);
 			aut.setText("- " + c.getAuthor());
 			TextView comment = (TextView) view.findViewById(R.id.comment);
@@ -426,5 +510,6 @@ public class MediaDetails extends BaseActivity {
 		}
 
 	}
+	
 
 }

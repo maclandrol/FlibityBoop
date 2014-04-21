@@ -5,13 +5,13 @@ import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.graphics.Bitmap;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -111,12 +111,15 @@ public class TraktTV extends API {
 
 class TraktTVSearch implements MediaInfos {
 
+	private static final long serialVersionUID = -9203729736235978006L;
+	
 	String poster, title, type;
 	int year, runtime, tvdb_id, voteCount;
 	String imdb_id;
 	double rating = -1.0;
 	String air_day, air_time;
 	String first_date;
+	boolean ended;
 	String genres, overview, network;
 	private HashMap<String, String> addInfos = null;
 
@@ -171,7 +174,8 @@ class TraktTVSearch implements MediaInfos {
 		addInfos.put("homepage", js.optString("url"));
 		addInfos.put("country", js.optString("country"));
 		addInfos.put("fanart", js.optString("fanart"));
-		addInfos.put("status", js.optBoolean("ended") ? "running" : "ended");
+		addInfos.put("status", js.optBoolean("ended") ? "ended":"running");
+		ended = js.optBoolean("ended");
 	}
 
 	public TraktTVSearch(Parcel source) {
@@ -347,17 +351,79 @@ class TraktTVSearch implements MediaInfos {
 
 		@Override
 		public TraktTVSearch createFromParcel(Parcel source) {
-			// TODO Auto-generated method stub
+			
 			return new TraktTVSearch(source);
 		}
 
 		@Override
 		public TraktTVSearch[] newArray(int size) {
-			// TODO Auto-generated method stub
+
 			return new TraktTVSearch[size];
 		}
 		
 		
 	};
+	
+	
+    public String getTimeUntilNextAirTime() {
+        
+        int daysToGo, hoursToGo, minutesToGo;
+        String result="";
+        GregorianCalendar today = new GregorianCalendar();
+        int todayDayOfWeek = today.get(GregorianCalendar.DAY_OF_WEEK);
+        int todayHour = today.get(GregorianCalendar.HOUR_OF_DAY);
+        int todayMinute = today.get(GregorianCalendar.MINUTE);
+       
+        int nextDayOfWeek;
+        int nextHour;
+        int nextMinute;
+
+        if (air_day.equals("Sunday"))
+                nextDayOfWeek = 1;
+        else if (air_day.equals("Monday"))
+                nextDayOfWeek = 2;
+        else if (air_day.equals("Tuesday"))
+                nextDayOfWeek = 3;
+        else if (air_day.equals("Wednesday"))
+                nextDayOfWeek = 4;
+        else if (air_day.equals("Thursday"))
+                nextDayOfWeek = 5;
+        else if (air_day.equals("Friday"))
+                nextDayOfWeek = 6;
+        else if (air_day.equals("Saturday"))
+                nextDayOfWeek = 7;
+        else
+                nextDayOfWeek = 0;
+        if(ended || nextDayOfWeek==0)
+             return result;
+       
+        int i = air_time.indexOf(':');
+        nextHour = Integer.parseInt(air_time.substring(0, i)) + (air_time.contains("pm") ? 12 : 0);
+        nextMinute = Integer.parseInt(air_time.substring(i+1, i+3));
+       
+        if (nextDayOfWeek >= todayDayOfWeek)
+                daysToGo = nextDayOfWeek - todayDayOfWeek;
+        else
+                daysToGo = nextDayOfWeek +6 - todayDayOfWeek;
+       
+        if (nextHour >= todayHour)
+                hoursToGo = nextHour - todayHour - 1;
+        else
+                hoursToGo = nextHour +23 - todayHour;
+       
+        if (nextMinute >= todayMinute)
+                minutesToGo = nextMinute - todayMinute -1;
+        else
+                minutesToGo = nextMinute +60 - todayMinute;
+       
+       
+        result = minutesToGo+" min";
+        if(hoursToGo>0)
+        	result = hoursToGo+" h "+result;
+        
+        if(daysToGo>0)
+        	result= daysToGo+ " day "+result;
+        return "in "+result;
+}
 
 }

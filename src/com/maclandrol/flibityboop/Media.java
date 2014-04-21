@@ -3,7 +3,6 @@ package com.maclandrol.flibityboop;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -14,7 +13,6 @@ import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
-import android.widget.Toast;
 
 public class Media implements Parcelable {
 
@@ -115,13 +113,13 @@ public class Media implements Parcelable {
 
 	public String getSynopsys() {
 		String resume = "Synopsis not available, We are so, so sorry!";
-		if (this.addInfos.containsKey("overview") && !this.addInfos.get("overview").isEmpty()) {
+		if (this.addInfos.get("overview")!=null && !this.addInfos.get("overview").isEmpty()) {
 			resume = this.addInfos.get("overview");
 		} else if (this.tk_info != null) {
 			String summary = this.tk_info.getSummary();
 			if (summary != null && !summary.isEmpty())
 				resume = summary;
-		} else if (this.addInfos.containsKey("iPlot") && !this.addInfos.get("iPlot").isEmpty()) {
+		} else if (this.addInfos.get("iPlot")!=null && !this.addInfos.get("iPlot").isEmpty()) {
 			resume = this.addInfos.get("iPlot");
 		}
 		return resume;
@@ -232,7 +230,8 @@ public class Media implements Parcelable {
 	}
 
 	public String getRTCertification() {
-		return this.addInfos.get("rtCertification");
+		String cert=this.addInfos.get("rtCertification");
+		return cert!=null?cert:"";
 	}
 
 	public String getTrailer() {
