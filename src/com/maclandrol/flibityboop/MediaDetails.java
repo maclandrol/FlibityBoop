@@ -18,8 +18,10 @@ import android.text.method.LinkMovementMethod;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
@@ -185,7 +187,7 @@ public class MediaDetails extends BaseActivity {
 				rt_fresh.setImageResource(R.drawable.rotten);
 			}
 
-			if (d_rate < 50) {
+			if (rt_rate_value < 50) {
 				user_fresh.setImageResource(R.drawable.user_dislike);
 			}
 		}
@@ -195,7 +197,25 @@ public class MediaDetails extends BaseActivity {
 		
 		EditText overviewTextView = ((EditText) findViewById(R.id.overview));
 		overviewTextView.setText(result.getSynopsys());
-		
+		overviewTextView.setKeyListener(null);
+		overviewTextView.setOnTouchListener(new OnTouchListener(){
+
+			@Override
+			public boolean onTouch(View view, MotionEvent event) {
+				if (view.getId() == R.id.overview) {
+					view.getParent().requestDisallowInterceptTouchEvent(true);
+					switch (event.getAction() & MotionEvent.ACTION_MASK) {
+					case MotionEvent.ACTION_UP:
+						view.getParent().requestDisallowInterceptTouchEvent(
+								false);
+						break;
+					}
+				}
+				return false;
+			}
+
+		});
+
 		((TextView) findViewById(R.id.date)).setText(this.mInfos.getDate());
 		((TextView) findViewById(R.id.cast)).setText(result.getCast());
 		((TextView) findViewById(R.id.author)).setText(result.getDirectors());

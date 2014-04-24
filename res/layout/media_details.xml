@@ -24,7 +24,7 @@
         android:id="@+id/view_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone">
+        android:visibility="gone" >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -263,13 +263,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="#FFF"
-                    android:maxLines="5"
-                    
-android:editable="false"
-android:cursorVisible="false"
-
-                    android:paddingBottom="5dp"
-                    android:paddingTop="5dp"
+                    android:cursorVisible="false"
+                    android:maxLines="8"
+                    android:padding="8dp"
+                    android:textSize="14sp"
                     android:scrollbarAlwaysDrawVerticalTrack="true"
                     android:scrollbars="vertical"
                     android:text="@string/indisponible" />
@@ -672,12 +669,12 @@ android:cursorVisible="false"
                             android:text="@string/def_rate"
                             android:textColor="@color/count"
                             android:textStyle="bold" />
-                        
-           	           <View
-     				       android:layout_width="0dp"
-     				       android:layout_height="0dp"
-   		     		  	   android:layout_weight="1"/>  
-                          
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1" />
+
                         <ImageView
                             android:id="@+id/sim_type_1"
                             android:layout_width="20dp"
@@ -685,7 +682,6 @@ android:cursorVisible="false"
                             android:contentDescription="@string/indisponible"
                             android:paddingLeft="2dp"
                             android:src="@drawable/movie" />
-
                     </LinearLayout>
 
                     <ImageView
@@ -742,20 +738,19 @@ android:cursorVisible="false"
                             android:text="@string/def_rate"
                             android:textColor="@color/count"
                             android:textStyle="bold" />
-                        
-           	           <View
-     				       android:layout_width="0dp"
-     				       android:layout_height="0dp"
-   		     		  	   android:layout_weight="1"/>  
-                         
-                       <ImageView
-                           android:id="@+id/sim_type_2"
-                           android:layout_width="20dp"
-                           android:layout_height="match_parent"
-                           android:contentDescription="@string/indisponible"
-                           android:paddingLeft="2dp"
-                           android:src="@drawable/movie" />
 
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1" />
+
+                        <ImageView
+                            android:id="@+id/sim_type_2"
+                            android:layout_width="20dp"
+                            android:layout_height="match_parent"
+                            android:contentDescription="@string/indisponible"
+                            android:paddingLeft="2dp"
+                            android:src="@drawable/movie" />
                     </LinearLayout>
 
                     <ImageView
@@ -812,21 +807,20 @@ android:cursorVisible="false"
                             android:singleLine="true"
                             android:text="@string/def_rate"
                             android:textColor="@color/count"
-                            android:textStyle="bold" /> 
-                
-           	           <View
-     				       android:layout_width="0dp"
-     				       android:layout_height="0dp"
-   		     		  	   android:layout_weight="1"/>  
-            
-                       <ImageView
-                           android:id="@+id/sim_type_3"
-                           android:layout_width="wrap_content"
-                           android:layout_height="wrap_content"
-                           android:contentDescription="@string/indisponible"
-                           android:paddingLeft="2dp"
-                           android:src="@drawable/movie" />
+                            android:textStyle="bold" />
 
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1" />
+
+                        <ImageView
+                            android:id="@+id/sim_type_3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:contentDescription="@string/indisponible"
+                            android:paddingLeft="2dp"
+                            android:src="@drawable/movie" />
                     </LinearLayout>
 
                     <ImageView

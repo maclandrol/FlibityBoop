@@ -335,7 +335,7 @@ class RTSearch implements MediaInfos {
 
 	@Override
 	public String getOriginalPosterURL() {
-		return this.poster_original;
+		return this.poster_small;
 	}
 
 	public String getProfilePosterURL() {

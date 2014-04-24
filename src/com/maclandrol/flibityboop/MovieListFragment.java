@@ -21,7 +21,7 @@ import android.widget.Toast;
 public class MovieListFragment extends ListFragment implements	LoaderManager.LoaderCallbacks<Cursor> {
 
 	MovieFavoriteCursorAdapter adapter;
-	private static final int LOADER_ID = 6;
+	private static final int LOADER_ID = 7;
 	Cursor cursor;
 
 	String affichage;

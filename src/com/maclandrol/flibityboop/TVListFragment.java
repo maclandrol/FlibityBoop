@@ -32,7 +32,7 @@ public class TVListFragment extends Fragment implements
 
 	static final String[] group_from = new String[] { DBHelperMedia.M_SEEN };
 	static final int[] group_to = new int[] { R.id.ctView1 };
-	private static final int LOADER_ID = 6;
+	private static final int LOADER_ID = 7;
 
 	private Bundle savedInstanceState; // add this to your code
 

@@ -18,7 +18,7 @@ import android.widget.Toast;
 
 public class DBHelperMedia extends SQLiteOpenHelper {
 
-	static final int VERSION = 6;
+	static final int VERSION = 7;
 	static final String MEDIA_TABLE = "fav_media";
 	static final String SHOW_DATE_TABLE = "show_date";
 
@@ -107,7 +107,7 @@ public class DBHelperMedia extends SQLiteOpenHelper {
 
 		}
 		String status = addInfos.get("status");
-
+		
 		val.put(M_ID, m.hashCode());
 		val.put(M_INSERT_TIME, System.currentTimeMillis());
 		val.put(M_TITLE, m.getTitle());
@@ -126,7 +126,8 @@ public class DBHelperMedia extends SQLiteOpenHelper {
 					+ M_DAY_CORR + ", " + M_DAY + ") values( "
 					+ Date_sort.get(day) + ", \"" + day + "\" )";
 			System.out.println(s_query);
-			db.execSQL(s_query);
+			if(m.isShow())
+				db.execSQL(s_query);
 
 		} catch (SQLException e) {
 			Log.d("DBHelper", "Erreur BDD: " + e.getMessage());
