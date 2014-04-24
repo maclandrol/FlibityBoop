@@ -52,7 +52,7 @@ public class Critics implements Parcelable {
 	}
 
 	public Critics(String author, String comment, String date) {
-		this(author, comment, null, date);
+		this(author, comment, null , date);
 	}
 
 	public Critics(String author, String comment) {
@@ -81,6 +81,16 @@ public class Critics implements Parcelable {
 
 	public Uri getURL(){
 		return Uri.parse(this.url);
+	}
+	
+	public String getDomain(){
+		try {
+			Uri uri = Uri.parse(url);
+			String domain = uri.getHost();
+			return domain.startsWith("www.") ? domain.substring(4) : domain;
+		} catch (Exception e) {
+			return null;
+		}
 	}
 
 	public String getAuthor() {

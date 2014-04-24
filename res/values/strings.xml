@@ -2,9 +2,11 @@
 <resources>
 
     <string name="app_name">FlibityBoop</string>
+    <string name="fav_act">Favoris</string>
     <string name="action_settings">Settings</string>
+    <string name="action_clear_recent">Clear search history</string>
+    <string name="action_clear_cache">Clear cache</string>
     <string name="action_favorites">Favorites</string>
-    <string name="hello_world">Hello world!</string>
     <string name="image_default">Default image!</string>
     <string name="score">0.0</string>
     <string name="search_hint">Enter a Movie or TV show</string>
@@ -15,7 +17,6 @@
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_searchable">SearchableActivity</string>
     <string name="noResult">No search result corresponding to your search</string>
-    
     <string name="titre">Titre (Year)</string>
     <string name="imdb_rate">\?</string>
     <string name="NA">N/A</string>
@@ -23,14 +24,18 @@
     <string name="rt_count"></string>
     <string name="def_rate"> - </string>
     <string name="rtu_count"></string>
+    <string name="empty_string"></string>
     <string name="runtime_text"><u><b>Runtime:</b></u></string>
     <string name="date_text"><u><b>Date:</b></u></string>
     <string name="date">"????-??-??"</string>
-    <string name="add_to_fav">Add to favorite:</string>
+    <string name="add_to_fav">In favorite:</string>
     <string name="overview_text"><u><b>Overview</b></u></string>
     <string name="critic_text"><u><b>They said</b></u></string>
     <string name="cast_text"><u><b>Cast:</b></u></string>
     <string name="author_text"><u><b>Director:</b></u></string>
+    <string name="status_text"><u><b>Status:</b></u></string>
+    <string name="network_text"><u><b>Network:</b></u></string>
+    <string name="airtime_text"><u><b>Airtime:</b></u></string>
     <string name="similar_media"><u><b>You may like</b></u></string>
     <string name="title_activity_media_details">MediaDetails</string>
     <string name="title_activity_search">SearchActivity</string>
@@ -38,10 +43,19 @@
     <string name="trailer_text"><u><b>Trailer:</b></u></string>
     <string name="web_link"><u><b>WebLink:</b></u></string>
     <string name="cc">default title</string>
+    <string name="Day">Today</string>
+    <string name="fav_mov">My favorites movies</string>
+    <string name="fav_show">My favorites tv shows</string>
+    <string name="seen">seen</string>
+    <string name="show_seen">follow</string>
     <string name="author">- default author</string>
     <string name="details_text"><u><b>Detailed Informations</b></u></string>
     <string name="comment">default comment</string>
+    <string name="critics_url">- default url</string>
     <string name="show_more">more</string>
     <string name="error">Media not found!, maybe it\'s your fault, maybe ours &#8230;</string>
+    <string name="drawer_open">Drawer Ouvert</string>
+    <string name="drawer_close">Drawer Fermé</string>
     
+
 </resources>

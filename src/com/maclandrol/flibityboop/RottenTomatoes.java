@@ -195,10 +195,11 @@ public class RottenTomatoes extends API {
 
 class RTSearch implements MediaInfos {
 
+	private static final long serialVersionUID = -4764592788822302046L;
 	int id, years;
 	String title, imdb_id, type, critic_consensus, release_date, runtime,
 			freshness;
-	double audience_score, critics_score;
+	int audience_score, critics_score;
 	String poster_small, poster_original;
 	private HashMap<String, String> addInfos = null;
 
@@ -216,8 +217,8 @@ class RTSearch implements MediaInfos {
 		this.freshness = null;
 		JSONObject rating = jsObj.optJSONObject("ratings");
 		if (rating != null) {
-			this.audience_score = rating.optDouble("audience_score");
-			this.critics_score = rating.optDouble("critics_score");
+			this.audience_score = (int) rating.optDouble("audience_score");
+			this.critics_score = (int) rating.optDouble("critics_score");
 			this.freshness = rating.optString("critics_rating", null);
 		}
 
@@ -266,8 +267,8 @@ class RTSearch implements MediaInfos {
 		id = source.readInt();
 		years = source.readInt();
 
-		audience_score = source.readDouble();
-		critics_score = source.readDouble();
+		audience_score = (int) source.readDouble();
+		critics_score = (int) source.readDouble();
 
 		Bundle bundle = source.readBundle();
 		@SuppressWarnings("unchecked")
@@ -288,7 +289,7 @@ class RTSearch implements MediaInfos {
 		return this.critics_score;
 	}
 
-	public double getScore() {
+	public int getScore() {
 		return this.audience_score > 0 ? this.audience_score
 				: (this.critics_score > 0 ? this.critics_score : 0);
 	}

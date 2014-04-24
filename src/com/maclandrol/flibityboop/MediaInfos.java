@@ -1,15 +1,16 @@
 package com.maclandrol.flibityboop;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public interface MediaInfos extends Parcelable{
+public interface MediaInfos extends Parcelable, Serializable{
 	
 	public String getTitle();
-	public double getScore();
+	public int getScore();
 	public boolean isMovie();
 	public boolean isShow();
 	public API.MediaType getType();

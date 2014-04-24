@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="alt_back">#E6ECF5</color>
-    <color name="back">#F5EFE6</color>
+    <color name="alt_back">#eaeefa</color>
+    <color name="back">#f5f5fa</color>
     <color name="title">#090A0A</color>
-    <color name="appback">#FFF6F6</color>
+    <color name="appback">#F6F6F6</color>
     <color name="count">#666</color>
     <color name="cat_title">#455</color>
     <color name="rate">#F66666</color>

@@ -24,11 +24,12 @@
         android:id="@+id/view_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone" >
+        android:visibility="gone">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
             android:orientation="vertical" >
 
             <TextView
@@ -226,7 +227,7 @@
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
-                <ImageButton
+                <ToggleButton
                     android:id="@+id/fav"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
@@ -234,11 +235,12 @@
                     android:layout_alignTop="@+id/fav_text"
                     android:layout_marginLeft="5dp"
                     android:layout_toRightOf="@+id/fav_text"
-                    android:background="#FFF"
+                    android:background="@drawable/more_default"
+                    android:button="@drawable/selector"
                     android:contentDescription="@string/indisponible"
                     android:gravity="center"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/selector" />
+                    android:padding="2dp"
+                    android:scaleType="fitXY" />
             </RelativeLayout>
 
             <TextView
@@ -256,12 +258,16 @@
                 android:layout_marginBottom="10dp"
                 android:orientation="vertical" >
 
-                <TextView
+                <EditText
                     android:id="@+id/overview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="#FFF"
                     android:maxLines="5"
+                    
+android:editable="false"
+android:cursorVisible="false"
+
                     android:paddingBottom="5dp"
                     android:paddingTop="5dp"
                     android:scrollbarAlwaysDrawVerticalTrack="true"
@@ -305,6 +311,62 @@
 
                     <TextView
                         android:id="@+id/date"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:layout_weight="1"
+                        android:gravity="left"
+                        android:text="@string/indisponible"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/fixed_airtime_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="6dp"
+                    android:orientation="horizontal"
+                    android:visibility="gone" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:paddingRight="5dp"
+                        android:text="@string/airtime_text"
+                        android:textColor="@color/cat_title"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/airtime"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:layout_weight="1"
+                        android:gravity="left"
+                        android:text="@string/indisponible"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/fixed_status_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="6dp"
+                    android:orientation="horizontal"
+                    android:visibility="gone" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:paddingRight="5dp"
+                        android:text="@string/status_text"
+                        android:textColor="@color/cat_title"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/status"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="left"
@@ -359,6 +421,34 @@
 
                     <TextView
                         android:id="@+id/cast"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:layout_weight="1"
+                        android:gravity="left"
+                        android:text="@string/indisponible"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/fixed_network_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="6dp"
+                    android:orientation="horizontal"
+                    android:visibility="gone" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:paddingRight="5dp"
+                        android:text="@string/network_text"
+                        android:textColor="@color/cat_title"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/network"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="left"
@@ -518,12 +608,12 @@
                     android:id="@+id/show_more"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/more_selector"
                     android:clickable="true"
                     android:drawablePadding="2dp"
                     android:drawableRight="@drawable/more_normal"
                     android:gravity="end"
                     android:padding="5dp"
-                    android:background="@drawable/more_selector"
                     android:text="@string/show_more" />
             </LinearLayout>
 
@@ -563,6 +653,7 @@
                         tools:ignore="UseCompoundDrawables" >
 
                         <ImageView
+                            android:id="@+id/sim_rating_type1"
                             android:layout_width="20dp"
                             android:layout_height="match_parent"
                             android:contentDescription="@string/indisponible"
@@ -581,6 +672,20 @@
                             android:text="@string/def_rate"
                             android:textColor="@color/count"
                             android:textStyle="bold" />
+                        
+           	           <View
+     				       android:layout_width="0dp"
+     				       android:layout_height="0dp"
+   		     		  	   android:layout_weight="1"/>  
+                          
+                        <ImageView
+                            android:id="@+id/sim_type_1"
+                            android:layout_width="20dp"
+                            android:layout_height="match_parent"
+                            android:contentDescription="@string/indisponible"
+                            android:paddingLeft="2dp"
+                            android:src="@drawable/movie" />
+
                     </LinearLayout>
 
                     <ImageView
@@ -618,6 +723,7 @@
                         tools:ignore="UseCompoundDrawables" >
 
                         <ImageView
+                            android:id="@+id/sim_rating_type2"
                             android:layout_width="20dp"
                             android:layout_height="match_parent"
                             android:contentDescription="@string/indisponible"
@@ -636,6 +742,20 @@
                             android:text="@string/def_rate"
                             android:textColor="@color/count"
                             android:textStyle="bold" />
+                        
+           	           <View
+     				       android:layout_width="0dp"
+     				       android:layout_height="0dp"
+   		     		  	   android:layout_weight="1"/>  
+                         
+                       <ImageView
+                           android:id="@+id/sim_type_2"
+                           android:layout_width="20dp"
+                           android:layout_height="match_parent"
+                           android:contentDescription="@string/indisponible"
+                           android:paddingLeft="2dp"
+                           android:src="@drawable/movie" />
+
                     </LinearLayout>
 
                     <ImageView
@@ -674,6 +794,7 @@
                         tools:ignore="UseCompoundDrawables" >
 
                         <ImageView
+                            android:id="@+id/sim_rating_type3"
                             android:layout_width="20dp"
                             android:layout_height="match_parent"
                             android:contentDescription="@string/indisponible"
@@ -691,7 +812,21 @@
                             android:singleLine="true"
                             android:text="@string/def_rate"
                             android:textColor="@color/count"
-                            android:textStyle="bold" />
+                            android:textStyle="bold" /> 
+                
+           	           <View
+     				       android:layout_width="0dp"
+     				       android:layout_height="0dp"
+   		     		  	   android:layout_weight="1"/>  
+            
+                       <ImageView
+                           android:id="@+id/sim_type_3"
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:contentDescription="@string/indisponible"
+                           android:paddingLeft="2dp"
+                           android:src="@drawable/movie" />
+
                     </LinearLayout>
 
                     <ImageView
@@ -702,10 +837,6 @@
                         android:src="@drawable/default_media" />
                 </LinearLayout>
             </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="5dp" />
         </LinearLayout>
     </ScrollView>
 

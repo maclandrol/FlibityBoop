@@ -15,15 +15,25 @@
         android:textSize="15sp" />
 
     <TextView
-        android:id="@+id/aut"
+        android:id="@+id/critics_url"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignRight="@+id/comment"
         android:layout_below="@+id/comment"
+        android:maxLines="1"
+        android:text="@string/critics_url"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/aut"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/critics_url"
+        android:layout_below="@+id/critics_url"
         android:gravity="center"
         android:text="@string/author"
         android:textColor="@color/cat_title"
         android:textSize="16sp"
         android:textStyle="bold" />
-
+    
 </RelativeLayout>

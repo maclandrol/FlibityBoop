@@ -37,7 +37,7 @@
                        
             android:layout_toRightOf="@+id/poster"
             android:text="@string/titre"
-            android:textColor="#AAA"
+            android:textColor="#000000"
             android:textStyle="bold"
             android:textSize="16sp" />
          
@@ -51,7 +51,7 @@
 			   
             android:layout_marginBottom="4dp"
             android:layout_toRightOf="@+id/poster"
-            android:textColor="#AAA"
+            android:textColor="#545454"
             android:textSize="15sp" />
           
           <TextView
@@ -63,13 +63,14 @@
 			android:layout_marginBottom="4dp"
             android:text="@string/score"
             android:layout_toRightOf="@+id/poster"
-            android:textColor="#AAA"
+            android:textColor="#545454"
             android:textSize="15sp" 
             />
           
           	<ImageView
           	    android:id="@+id/score_icon"
           	    android:layout_width="20dp"
+          	    android:layout_marginLeft="5dp"
           	    android:layout_height="wrap_content"
           	    android:layout_toRightOf="@+id/score"
         		android:layout_alignTop="@+id/score"
