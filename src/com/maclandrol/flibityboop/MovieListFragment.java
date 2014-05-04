@@ -21,7 +21,7 @@ import android.widget.Toast;
 public class MovieListFragment extends ListFragment implements	LoaderManager.LoaderCallbacks<Cursor> {
 
 	MovieFavoriteCursorAdapter adapter;
-	private static final int LOADER_ID = 7;
+	private static final int LOADER_ID = 8;
 	Cursor cursor;
 
 	String affichage;
@@ -67,18 +67,20 @@ public class MovieListFragment extends ListFragment implements	LoaderManager.Loa
 	static final ViewBinder VIEW_BINDER = new ViewBinder() {
 		@Override
 		public boolean setViewValue(View v, Cursor c, int index) {
-			MediaInfos m = null;
+			Media media = null;
+			MediaInfos m =null;
 
 			switch (v.getId()) {
 			case R.id.date_fav:
 				try {
 					ObjectInputStream ois = new ObjectInputStream(
 							new ByteArrayInputStream(c.getBlob(index)));
-					m = (MediaInfos) ois.readObject();
+					media= (Media) ois.readObject();
 				} catch (Exception e) {
 
 				}
-				if (m != null) {
+				if (media != null) {
+					m = media.mediainfos;
 					((TextView) v).setText(m.getDate());
 				}
 				return true;
@@ -87,27 +89,17 @@ public class MovieListFragment extends ListFragment implements	LoaderManager.Loa
 				try {
 					ObjectInputStream ois = new ObjectInputStream(
 							new ByteArrayInputStream(c.getBlob(index)));
-					m = (MediaInfos) ois.readObject();
+					media = (Media) ois.readObject();
 				} catch (Exception e) {
 
 				}
-				if (m != null) {
+				if (media != null) {
+					m = media.mediainfos;
 					((TextView) v).setText(m.getScore() + "%");
 				}
 				return true;
 				
 			case R.id.poster_fav:
-				try {
-					ObjectInputStream ois = new ObjectInputStream(
-							new ByteArrayInputStream(c.getBlob(index)));
-					m = (MediaInfos) ois.readObject();
-				} catch (Exception e) {
-
-				}
-				if (m != null) {
-					//ImageLoader im = new ImageLoader();
-					//im.DisplayImage(m.getPosterURL(1), (ImageView)v);
-				}
 				return true;
 				
 			case R.id.title_fav:
@@ -126,7 +118,6 @@ public class MovieListFragment extends ListFragment implements	LoaderManager.Loa
 			return false;
 		}
 	};
-
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 		CursorLoader cursorLoader = null;

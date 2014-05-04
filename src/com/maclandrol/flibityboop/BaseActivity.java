@@ -64,10 +64,6 @@ public class BaseActivity extends FragmentActivity{
         		//start activity settings
         		break;
         	
-        	case R.id.action_favorites:
-        		//start activity favorites
-        		break;
-        	
         	case android.R.id.home:
         	      Intent homeIntent = new Intent(getApplicationContext(), MainActivity.class);
         	      startActivity(homeIntent);
@@ -78,15 +74,15 @@ public class BaseActivity extends FragmentActivity{
         		suggestions.clearHistory();
 		
         	case R.id.action_clear_cache:
-        		MemoryCache cache = new MemoryCache();
-        		cache.clear();
+        		ImageLoader im = new ImageLoader(this);
+        		im.clearCache();
 		}
 			
 		
 		return super.onOptionsItemSelected(item);
 	}
 
-protected void addToDB(MediaInfos media, boolean seen){
+protected void addToDB(Media media, boolean seen){
 		
 		ContentResolver resolver = getContentResolver();
 		ContentValues val = new ContentValues();
@@ -116,7 +112,7 @@ protected void addToDB(MediaInfos media, boolean seen){
 		}
 	}
 
-	protected void delFromDB(MediaInfos mediaInfos) {
+	protected void delFromDB(Media mediaInfos) {
 
 		int hash = mediaInfos.hashCode();
 		ContentResolver resolver = this.getContentResolver();

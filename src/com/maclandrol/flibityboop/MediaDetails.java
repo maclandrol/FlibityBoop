@@ -67,10 +67,16 @@ public class MediaDetails extends BaseActivity {
 			showMedia(m);
 		} else {
 			if (i != null) {
-				mInfos = i.getParcelableExtra("media");
-				if (mInfos != null && mInfos instanceof MediaInfos) {
+				mInfos = i.getParcelableExtra("mediainfo");
+				m= i.getParcelableExtra("mediaComplete");
+				if(m!=null && m instanceof Media){
+					this.mInfos=m.mediainfos;
+					new LoadMedia(false).execute(mInfos);
+
 				}
-				new LoadMedia().execute(mInfos);
+				else if (mInfos != null && mInfos instanceof MediaInfos) {
+					new LoadMedia(true).execute(mInfos);
+				}
 			}
 		}
 
@@ -85,6 +91,8 @@ public class MediaDetails extends BaseActivity {
 		outState.putParcelableArrayList("similar", this.similar);
 	}
 
+	
+		
 	public void showMedia(Media result) {
 
 		int in_db= resolver.query(MediaContentProvider.CONTENT_URI, null, DBHelperMedia.M_ID+" LIKE ?", new String [] {Integer.toString(mInfos.hashCode())}, null).getCount();
@@ -95,9 +103,9 @@ public class MediaDetails extends BaseActivity {
 			@Override
 			public void onCheckedChanged(CompoundButton tb,	boolean isChecked) {
 				if(isChecked)
-					MediaDetails.this.addToDB(mInfos, false);
+					MediaDetails.this.addToDB(m, false);
 				else
-					MediaDetails.this.delFromDB(mInfos);
+					MediaDetails.this.delFromDB(m);
 								
 			}
 		
@@ -443,6 +451,10 @@ public class MediaDetails extends BaseActivity {
 	// List des classes
 	class LoadMedia extends AsyncTask<MediaInfos, Void, Media> {
 
+		boolean sendReq=true;
+		public LoadMedia(boolean sendReq){
+			this.sendReq=sendReq;
+		}
 		@Override
 		protected void onPostExecute(Media result) {
 			MediaDetails.progressDiag.dismiss();
@@ -475,30 +487,32 @@ public class MediaDetails extends BaseActivity {
 
 		@Override
 		protected Media doInBackground(MediaInfos... params) {
-			Media media = null;
-			// Aller chercher le media
-			try {
-				media = new Media(params[0]);
-			} catch (Exception e) {
-				Log.e("Media", "Impossible d'acceder aux media");
+			Media media = MediaDetails.this.m;
+			if (sendReq) {
+				// Aller chercher le media
+				try {
+					media = new Media(params[0]);
+				} catch (Exception e) {
+					Log.e("Media", "Impossible d'acceder aux media");
+				}
+				// Media.afficheMedia(media);
 			}
-			Media.afficheMedia(media);
 			return media;
 		}
 
 	}
 
 	private class MediaDetailsIntentListener implements OnClickListener {
-		MediaInfos m;
+		MediaInfos infos;
 
 		public MediaDetailsIntentListener(MediaInfos m) {
-			this.m = m;
+			this.infos = m;
 		}
 
 		@Override
 		public void onClick(View v) {
 			Intent i = new Intent(MediaDetails.this, MediaDetails.class);
-			i.putExtra("media", (Parcelable)m);
+			i.putExtra("mediainfo", (Parcelable)infos);
 			startActivity(i);
 		}
 	}

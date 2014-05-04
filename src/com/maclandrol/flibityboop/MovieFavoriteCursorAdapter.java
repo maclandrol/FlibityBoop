@@ -81,18 +81,20 @@ public class MovieFavoriteCursorAdapter extends SimpleCursorAdapter {
         
         final int media_pos= cursor.getColumnIndex(DBHelperMedia.M_INFOS);
         
+        Media media=null;
         MediaInfos m=null;
         try {
 			ObjectInputStream ois = new ObjectInputStream(
 					new ByteArrayInputStream(cursor.getBlob(media_pos)));
-			m = (MediaInfos) ois.readObject();
+			media = (Media) ois.readObject();
 		} catch (Exception e) {
 
 		}
-		if (m != null) {
+		if (media != null) {
+			m= media.mediainfos;
 			im.DisplayImage(m.getPosterURL(1), poster_fav);
 		}
-		final MediaInfos to_send = m;
+		final Media to_send = media;
 
 		poster_fav.setOnClickListener(new OnClickListener() {
 
@@ -100,7 +102,7 @@ public class MovieFavoriteCursorAdapter extends SimpleCursorAdapter {
 			public void onClick(View arg0) {
 				if (to_send != null) {
 					Intent i = new Intent(c, MediaDetails.class);
-					i.putExtra("media", (Parcelable) to_send);
+					i.putExtra("mediaComplete", (Parcelable) to_send);
 					c.startActivity(i);
 				}
 			}

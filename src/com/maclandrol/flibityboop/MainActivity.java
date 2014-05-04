@@ -114,7 +114,7 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 			this.emptyDB();
 			break;
 		case R.id.fav_db_add:
-			addToDB(this.media, seen.isChecked());
+//			addToDB(this.media, seen.isChecked());
 			break;
 		}
 			

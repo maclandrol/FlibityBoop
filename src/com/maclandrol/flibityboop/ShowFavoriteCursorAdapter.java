@@ -61,7 +61,8 @@ public class ShowFavoriteCursorAdapter extends SimpleCursorTreeAdapter {
 	@Override
 	protected void bindChildView(View view, Context context, Cursor cursor,
 			boolean isLastChild) {
-		MediaInfos m = null;
+		Media media = null;
+		MediaInfos m =null;
 		final int id = cursor.getInt(cursor.getColumnIndex(DBHelperMedia.M_ID));
 
 		TextView date = (TextView) view.findViewById(R.id.date_fav);
@@ -79,11 +80,12 @@ public class ShowFavoriteCursorAdapter extends SimpleCursorTreeAdapter {
 			try {
 				ObjectInputStream ois = new ObjectInputStream(
 						new ByteArrayInputStream(cursor.getBlob(pos)));
-				m = (MediaInfos) ois.readObject();
+				media = (Media) ois.readObject();
 			} catch (Exception e) {
 
 			}
-			if (m != null) {
+			if (media != null) {
+				m = media.mediainfos;
 				date.setText(m.getDate());
 				score_fav.setText(m.getScore() + "%");
 				im.DisplayImage(m.getPosterURL(1), poster_fav);
@@ -101,7 +103,7 @@ public class ShowFavoriteCursorAdapter extends SimpleCursorTreeAdapter {
 		boolean s = cursor.getInt(cursor.getColumnIndex(DBHelperMedia.M_SEEN)) > 0 ? true
 				: false;
 		seen.setChecked(s);
-        final MediaInfos to_send = m;
+        final Media to_send =media;
 
         final ContentResolver resolver = ShowFavoriteCursorAdapter.this.c
                 .getContentResolver();
@@ -126,7 +128,7 @@ public class ShowFavoriteCursorAdapter extends SimpleCursorTreeAdapter {
             @Override
             public void onClick(View arg0) {
                 Intent i = new Intent(c, MediaDetails.class);
-                i.putExtra("media", (Parcelable) to_send);
+                i.putExtra("mediaComplete", (Parcelable) to_send);
                 c.startActivity(i);
 
             }

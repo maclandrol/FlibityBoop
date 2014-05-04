@@ -4,26 +4,22 @@ import java.io.ByteArrayInputStream;
 import java.io.ObjectInputStream;
 
 import android.app.ExpandableListActivity;
-import android.app.ListActivity;
-
 import android.app.LoaderManager;
+import android.content.CursorLoader;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.content.CursorLoader;
 import android.view.View;
 import android.widget.CheckBox;
-import android.widget.SimpleCursorAdapter;
+import android.widget.ImageView;
 import android.widget.SimpleCursorAdapter.ViewBinder;
 import android.widget.TextView;
-import android.widget.ImageView;
 
 public class FavoriteListActivity extends ExpandableListActivity implements
 		LoaderManager.LoaderCallbacks<Cursor> {
 
 	String affichage;
 	Cursor cursor;
-	//final static ImageLoader im = new ImageLoader(getApplicationContext()); 
 	ShowFavoriteCursorAdapter adapter;
 	static final String[] select = new String[] { DBHelperMedia.M_ID,
 			DBHelperMedia.M_INSERT_TIME, DBHelperMedia.M_TITLE,
@@ -38,7 +34,7 @@ public class FavoriteListActivity extends ExpandableListActivity implements
 	
 	static final String [] group_from = new String[] {DBHelperMedia.M_SEEN};
 	static final int [] group_to = new int [] {R.id.ctView1};
-	private static final int LOADER_ID = 6;
+	private static final int LOADER_ID = 8;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -65,18 +61,20 @@ public class FavoriteListActivity extends ExpandableListActivity implements
 	static final ViewBinder VIEW_BINDER = new ViewBinder() {
 		@Override
 		public boolean setViewValue(View v, Cursor c, int index) {
-			MediaInfos m = null;
+			Media media = null;
+			MediaInfos m =null;
 
 			switch (v.getId()) {
 			case R.id.date_fav:
 				try {
 					ObjectInputStream ois = new ObjectInputStream(
 							new ByteArrayInputStream(c.getBlob(index)));
-					m = (MediaInfos) ois.readObject();
+					media= (Media) ois.readObject();
 				} catch (Exception e) {
 
 				}
-				if (m != null) {
+				if (media != null) {
+					m = media.mediainfos;
 					((TextView) v).setText(m.getDate());
 				}
 				return true;
@@ -85,27 +83,17 @@ public class FavoriteListActivity extends ExpandableListActivity implements
 				try {
 					ObjectInputStream ois = new ObjectInputStream(
 							new ByteArrayInputStream(c.getBlob(index)));
-					m = (MediaInfos) ois.readObject();
+					media = (Media) ois.readObject();
 				} catch (Exception e) {
 
 				}
-				if (m != null) {
+				if (media != null) {
+					m = media.mediainfos;
 					((TextView) v).setText(m.getScore() + "%");
 				}
 				return true;
 				
 			case R.id.poster_fav:
-				try {
-					ObjectInputStream ois = new ObjectInputStream(
-							new ByteArrayInputStream(c.getBlob(index)));
-					m = (MediaInfos) ois.readObject();
-				} catch (Exception e) {
-
-				}
-				if (m != null) {
-					//ImageLoader im = new ImageLoader();
-					//im.DisplayImage(m.getPosterURL(1), (ImageView)v);
-				}
 				return true;
 				
 			case R.id.title_fav:

@@ -107,7 +107,7 @@ public class SearchActivity extends BaseActivity {
 				to_send=filminfosList.get(position);
 			else
 				to_send=showinfosList.get(position);
-			i.putExtra("media",(Parcelable)to_send);
+			i.putExtra("mediainfo",(Parcelable)to_send);
 			startActivity(i);
 
 		}

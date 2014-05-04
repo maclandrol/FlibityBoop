@@ -12,6 +12,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -178,8 +179,9 @@ class TraktTVSearch implements MediaInfos {
 		ended = js.optBoolean("ended");
 	}
 
+	@SuppressWarnings("unchecked")
 	public TraktTVSearch(Parcel source) {
-		
+		source.readInt();
 		title = source.readString();
 		imdb_id = source.readString();
 		type = source.readString();
@@ -195,11 +197,36 @@ class TraktTVSearch implements MediaInfos {
 		runtime = source.readInt();
 		tvdb_id = source.readInt();
 		voteCount = source.readInt();
-
 		rating = source.readDouble();
+		
+		Bundle bundle = source.readBundle();
+		HashMap<String, String> serializable = (HashMap<String, String>)bundle.getSerializable("infosMap");
+		this.addInfos = serializable; 
+		}
 
-		addInfos = source.readHashMap(null);
-	}
+	public TraktTVSearch(Parcel source, boolean b) {
+		if(b) source.readInt();
+		title = source.readString();
+		imdb_id = source.readString();
+		type = source.readString();
+		poster = source.readString();
+		air_day = source.readString();
+		overview = source.readString();
+		air_time = source.readString();
+		first_date = source.readString();
+		genres = source.readString();
+		network = source.readString();
+
+		year = source.readInt();
+		runtime = source.readInt();
+		tvdb_id = source.readInt();
+		voteCount = source.readInt();
+		rating = source.readDouble();
+		
+		Bundle bundle = source.readBundle();
+		HashMap<String, String> serializable = (HashMap<String, String>)bundle.getSerializable("infosMap");
+		this.addInfos = serializable; 
+		}	
 
 	public String getNetwork() {
 		return this.network;
@@ -320,12 +347,13 @@ class TraktTVSearch implements MediaInfos {
 
 	@Override
 	public int describeContents() {
-		return 0;
+		return 2;
 	}
 
 	@Override
 	public void writeToParcel(Parcel out, int arg1) {
 
+		out.writeInt(describeContents());
 		out.writeString(title);
 		out.writeString(imdb_id);
 		out.writeString(type);
@@ -343,8 +371,9 @@ class TraktTVSearch implements MediaInfos {
 		out.writeInt(voteCount);
 
 		out.writeDouble(rating);
-
-		out.writeMap(addInfos);
+		Bundle bundle = new Bundle();
+		bundle.putSerializable("infosMap", addInfos);
+		out.writeBundle(bundle);
 	}
 	
 	public static final Parcelable.Creator<TraktTVSearch> CREATOR = new Creator<TraktTVSearch>(){

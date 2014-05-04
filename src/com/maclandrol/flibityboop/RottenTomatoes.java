@@ -276,6 +276,31 @@ class RTSearch implements MediaInfos {
 		addInfos = serializable; 
 	}
 
+	public RTSearch(Parcel source, boolean b) {
+		if(b)
+			source.readInt();
+		title = source.readString();
+		imdb_id = source.readString();
+		type = source.readString();
+		critic_consensus = source.readString();
+		release_date = source.readString();
+		runtime = source.readString();
+		freshness = source.readString();
+		poster_small = source.readString();
+		poster_original = source.readString();
+
+		id = source.readInt();
+		years = source.readInt();
+
+		audience_score = (int) source.readDouble();
+		critics_score = (int) source.readDouble();
+
+		Bundle bundle = source.readBundle();
+		@SuppressWarnings("unchecked")
+		HashMap<String, String> serializable = (HashMap<String, String>)bundle.getSerializable("infosMap");
+		addInfos = serializable; 
+	}
+
 	@Override
 	public String getTitle() {
 		return this.title;

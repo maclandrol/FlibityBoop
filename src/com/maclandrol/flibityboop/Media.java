@@ -1,5 +1,6 @@
 package com.maclandrol.flibityboop;
 
+import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,8 +15,9 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
-public class Media implements Parcelable {
+public class Media implements Parcelable, Serializable {
 
+	private static final long serialVersionUID = -1709498292286584203L;
 	MediaInfos mediainfos;
 	ArrayList<Critics> critiques;
 	API.MediaType type;
@@ -66,16 +68,16 @@ public class Media implements Parcelable {
 
 		Bundle bundle = source.readBundle();
 		@SuppressWarnings("unchecked")
-		HashMap<String, String> serializable = (HashMap<String, String>) bundle
+		HashMap<String, String> ser_map = (HashMap<String, String>) bundle
 				.getSerializable("map");
-		addInfos = serializable;
+		addInfos = ser_map;
 		this.mediainfos = source.readParcelable(MediaInfos.class
 				.getClassLoader());
 		this.tk_info = source.readParcelable(TKSearchResult.class
 				.getClassLoader());
-		MediaInfos m[] = null;
-		source.readTypedArray(m, MediaInfos.CREATOR);
-		this.similarMedia = new HashSet<MediaInfos>(Arrays.asList(m));
+		ArrayList <MediaInfos>sim_media = new ArrayList<MediaInfos>();
+		source.readTypedList(sim_media, MediaInfos.CREATOR);
+		this.similarMedia = new HashSet<MediaInfos>(sim_media);
 		this.critiques = new ArrayList<Critics>();
 		source.readTypedList(this.critiques, Critics.CREATOR);
 	}
@@ -167,28 +169,33 @@ public class Media implements Parcelable {
 	public int getRTUserRating() {
 		String rate = this.addInfos.get("rtUserMeter");
 		double val = -1;
-		try {
-			val = rate != null ? Double.parseDouble(rate) : -1.0;
-
-		} catch (Exception e) {
-
-		}
 		if (val < 0 && this.mediainfos instanceof RTSearch)
 			val = ((RTSearch) this.mediainfos).audience_score;
+		else {
+			try {
+				val = rate != null ? Double.parseDouble(rate) : -1.0;
+
+			} catch (Exception e) {
+
+			}
+		}
+
 		return (int) val;
 	}
 
 	public int getRTRating() {
 		String rate = this.addInfos.get("rtMeter");
 		double val = -1;
-		try {
-			val = rate != null ? Double.parseDouble(rate) : -1.0;
-
-		} catch (Exception e) {
-
-		}
 		if (val < 0 && this.mediainfos instanceof RTSearch)
 			val = ((RTSearch) this.mediainfos).critics_score;
+		else {
+			try {
+				val = rate != null ? Double.parseDouble(rate) : -1.0;
+
+			} catch (Exception e) {
+
+			}
+		}
 		return (int) val;
 	}
 
@@ -314,7 +321,11 @@ public class Media implements Parcelable {
 			System.out.println();
 		}
 	}
-
+	
+	@Override
+	public int hashCode(){
+		return this.mediainfos.hashCode();
+	}
 	
 	@Override
 	public int describeContents() {
@@ -323,15 +334,13 @@ public class Media implements Parcelable {
 
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
-		dest.writeMap(addInfos);
+		Bundle bundle = new Bundle();
+		bundle.putSerializable("map", addInfos);
+		dest.writeBundle(bundle);
 		dest.writeParcelable(mediainfos, PARCELABLE_WRITE_RETURN_VALUE);
 		dest.writeParcelable(this.tk_info, PARCELABLE_WRITE_RETURN_VALUE);
-		dest.writeTypedArray(this.similarMedia
-				.toArray(new MediaInfos[this.similarMedia.size()]),
-				PARCELABLE_WRITE_RETURN_VALUE);
-		dest.writeTypedArray(
-				this.critiques.toArray(new Critics[critiques.size()]),
-				PARCELABLE_WRITE_RETURN_VALUE);
+		dest.writeTypedList(new ArrayList<MediaInfos>(this.similarMedia));
+		dest.writeTypedList(this.critiques);
 	}
 
 	public static final Parcelable.Creator<Media> CREATOR = new Creator<Media>() {
