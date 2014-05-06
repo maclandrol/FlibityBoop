@@ -1,0 +1,45 @@
+<resources>
+
+    <string name="title_activity_settings">Settings</string>
+    <string name="pref_header_general">General</string>
+    <string name="pref_title_display_name">Username</string>
+    <string name="pref_default_display_name">FlibityBoop</string>
+    <string name="pref_max_result_per_req">Max search result per media request</string>
+
+    <string-array name="pref_max_result">
+        <item>10</item>
+        <item>20</item>
+        <item>30</item>
+        <item>40</item>
+        <item>50</item>
+    </string-array>
+    <string-array name="pref_max_result_value">
+        <item>10</item>
+        <item>20</item>
+        <item>30</item>
+        <item>40</item>
+        <item>50</item>
+    </string-array>
+    <string-array name="pref_sync_reminders">
+        <item>15 minutes</item>
+        <item>30 minutes</item>
+        <item>1 heure</item>
+        <item>3 heures</item>
+        <item>6 heures</item>
+    </string-array>
+    <string-array name="pref_sync_reminders_values">
+        <item>15</item>
+        <item>30</item>
+        <item>60</item>
+        <item>180</item>
+        <item>360</item>
+    </string-array>
+
+    <!-- Example settings for Notifications -->
+    <string name="pref_header_notifications">Show notifications</string>
+    <string name="pref_reminders">Time before notification</string>
+    <string name="pref_title_message_notifications">Enable show reminders</string>
+    <string name="pref_alert">Notify by alert </string>
+    <string name="pref_mail">Notify by email</string>
+
+</resources>

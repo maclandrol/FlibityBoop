@@ -6,9 +6,11 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.preference.PreferenceManager;
 import android.provider.SearchRecentSuggestions;
 import android.support.v4.app.NavUtils;
 import android.util.Log;
@@ -31,13 +33,12 @@ public class SearchActivity extends BaseActivity {
 	private ArrayList<? extends MediaInfos> mediainfosList;
 
 	// Number of results returned by APIs
-	private int nResultsRT = 10;
-	private int nResultsTTV = 10;
+	private int nResultsRT;
+	private int nResultsTTV;
 
 	private boolean includeMovies = true;
 	private boolean includeShows = true;
 
-	private MediaType type = MediaType.Any;
 	private MediaAdapter mAdapter;
 	private ProgressDialog progress;
 	private ProgressBar toggleProgress;
@@ -86,7 +87,6 @@ public class SearchActivity extends BaseActivity {
 				showinfosList = b.getParcelableArrayList("shows");
 				mediainfosList = Utils.entrelace(filminfosList, showinfosList);
 				Log.d("search", ""+mediainfosList.size());
-				type = MediaType.Any;
 				this.search_title = "Recommendations for \""
 						+ b.getString("titre") + "\"";
 				displaySearchResult();
@@ -129,6 +129,10 @@ public class SearchActivity extends BaseActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		activity = this;
+		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+		nResultsRT= Integer.parseInt(sharedPref.getString("max_req", "20"));
+		nResultsTTV= Integer.parseInt(sharedPref.getString("max_req", "20"));
+
 		setContentView(R.layout.activity_search);
 		myList = (ListView) findViewById(R.id.searchList);
 		myList.setOnItemClickListener(new ListOnItemClick());

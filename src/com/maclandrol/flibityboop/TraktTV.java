@@ -430,21 +430,25 @@ class TraktTVSearch implements MediaInfos {
         nextHour = Integer.parseInt(air_time.substring(0, i)) + (air_time.contains("pm") ? 12 : 0);
         nextMinute = Integer.parseInt(air_time.substring(i+1, i+3));
        
-        if (nextDayOfWeek >= todayDayOfWeek)
-                daysToGo = nextDayOfWeek - todayDayOfWeek;
-        else
-                daysToGo = nextDayOfWeek +6 - todayDayOfWeek;
-       
-        if (nextHour >= todayHour)
+        if (nextHour > todayHour)
                 hoursToGo = nextHour - todayHour - 1;
         else
                 hoursToGo = nextHour +23 - todayHour;
        
-        if (nextMinute >= todayMinute)
+        if (nextMinute >  todayMinute)
                 minutesToGo = nextMinute - todayMinute -1;
         else
                 minutesToGo = nextMinute +60 - todayMinute;
-       
+
+        if(nextDayOfWeek == todayDayOfWeek  && (nextHour < todayHour || (nextHour > todayHour
+				&& nextMinute > todayMinute))){
+            daysToGo = nextDayOfWeek+6 - todayDayOfWeek;
+        }
+        else if (nextDayOfWeek < todayDayOfWeek)
+            daysToGo = nextDayOfWeek +6- todayDayOfWeek;
+        else
+            daysToGo = nextDayOfWeek - todayDayOfWeek;
+   
        
         result = minutesToGo+" min";
         if(hoursToGo>0)
@@ -454,5 +458,71 @@ class TraktTVSearch implements MediaInfos {
         	result= daysToGo+ " day "+result;
         return "in "+result;
 }
+    
+	public int getHours() {
+		int i = this.getAirTime().indexOf(':');
+		if(i>0)
+			return Integer.parseInt(air_time.substring(0, i))+ (air_time.contains("pm") ? 12 : 0);
+		return -1;
+	}
 
+	public int getMinutes() {
+		int i = this.getAirTime().indexOf(':');
+		if (i > 0)
+			return Integer.parseInt(air_time.substring(i + 1, i + 3));
+		return -1;
+	}
+	
+	public int getDuration(){
+		return this.runtime;
+	}
+	
+	public long getTimeToGoMillis() {
+		int nextDayOfWeek = 0, daysToGo, nextMinute= getMinutes(), nextHour=getHours(), hoursToGo, minutesToGo;
+        GregorianCalendar today = new GregorianCalendar();
+        int todayHour = today.get(GregorianCalendar.HOUR_OF_DAY);
+        int todayMinute = today.get(GregorianCalendar.MINUTE);
+        int todayDayOfWeek = today.get(GregorianCalendar.DAY_OF_WEEK);
+
+		if (air_day.equals("Sunday"))
+			nextDayOfWeek = 1;
+		else if (air_day.equals("Monday"))
+			nextDayOfWeek = 2;
+		else if (air_day.equals("Tuesday"))
+			nextDayOfWeek = 3;
+		else if (air_day.equals("Wednesday"))
+			nextDayOfWeek = 4;
+		else if (air_day.equals("Thursday"))
+			nextDayOfWeek = 5;
+		else if (air_day.equals("Friday"))
+			nextDayOfWeek = 6;
+		else if (air_day.equals("Saturday"))
+			nextDayOfWeek = 7;
+
+		if (nextHour > todayHour)
+			hoursToGo = nextHour - todayHour - 1;
+		else
+			hoursToGo = nextHour + 23 - todayHour;
+
+		if (nextMinute > todayMinute)
+			minutesToGo = nextMinute - todayMinute - 1;
+		else
+			minutesToGo = nextMinute + 60 - todayMinute;
+
+		if (nextDayOfWeek == todayDayOfWeek
+				&& (nextHour < todayHour || (nextHour > todayHour && nextMinute > todayMinute))) {
+			daysToGo = nextDayOfWeek + 6 - todayDayOfWeek;
+		} else if (nextDayOfWeek < todayDayOfWeek)
+			daysToGo = nextDayOfWeek + 6 - todayDayOfWeek;
+		else
+			daysToGo = nextDayOfWeek - todayDayOfWeek;
+
+		today.add(GregorianCalendar.DAY_OF_YEAR,daysToGo);
+        today.add(GregorianCalendar.HOUR,hoursToGo);
+        today.add(GregorianCalendar.MINUTE,minutesToGo);
+			System.err.println(today.getTimeInMillis());
+        return today.getTimeInMillis();
+	}
 }
+
+

@@ -53,7 +53,6 @@ public class MovieListFragment extends ListFragment implements	LoaderManager.Loa
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		Toast.makeText(getActivity(), "onCreate", Toast.LENGTH_LONG).show();
 		this.savedInstanceState = savedInstanceState; // add this to your code
 
 	}

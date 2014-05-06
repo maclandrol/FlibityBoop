@@ -36,9 +36,9 @@ public class ImageLoader {
     }
     
     public ImageLoader(Context context, long cacheLimit){
-        fileCache=new FileCache(context);
-        executorService=Executors.newFixedThreadPool(5);
-        memoryCache.setLimit(cacheLimit);
+    	this(context);
+    	if(cacheLimit>0)
+    		memoryCache.setLimit(cacheLimit);
     }
     
     final int stub_id=R.drawable.default_media;

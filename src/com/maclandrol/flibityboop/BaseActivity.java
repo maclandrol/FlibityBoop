@@ -9,6 +9,8 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.provider.SearchRecentSuggestions;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
@@ -54,28 +56,44 @@ public class BaseActivity extends FragmentActivity{
 	    
     }
 
-	
+	/**
+	 * 
+	 * Comme l'activité SettingsActivity cause
+	 * un arrêt partiel de cette activité, lorsque
+	 * nous retrouvons le focus, il faut vérifier
+	 * si les préférences ont changé.
+	 * 
+	 */
+	@Override
+	protected void onResume() {
+		super.onResume();
+
+		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+		
+	}
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 
 		switch (item.getItemId()) {
         	case R.id.action_settings:
-        		//start activity settings
-        		break;
-        	
+        		Intent i = new Intent(this, SettingActivity.class);
+    			startActivity(i);
+    			return true;
         	case android.R.id.home:
         	      Intent homeIntent = new Intent(getApplicationContext(), MainActivity.class);
         	      startActivity(homeIntent);
+        	      break;
         	      
         	case R.id.action_clear_recent:
         		SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this,
         		        SearchSuggestionProvider.AUTHORITY, SearchSuggestionProvider.MODE);
         		suggestions.clearHistory();
-		
+        		break;
         	case R.id.action_clear_cache:
         		ImageLoader im = new ImageLoader(this);
         		im.clearCache();
+        		break;
 		}
 			
 		

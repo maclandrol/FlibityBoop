@@ -660,7 +660,7 @@ class TMDBSearch implements MediaInfos {
 		bundle.putSerializable("map", addInfos);
 		out.writeBundle(bundle);
 	}
-
+ 
 	public static final Parcelable.Creator<TMDBSearch> CREATOR = new Creator<TMDBSearch>() {
 
 		@Override

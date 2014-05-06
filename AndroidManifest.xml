@@ -10,6 +10,8 @@
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_CALENDAR" />
+    <uses-permission android:name="android.permission.WRITE_CALENDAR" />
 
     <application
         android:allowBackup="true"
@@ -49,14 +51,19 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
-        <activity android:name="com.maclandrol.flibityboop.FavoriteActivity" 
+        <activity
+            android:name="com.maclandrol.flibityboop.FavoriteActivity"
             android:label="@string/fav_act"
-            android:launchMode="singleTop">
+            android:launchMode="singleTop" >
+        </activity>
+        <activity android:name="com.maclandrol.flibityboop.SettingActivity" android:label="@string/title_activity_settings">
         </activity>
 
         <provider
             android:name=".SearchSuggestionProvider"
-            android:authorities="com.maclandrol.flibityboop.SearchSuggestionProvider" />
+            android:authorities="com.maclandrol.flibityboop.SearchSuggestionProvider"
+            android:exported="false" >
+        </provider>
         <provider
             android:name=".MediaContentProvider"
             android:authorities="com.maclandrol.flibityboop"
