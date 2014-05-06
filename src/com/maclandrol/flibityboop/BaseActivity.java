@@ -56,21 +56,6 @@ public class BaseActivity extends FragmentActivity{
 	    
     }
 
-	/**
-	 * 
-	 * Comme l'activité SettingsActivity cause
-	 * un arrêt partiel de cette activité, lorsque
-	 * nous retrouvons le focus, il faut vérifier
-	 * si les préférences ont changé.
-	 * 
-	 */
-	@Override
-	protected void onResume() {
-		super.onResume();
-
-		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-		
-	}
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
