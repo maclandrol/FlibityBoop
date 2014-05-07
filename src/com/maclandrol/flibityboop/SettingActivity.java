@@ -1,11 +1,21 @@
 package com.maclandrol.flibityboop;
 
+import android.app.ActionBar;
+import android.app.SearchManager;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
+import android.provider.SearchRecentSuggestions;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.MenuItem.OnMenuItemClickListener;
+import android.widget.SearchView;
+import android.widget.ShareActionProvider;
 
 /**
  * Une SettingsActivity présente des paramètres à l'usager.
@@ -23,6 +33,76 @@ public class SettingActivity extends PreferenceActivity {
 		// Au lieu de charger un layout, on doit initialiser le fragment de préférences
 		getFragmentManager().beginTransaction().replace(android.R.id.content, new GeneralPreferenceFragment()).commit();
 	}
+	
+	public boolean onCreateOptionsMenu(Menu menu) {
+		
+		   // Retrieves the action menu.
+			getMenuInflater().inflate(R.menu.main_actions, menu);
+
+			// Declares the SearchView for the search bar.
+			SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+			SearchView searchView = (SearchView) menu.findItem(R.id.action_search)
+					.getActionView();
+			if (null != searchView) {
+				searchView.setSearchableInfo(searchManager
+						.getSearchableInfo(getComponentName()));
+				searchView.setIconifiedByDefault(false);
+			}
+			searchView.setQuery(Utils.getLastQuery(), false);
+			
+		
+			
+			menu.findItem(R.id.action_favorites).setOnMenuItemClickListener(
+					new OnMenuItemClickListener() {
+						@Override
+						public boolean onMenuItemClick(MenuItem item) {
+
+							Intent in = new Intent(getApplicationContext(),
+									FavoriteActivity.class);
+							startActivity(in);
+							;
+							return true;
+						}
+			});
+		   
+		   	ActionBar ab = getActionBar();
+		    ab.setHomeButtonEnabled(true);
+			
+	       return true;
+		    
+	    }
+		
+		
+		@Override
+		public boolean onOptionsItemSelected(MenuItem item) {
+
+			switch (item.getItemId()) {
+	        	case R.id.action_settings:
+	        		Intent i = new Intent(this, SettingActivity.class);	
+					startActivity(i);	
+					return true;
+
+	        	case android.R.id.home:
+	        	    Intent homeIntent = new Intent(getApplicationContext(), MainActivity.class);
+	        	    startActivity(homeIntent);
+	        	    break;
+	        	    
+	        	case R.id.action_clear_recent:
+	        		SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this,
+	        		        SearchSuggestionProvider.AUTHORITY, SearchSuggestionProvider.MODE);
+	        		suggestions.clearHistory();
+	        		return true;
+	        		
+	        	case R.id.action_clear_cache:
+	        		ImageLoader im = new ImageLoader(this);
+	        		im.clearCache();
+	        		return true;
+	       
+	        		
+	        		
+			}		
+			return super.onOptionsItemSelected(item);
+		}
 
 	/**
 	 * 
@@ -95,9 +175,11 @@ public class SettingActivity extends PreferenceActivity {
 			// Et on répète pour chaque XML
 			addPreferencesFromResource(R.xml.pref_notification);
 			bindPreferenceSummaryToValue(findPreference("notif_time"));
-			/*bindPreferenceSummaryToValue(findPreference("calendar_notifications"));
-			
-			bindPreferenceSummaryToValue(findPreference("alert"));
+			bindPreferenceSummaryToValue(findPreference("max_req"));
+			bindPreferenceSummaryToValue(findPreference("maxPage"));
+			bindPreferenceSummaryToValue(findPreference("username"));
+
+			/*bindPreferenceSummaryToValue(findPreference("alert"));
 
 			bindPreferenceSummaryToValue(findPreference("mail"));*/
 		}

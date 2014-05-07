@@ -28,6 +28,10 @@ public class SectionListAdapter  extends ArrayAdapter<Item>{
 		if (v == null) {
 			if (item.isSection()) {
 				v = inflater.inflate(R.layout.item_section, parent, false);
+				v.setClickable(false);
+				v.setFocusable(false);
+				v.setEnabled(false);
+				v.setOnClickListener(null);
 			} else {
 				v = inflater.inflate(R.layout.item_list, null);
 			}

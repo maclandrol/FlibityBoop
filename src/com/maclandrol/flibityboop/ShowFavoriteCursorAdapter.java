@@ -104,7 +104,8 @@ public class ShowFavoriteCursorAdapter extends SimpleCursorTreeAdapter {
 				score_fav.setText(m.getScore() + "%");
 				im.DisplayImage(m.getPosterURL(1), poster_fav);
 				if(m instanceof TraktTVSearch){
-					rel_time.setText(((TraktTVSearch) m).getTimeUntilNextAirTime());
+					rel_time.setText(((TraktTVSearch) m).getTimeUntilNextAirTime() + " on "
+							+((TraktTVSearch) m).getNetwork());
 					if(s){
 						addEvent((TraktTVSearch) m);
 					}

@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
@@ -36,7 +37,7 @@ public class TVListFragment extends Fragment implements
 	private static final int LOADER_ID = 8;
 
 	private Bundle savedInstanceState; // add this to your code
-	TextView empty;
+	LinearLayout empty;
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
@@ -54,7 +55,7 @@ public class TVListFragment extends Fragment implements
 			Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.expendable_fragment_favorites,container, false);
 		flv = (ExpandableListView) rootView.findViewById(R.id.ExpendableFragmentListView);
-		empty=(TextView)rootView.findViewById(R.id.empty1);
+		empty=(LinearLayout)rootView.findViewById(R.id.empty1);
 		this.getLoaderManager().initLoader(LOADER_ID, null, this);
 		adapter = new ShowFavoriteCursorAdapter(this.getActivity(), cursor,R.layout.layout_group, group_from, group_to,	R.layout.show_favorite_details, child_from, child_to);
 		flv.setAdapter(adapter);

@@ -1,7 +1,13 @@
 package com.maclandrol.flibityboop;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.net.Uri;
 
 public class FileCache {
     
@@ -33,6 +39,26 @@ public class FileCache {
             return;
         for(File f:files)
             f.delete();
+    }
+    
+    public Uri saveAndGetBitMapPath(Bitmap b){
+    	File imageFile = new File(cacheDir,"xxMediaSharexx"+ ".png");
+    	FileOutputStream fileOutPutStream;
+		try {
+			fileOutPutStream = new FileOutputStream(imageFile);
+	    	b.compress(Bitmap.CompressFormat.PNG, 80, fileOutPutStream);
+
+	    	fileOutPutStream.flush();
+	    	fileOutPutStream.close();
+	    	return Uri.parse("file://" + imageFile.getAbsolutePath());
+
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return null;
     }
 
 }

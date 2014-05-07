@@ -3,8 +3,11 @@
     <string name="title_activity_settings">Settings</string>
     <string name="pref_header_general">General</string>
     <string name="pref_title_display_name">Username</string>
-    <string name="pref_default_display_name">FlibityBoop</string>
-    <string name="pref_max_result_per_req">Max search result per media request</string>
+	<string name="pref_default_display_name">FlibityBoop Team</string>
+    <string name="pref_max_result_per_req">Results limit per page</string>
+    <string name="pref_max_page_request">Max number of result page</string>
+
+    
 
     <string-array name="pref_max_result">
         <item>10</item>

@@ -36,7 +36,7 @@ public class Media implements Parcelable, Serializable {
 		ArrayList<TKSearchResult> tk_similar = null;
 		try {
 			JSONObject jo = t.getJSONMedia(this.mediainfos.getTitle(), type);
-			System.out.println(jo.toString(4));
+			jo.toString(4);
 			tk_info = t.getMediaInfos(jo);
 			tk_similar = t.getRecomMediaInfos(jo);
 
@@ -320,6 +320,10 @@ public class Media implements Parcelable, Serializable {
 			System.out.println(mi);
 			System.out.println();
 		}
+	}
+	
+	public String getShare(){
+		return "Hey Dude, I'm using FlibityBoop and I found this great "+type.toString()+(this.mediainfos.isShow()?" show":"") +" : " + this.getDetailledTitle() +".\nIt's rated " +this.mediainfos.getScore()+"%.\n"+(this.hasTrailer()?"Here is the trailer "+this.getTrailer()+"\n.":"")+(this.hasWiki()?"You can also found all informations on the wiki page"+this.getWiki()+".\n":"")+"Check it if you haven't seen it yet!!"; 		
 	}
 	
 	@Override
