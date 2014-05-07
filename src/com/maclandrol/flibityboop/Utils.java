@@ -4,8 +4,14 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Rect;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.util.DisplayMetrics;
+import android.view.View;
 
 public class Utils {
 	
@@ -84,5 +90,28 @@ public class Utils {
 
 		return bm;
 	}
+	
+	//Take a screenshot from activity
+	public static Bitmap takeScreenShot(Activity activity)
+	{
+	    View act_view = activity.findViewById(android.R.id.content);
+	    act_view.setDrawingCacheEnabled(true); //enable cache drawing
+	    act_view.buildDrawingCache();
+	    Bitmap b1 = act_view.getDrawingCache(); //retrive the cache builded 
+	    Rect frame = new Rect();
+	    activity.getWindow().getDecorView().getWindowVisibleDisplayFrame(frame);
+	    int statusBarHeight = frame.top;
+
+	    int width=  activity.getWindowManager().getDefaultDisplay().getWidth();
+	    int height=activity.getWindowManager().getDefaultDisplay().getWidth();
+	    /*int width= displaymetrics.widthPixels;
+	    int height = displaymetrics.heightPixels;
+*/
+	    Bitmap b = Bitmap.createBitmap(b1);//, 0, statusBarHeight, width, height  - statusBarHeight);
+	    act_view.destroyDrawingCache();
+	    return b;
+	}
+	
+	
 
 }

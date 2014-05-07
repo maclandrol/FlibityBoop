@@ -9,15 +9,18 @@ import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.preference.PreferenceManager;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
-import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -44,18 +47,27 @@ public class MediaDetails extends BaseActivity {
 	ToggleButton fav ;
 	ContentResolver resolver;
 	FragmentManager fm;
-
+	SharedPreferences sharedPref = null;
 	static ProgressDialog progressDiag;
 
+	//enable share option here only
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		MenuItem share=menu.findItem(R.id.menu_item_share);
+		share.setVisible(true);
+		return true;
+
+	}
+	 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Intent i = getIntent();
+		sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 		fm = getFragmentManager();
-		resolver= this.getContentResolver();
+		resolver = this.getContentResolver();
 		setContentView(R.layout.media_details);
 		imLoader = new ImageLoader(getApplicationContext());
 		fav= (ToggleButton)findViewById(R.id.fav);
-			
 		if (savedInstanceState != null) {
 			this.critics_pos = savedInstanceState.getInt("critic");
 			this.m = savedInstanceState.getParcelable("media");
@@ -67,14 +79,25 @@ public class MediaDetails extends BaseActivity {
 			showMedia(m);
 		} else {
 			if (i != null) {
-				mInfos = i.getParcelableExtra("media");
-				if (mInfos != null && mInfos instanceof MediaInfos) {
+				mInfos = i.getParcelableExtra("mediainfo");
+				m= i.getParcelableExtra("mediaComplete");
+				if(m!=null && m instanceof Media){
+					this.mInfos=m.mediainfos;
+					new LoadMedia(false).execute(mInfos);
+
 				}
-				new LoadMedia().execute(mInfos);
+				else if (mInfos != null && mInfos instanceof MediaInfos) {
+					new LoadMedia(true).execute(mInfos);
+				}
 			}
 		}
 
+		//shareIntent.setType("image/png");
+		shareIntent.setType("text/plain");
+		
 	}
+
+	
 
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
@@ -85,8 +108,10 @@ public class MediaDetails extends BaseActivity {
 		outState.putParcelableArrayList("similar", this.similar);
 	}
 
+	
+		
 	public void showMedia(Media result) {
-
+		share(m.getShare()+"\n\n"+sharedPref.getString("username","FlibityBoop Team"));
 		int in_db= resolver.query(MediaContentProvider.CONTENT_URI, null, DBHelperMedia.M_ID+" LIKE ?", new String [] {Integer.toString(mInfos.hashCode())}, null).getCount();
 		fav.setChecked(in_db>0);
 		fav.setTextOn("YES");
@@ -95,9 +120,9 @@ public class MediaDetails extends BaseActivity {
 			@Override
 			public void onCheckedChanged(CompoundButton tb,	boolean isChecked) {
 				if(isChecked)
-					MediaDetails.this.addToDB(mInfos, false);
+					MediaDetails.this.addToDB(m, false);
 				else
-					MediaDetails.this.delFromDB(mInfos);
+					MediaDetails.this.delFromDB(m);
 								
 			}
 		
@@ -120,7 +145,7 @@ public class MediaDetails extends BaseActivity {
 		// Les TV shows n'ont pas de rottenTomatoes score
 		if (this.mInfos.isShow()) {
 			// Remplacer les scores de rotten tomatoes par ceux de trakt
-			double score = this.mInfos.getScore();
+			int score = this.mInfos.getScore();
 			if (score > 0)
 				rt_rate.setText(score + "%");
 			rt_vote.setVisibility(View.INVISIBLE);
@@ -323,7 +348,7 @@ public class MediaDetails extends BaseActivity {
 				sim_poster.setOnClickListener(new MediaDetailsIntentListener(
 						sim.get(i)));
 				sim_note.setText(sim.get(i).getScore() + "%");
-				sim_title.setText(sim.get(i).getTitle());
+				sim_title.setText(sim.get(i).getDetailedTitle() );
 				sim_rating.setImageResource(sim.get(i).isMovie() ? R.drawable.user_like : 
 																   R.drawable.trakt_love_red);
 				sim_type.setImageResource(sim.get(i).isMovie() ? R.drawable.movie :
@@ -443,6 +468,10 @@ public class MediaDetails extends BaseActivity {
 	// List des classes
 	class LoadMedia extends AsyncTask<MediaInfos, Void, Media> {
 
+		boolean sendReq=true;
+		public LoadMedia(boolean sendReq){
+			this.sendReq=sendReq;
+		}
 		@Override
 		protected void onPostExecute(Media result) {
 			MediaDetails.progressDiag.dismiss();
@@ -475,30 +504,32 @@ public class MediaDetails extends BaseActivity {
 
 		@Override
 		protected Media doInBackground(MediaInfos... params) {
-			Media media = null;
-			// Aller chercher le media
-			try {
-				media = new Media(params[0]);
-			} catch (Exception e) {
-				Log.e("Media", "Impossible d'acceder aux media");
+			Media media = MediaDetails.this.m;
+			if (sendReq) {
+				// Aller chercher le media
+				try {
+					media = new Media(params[0]);
+				} catch (Exception e) {
+					Log.e("Media", "Impossible d'acceder aux media");
+				}
+				// Media.afficheMedia(media);
 			}
-			Media.afficheMedia(media);
 			return media;
 		}
 
 	}
 
 	private class MediaDetailsIntentListener implements OnClickListener {
-		MediaInfos m;
+		MediaInfos infos;
 
 		public MediaDetailsIntentListener(MediaInfos m) {
-			this.m = m;
+			this.infos = m;
 		}
 
 		@Override
 		public void onClick(View v) {
 			Intent i = new Intent(MediaDetails.this, MediaDetails.class);
-			i.putExtra("media", (Parcelable)m);
+			i.putExtra("mediainfo", (Parcelable)infos);
 			startActivity(i);
 		}
 	}

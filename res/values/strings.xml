@@ -4,8 +4,9 @@
     <string name="app_name">FlibityBoop</string>
     <string name="fav_act">Favoris</string>
     <string name="action_settings">Settings</string>
+    <string name="action_share">Share</string>
     <string name="action_clear_recent">Clear search history</string>
-    <string name="action_clear_cache">Clear cache</string>
+    <string name="action_clear_cache">Clear Image cache</string>
     <string name="action_favorites">Favorites</string>
     <string name="image_default">Default image!</string>
     <string name="score">0.0</string>
@@ -56,6 +57,12 @@
     <string name="error">Media not found!, maybe it\'s your fault, maybe ours &#8230;</string>
     <string name="drawer_open">Drawer Ouvert</string>
     <string name="drawer_close">Drawer Fermé</string>
-    
+    <string name="title_activity_accueil">Accueil</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="accueil_suggestions_string">You might like:</string>
+    <string name="accueil_empty_recommendations">We could not find any recommendations for you! Please add media to your favorites to use this function.</string>
+    <string name="accueil_genres_string">Quicksearch by genre</string>
+    <string name="accueil_upcoming_string">Upcoming TV Shows you follow</string>
+     <string name="no_internet_connection">No internet connection</string>
 
 </resources>

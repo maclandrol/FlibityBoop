@@ -28,6 +28,7 @@ public class FavoriteActivity extends BaseActivity {
 	SimplePagerAdapter adapter;
 	ViewPager pager;
 	TextView t;
+	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

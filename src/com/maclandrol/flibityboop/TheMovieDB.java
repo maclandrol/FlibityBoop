@@ -12,6 +12,8 @@ import org.json.JSONObject;
 
 import android.os.Bundle;
 import android.os.Parcel;
+import android.os.Parcelable;
+import android.os.Parcelable.Creator;
 
 import com.maclandrol.flibityboop.API.MediaType;
 
@@ -473,6 +475,45 @@ class TMDBSearch implements MediaInfos {
 		}
 	}
 
+	public TMDBSearch(Parcel source) {
+
+		source.readInt();
+		this.poster = source.readString();
+		this.ori_title = source.readString();
+		this.title = source.readString();
+		this.type=source.readString();
+		this.first_date=source.readString();
+		this.id=source.readInt();
+		this.voteCount=source.readInt();
+		this.averageVote=source.readDouble();
+		this.popularity=source.readDouble();
+
+		Bundle bundle = source.readBundle();
+		@SuppressWarnings("unchecked")
+		HashMap<String, String> serializable = (HashMap<String, String>)bundle.getSerializable("map");
+		this.addInfos = serializable; 
+		
+	}
+
+	public TMDBSearch(Parcel source, boolean b) {
+		if(b) source.readInt();
+		this.poster = source.readString();
+		this.ori_title = source.readString();
+		this.title = source.readString();
+		this.type=source.readString();
+		this.first_date=source.readString();
+		this.id=source.readInt();
+		this.voteCount=source.readInt();
+		this.averageVote=source.readDouble();
+		this.popularity=source.readDouble();
+
+		Bundle bundle = source.readBundle();
+		@SuppressWarnings("unchecked")
+		HashMap<String, String> serializable = (HashMap<String, String>)bundle.getSerializable("map");
+		this.addInfos = serializable; 
+		
+	}
+
 	public boolean isMovie() {
 		return this.type.equalsIgnoreCase("movie");
 	}
@@ -522,6 +563,12 @@ class TMDBSearch implements MediaInfos {
 			return this.ori_title;
 		else
 			return this.title;
+	}
+	
+	public String getDetailedTitle() {
+
+		return (getTitle() + " (" + first_date + ")");
+
 	}
 
 	public String getOriginalPosterURL() {
@@ -601,11 +648,11 @@ class TMDBSearch implements MediaInfos {
 	@Override
 	public int describeContents() {
 
-		return 0;
+		return 3;
 	}
 
 	public void writeToParcel(Parcel out, int arg1) {
-
+		out.writeInt(describeContents());
 		out.writeString(poster);
 		out.writeString(ori_title);
 		out.writeString(title);
@@ -619,5 +666,19 @@ class TMDBSearch implements MediaInfos {
 		bundle.putSerializable("map", addInfos);
 		out.writeBundle(bundle);
 	}
+
+	public static final Parcelable.Creator<TMDBSearch> CREATOR = new Creator<TMDBSearch>() {
+
+		@Override
+		public TMDBSearch createFromParcel(Parcel source) {
+			return new TMDBSearch(source);
+		}
+
+		@Override
+		public TMDBSearch[] newArray(int size) {
+			return new TMDBSearch[size];
+		}
+
+	};
 
 }
