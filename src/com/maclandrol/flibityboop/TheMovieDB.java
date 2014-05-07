@@ -681,18 +681,5 @@ class TMDBSearch implements MediaInfos {
 
 	};
 
-	public static final Parcelable.Creator<TMDBSearch> CREATOR = new Creator<TMDBSearch>() {
-
-		@Override
-		public TMDBSearch createFromParcel(Parcel source) {
-			return new TMDBSearch(source);
-		}
-
-		@Override
-		public TMDBSearch[] newArray(int size) {
-			return new TMDBSearch[size];
-		}
-
-	};
 
 }
