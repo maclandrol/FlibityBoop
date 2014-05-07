@@ -13,8 +13,8 @@
         android:ems="10"
         android:maxLines="1"
         android:padding="10dp"
-        android:paddingBottom="20dp"
-        android:paddingTop="20dp"
+        android:paddingBottom="25dp"
+        android:paddingTop="25dp"
         android:textColor="#CCC"
         android:textSize="18sp"
         android:textStyle="bold" >

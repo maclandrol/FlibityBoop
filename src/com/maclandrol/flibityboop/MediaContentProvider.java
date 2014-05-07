@@ -18,8 +18,8 @@ public class MediaContentProvider  extends ContentProvider{
 	
 	DBHelperMedia dbh;
 	private static final String AUTHORITY = "com.maclandrol.flibityboop";
-	public static final int MEDIA = 10; //Celui utilisé par le demo, why 10??
-	public static final int DATE = 11; //Celui utilisé par le demo, why 10??
+	public static final int MEDIA = 10;
+	public static final int DATE = 11; 
 
 	private static final String MEDIA_PATH = "media";
 	private static final String DAY_PATH = "day";
@@ -83,7 +83,10 @@ public class MediaContentProvider  extends ContentProvider{
 		case MEDIA:
 			try {
 				dbh.addNewEntry(values);
-			} catch ( SQLException e ) { return null; }
+			} catch ( SQLException e ) {
+				Log.d("contentprovider","insert failed");
+				return null; 
+				}
 			break;
 		default:
 			throw new IllegalArgumentException("Unknown URI: " + uri);

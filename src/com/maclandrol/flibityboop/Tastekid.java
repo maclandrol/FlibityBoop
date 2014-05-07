@@ -1,5 +1,6 @@
 package com.maclandrol.flibityboop;
 
+import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -146,7 +147,9 @@ public class Tastekid extends API {
 
 // Cette classe contient les informations et les méthodes propres aux medias
 // retournés par tastekid
-class TKSearchResult implements Parcelable {
+class TKSearchResult implements Parcelable, Serializable {
+	
+	private static final long serialVersionUID = 8605593584797495584L;
 	String summary, type, title, webpage, ytbtitle, ytblink;
 
 	public TKSearchResult(String summary, String type, String title,
@@ -162,15 +165,11 @@ class TKSearchResult implements Parcelable {
 	public TKSearchResult(Parcel source) {
 		this.summary = source.readString();
 		this.type = source.readString();
-		;
 		this.title = source.readString();
-		;
 		this.webpage = source.readString();
-		;
 		this.ytblink = source.readString();
-		;
 		this.ytbtitle = source.readString();
-		;
+		
 	}
 
 	public String getSummary() {

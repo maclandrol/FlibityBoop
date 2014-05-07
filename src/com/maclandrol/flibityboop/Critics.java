@@ -1,5 +1,7 @@
 package com.maclandrol.flibityboop;
 
+import java.io.Serializable;
+
 import org.json.JSONObject;
 
 import android.net.Uri;
@@ -7,7 +9,9 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.webkit.URLUtil;
 
-public class Critics implements Parcelable {
+public class Critics implements Parcelable, Serializable {
+
+	private static final long serialVersionUID = -4069392063214205777L;
 	String author, comment, url, date;
 
 	public Critics(String author, String comment, String url, String date) {

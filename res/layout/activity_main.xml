@@ -5,109 +5,448 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity" >
 
-    <LinearLayout
-        android:id="@+id/LinearLayout1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:orientation="vertical"
-        android:paddingBottom="@dimen/activity_vertical_margin"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin" >
+    
+<LinearLayout
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+    android:orientation="vertical" >
+        
+    <TextView
+        android:id="@+id/no_connection"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center"
+        android:background="@color/appback"
+        android:gravity="center"
+        android:text="@string/no_internet_connection"
+        android:textSize="@dimen/font"
+        android:visibility="gone" />
+    
+   <RelativeLayout
+		android:id="@+id/RelativeLayout1"
+       	android:layout_width="match_parent"
+       	android:layout_height="wrap_content"
+		android:background="@color/appback"
+       	android:orientation="vertical" >
+	                    
+	        <TextView
+	            android:id="@+id/accueil_string_1"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_alignParentLeft="true"
+	            android:layout_alignParentTop="true"
+	            android:padding="5dp"
+	            android:text="@string/accueil_suggestions_string"
+	            android:textSize="@dimen/font" />
+	        
+		
+	        <LinearLayout
+	            android:id="@+id/accueil_similar_show_list"
+	            android:layout_width="match_parent"
+	            android:layout_height="185dp"
+	            android:layout_alignParentLeft="true"
+	            android:layout_below="@+id/accueil_string_1"
+	            android:layout_marginBottom="2dp"
+	            android:baselineAligned="false"
+	            android:orientation="horizontal"
+	            android:padding="5dp" >
+	
+	            <TextView
+	                android:id="@+id/accueil_empty"
+	                android:layout_width="match_parent"
+	                android:layout_height="match_parent"
+	                android:text="@string/accueil_empty_recommendations" 
+			        android:layout_gravity="center"
+	        		android:gravity="center"
+	        		android:visibility="visible"/>
+	
+	            <LinearLayout
+	                android:id="@+id/accueil_similar1"
+	                android:layout_width="0dp"
+	                android:layout_height="match_parent"
+	                android:layout_marginRight="5dp"
+	                android:layout_weight="0.33"
+		           	android:background="@drawable/background_accueil_reccomendations"
+	                android:orientation="vertical"
+	                android:padding="5dp" >
+	
+	                <TextView
+	                    android:id="@+id/accueil_sim_title1"
+	                    android:layout_width="match_parent"
+	                    android:layout_height="wrap_content"
+	                    android:layout_marginBottom="3dp"
+	                    android:ellipsize="end"
+	                    android:gravity="left"
+	                    android:maxLines="1"
+	                    android:text="@string/titre" />
+	
+	                <LinearLayout
+	                    android:layout_width="match_parent"
+	                    android:layout_height="20dp"
+	                    android:layout_marginBottom="3dp"
+	                    android:orientation="horizontal"
+	                    tools:ignore="UseCompoundDrawables" >
+	
+	                    <ImageView
+	                        android:id="@+id/accueil_sim_rating_type1"
+	                        android:layout_width="20dp"
+	                        android:layout_height="match_parent"
+	                        android:contentDescription="@string/indisponible"
+	                        android:gravity="left"
+	                        android:paddingLeft="2dp"
+	                        android:src="@drawable/like" />
+	
+	                    <TextView
+	                        android:id="@+id/accueil_vote_1"
+	                        android:layout_width="wrap_content"
+	                        android:layout_height="match_parent"
+	                        android:layout_gravity="center"
+	                        android:gravity="center"
+	                        android:paddingLeft="6dp"
+	                        android:singleLine="true"
+	                        android:text="@string/def_rate"
+	                        android:textColor="@color/count"
+	                        android:textStyle="bold" />
+	
+	                    <View
+	                        android:layout_width="0dp"
+	                        android:layout_height="0dp"
+	                        android:layout_weight="1" />
+	
+	                    <ImageView
+	                        android:id="@+id/accueil_sim_type_1"
+	                        android:layout_width="20dp"
+	                        android:layout_height="match_parent"
+	                        android:contentDescription="@string/indisponible"
+	                        android:paddingLeft="2dp"
+	                        android:src="@drawable/movie" />
+	                </LinearLayout>
+	
+	                <ImageView
+	                    android:id="@+id/accueil_sim_poster1"
+	                    android:layout_width="fill_parent"
+	                    android:layout_height="match_parent"
+	                    android:contentDescription="@string/indisponible"
+	                    android:src="@drawable/default_media" />
+	            </LinearLayout>
+	
+	            <LinearLayout
+	                android:id="@+id/accueil_similar2"
+	                android:layout_width="0dp"
+	                android:layout_height="match_parent"
+	                android:layout_weight="0.33"
+		           	android:background="@drawable/background_accueil_reccomendations"
+	                android:orientation="vertical"
+	                android:padding="5dp" >
+	
+	                <TextView
+	                    android:id="@+id/accueil_sim_title2"
+	                    android:layout_width="match_parent"
+	                    android:layout_height="wrap_content"
+	                    android:layout_marginBottom="3dp"
+	                    android:ellipsize="end"
+	                    android:gravity="left"
+	                    android:maxLines="1"
+	                    android:text="@string/titre" />
+	
+	                <LinearLayout
+	                    android:layout_width="match_parent"
+	                    android:layout_height="20dp"
+	                    android:layout_marginBottom="3dp"
+	                    android:orientation="horizontal"
+	                    tools:ignore="UseCompoundDrawables" >
+	
+	                    <ImageView
+	                        android:id="@+id/accueil_sim_rating_type2"
+	                        android:layout_width="20dp"
+	                        android:layout_height="match_parent"
+	                        android:contentDescription="@string/indisponible"
+	                        android:gravity="left"
+	                        android:paddingLeft="2dp"
+	                        android:src="@drawable/like" />
+	
+	                    <TextView
+	                        android:id="@+id/accueil_vote_2"
+	                        android:layout_width="wrap_content"
+	                        android:layout_height="match_parent"
+	                        android:layout_gravity="center"
+	                        android:gravity="center"
+	                        android:paddingLeft="6dp"
+	                        android:singleLine="true"
+	                        android:text="@string/def_rate"
+	                        android:textColor="@color/count"
+	                        android:textStyle="bold" />
+	
+	                    <View
+	                        android:layout_width="0dp"
+	                        android:layout_height="0dp"
+	                        android:layout_weight="1" />
+	
+	                    <ImageView
+	                        android:id="@+id/accueil_sim_type_2"
+	                        android:layout_width="20dp"
+	                        android:layout_height="match_parent"
+	                        android:contentDescription="@string/indisponible"
+	                        android:paddingLeft="2dp"
+	                        android:src="@drawable/movie" />
+	                </LinearLayout>
+	
+	                <ImageView
+	                    android:id="@+id/accueil_sim_poster2"
+	                    android:layout_width="fill_parent"
+	                    android:layout_height="match_parent"
+	                    android:contentDescription="@string/indisponible"
+	                    android:src="@drawable/default_media" />
+	            </LinearLayout>
+	
+	            <LinearLayout
+	                android:id="@+id/accueil_similar3"
+	                android:layout_width="0dp"
+	                android:layout_height="match_parent"
+	                android:layout_marginLeft="5dp"
+	                android:layout_weight="0.33"
+		           	android:background="@drawable/background_accueil_reccomendations"
+	                android:orientation="vertical"
+	                android:padding="5dp" >
+	
+	                <TextView
+	                    android:id="@+id/accueil_sim_title3"
+	                    android:layout_width="match_parent"
+	                    android:layout_height="wrap_content"
+	                    android:layout_marginBottom="3dp"
+	                    android:ellipsize="end"
+	                    android:gravity="left"
+	                    android:maxLines="1"
+	                    android:text="@string/titre" />
+	
+	                <LinearLayout
+	                    android:layout_width="match_parent"
+	                    android:layout_height="20dp"
+	                    android:layout_marginBottom="3dp"
+	                    android:orientation="horizontal"
+	                    tools:ignore="UseCompoundDrawables" >
+	
+	                    <ImageView
+	                        android:id="@+id/accueil_sim_rating_type3"
+	                        android:layout_width="20dp"
+	                        android:layout_height="match_parent"
+	                        android:contentDescription="@string/indisponible"
+	                        android:gravity="left"
+	                        android:paddingLeft="2dp"
+	                        android:src="@drawable/like" />
+	
+	                    <TextView
+	                        android:id="@+id/accueil_vote_3"
+	                        android:layout_width="wrap_content"
+	                        android:layout_height="match_parent"
+	                        android:layout_gravity="center"
+	                        android:gravity="center"
+	                        android:paddingLeft="6dp"
+	                        android:singleLine="true"
+	                        android:text="@string/def_rate"
+	                        android:textColor="@color/count"
+	                        android:textStyle="bold" />
+	
+	                    <View
+	                        android:layout_width="0dp"
+	                        android:layout_height="0dp"
+	                        android:layout_weight="1" />
+	
+	                    <ImageView
+	                        android:id="@+id/accueil_sim_type_3"
+	                        android:layout_width="20dp"
+	                        android:layout_height="wrap_content"
+	                        android:contentDescription="@string/indisponible"
+	                        android:paddingLeft="2dp"
+	                        android:src="@drawable/movie" />
+	                </LinearLayout>
+	
+	                <ImageView
+	                    android:id="@+id/accueil_sim_poster3"
+	                    android:layout_width="fill_parent"
+	                    android:layout_height="match_parent"
+	                    android:contentDescription="@string/indisponible"
+	                    android:src="@drawable/default_media" />
+	            </LinearLayout>
+	        </LinearLayout>
+	
+	        <LinearLayout 
+	            android:id="@+id/accueil_upcoming"
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+	            android:layout_alignParentLeft="true"
+	            android:padding="5dp"
+			    android:layout_below="@+id/accueil_similar_show_list"
+			    android:background="@drawable/background_accueil_reccomendations"
+			    android:orientation="vertical" >
+	                
+	            
+	            <TextView
+	            android:id="@+id/accueil_string_upcoming"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:padding="5dp"
+	            android:text="@string/accueil_upcoming_string"
+	            android:textSize="18sp" />
+	            
+	            <TextView
+	            android:id="@+id/accueil_string_upcoming_show1"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+                android:textStyle="italic"
+	            android:text="@string/titre"
+	            android:visibility="gone"
+	            android:textSize="15sp" />
+	            <TextView
+	            android:id="@+id/accueil_string_upcoming_show2"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+                android:textStyle="italic"
+	            android:text="@string/titre"
+	            android:visibility="gone"
+	            android:textSize="15sp" />
+	            <TextView
+	            android:id="@+id/accueil_string_upcoming_show3"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+                android:textStyle="italic"
+	            android:text="@string/titre"
+	            android:visibility="gone"
+	            android:textSize="15sp" />
+	            
+	       </LinearLayout>
+	       
+	        
+	       <TextView
+	            android:id="@+id/accueil_string_2"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_alignParentLeft="true"
+			    android:layout_below="@+id/accueil_upcoming"
+	            android:padding="5dp"
+	            android:text="@string/accueil_genres_string"
+	            android:textSize="@dimen/font" />
+	        
+	        
+			<LinearLayout 
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+			    android:layout_below="@+id/accueil_string_2"
+			    android:orientation="vertical" >
+			
+				    <LinearLayout
+				        android:layout_width="match_parent"
+				        android:layout_height="match_parent"
+				        android:layout_weight="1"
+				        android:orientation="horizontal" >
+				
+				        <Button
+				            android:layout_width="match_parent"
+				            android:layout_height="match_parent"
+				            android:layout_weight="1" />
+				
+				        <Button
+				            android:layout_width="match_parent"
+				            android:layout_height="match_parent"
+				            android:layout_weight="1" />
+				        
+				        <Button
+				            android:layout_width="match_parent"
+				            android:layout_height="match_parent"
+				            android:layout_weight="1" />	
+				        
+				    </LinearLayout>
+				
+				    <LinearLayout
+				        android:layout_width="match_parent"
+				        android:layout_height="match_parent"
+				        android:layout_weight="1"
+				        android:orientation="horizontal" >
+				
+				        <Button
+				            android:layout_width="match_parent"
+				            android:layout_height="match_parent"
+				            android:layout_weight="1" />
+				
+				        <Button
+				            android:layout_width="match_parent"
+				            android:layout_height="match_parent"
+				            android:layout_weight="1" />
+				        
+				        <Button
+				            android:layout_width="match_parent"
+				            android:layout_height="match_parent"
+				            android:layout_weight="1" />		
+				    </LinearLayout>
+				
+				    <LinearLayout
+				        android:layout_width="match_parent"
+				        android:layout_height="match_parent"
+				        android:layout_weight="1"
+				        android:orientation="horizontal" >
+				
+				        <Button
+				            android:layout_width="match_parent"
+				            android:layout_height="match_parent"
+				            android:layout_weight="1" />
+				
+				        <Button
+				            android:layout_width="match_parent"
+				            android:layout_height="match_parent"
+				            android:layout_weight="1" />
+				        
+				        <Button
+				            android:layout_width="match_parent"
+				            android:layout_height="match_parent"
+				            android:layout_weight="1" />	
+				    </LinearLayout>
+				
+				    <LinearLayout
+				        android:layout_width="match_parent"
+				        android:layout_height="match_parent"
+				        android:layout_weight="1"
+				        android:orientation="horizontal" >
+				
+				        <Button
+				            android:layout_width="match_parent"
+				            android:layout_height="match_parent"
+				            android:layout_weight="1" />
+				
+				        <Button
+				            android:layout_width="match_parent"
+				            android:layout_height="match_parent"
+				            android:layout_weight="1" />
+				        
+				        <Button
+				            android:layout_width="match_parent"
+				            android:layout_height="match_parent"
+				            android:layout_weight="1" />	
+				    </LinearLayout>
+				
+				
+				</LinearLayout>
+	
+			<Button
+			    android:id="@+id/accueil_rdm"
+			    android:layout_width="48dp"
+			    android:layout_height="48dp"
+			    android:layout_above="@+id/accueil_similar_show_list"
+			    android:layout_alignParentRight="true"
+			    android:background="@drawable/dice_selector"
+			    android:text="" />
+			
+    	</RelativeLayout>
+	</LinearLayout>
+	    
+	    
+	    <ListView
+	        android:id="@+id/drawer"
+	        android:layout_width="240dp"
+	        android:layout_height="match_parent"
+	        android:layout_gravity="start"
+	        android:background="#111"
+	        android:divider="@android:color/transparent"
+	        android:dividerHeight="0dp" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal" >
-
-            <EditText
-                android:id="@+id/search_bar"
-                android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:layout_marginRight="10dp"
-                android:layout_weight="0.8"
-                android:hint="@string/search_hint"
-                android:inputType="text" />
-
-            <Button
-                android:id="@+id/search_button"
-                style="?android:attr/buttonStyleSmall"
-                android:layout_width="70dp"
-                android:layout_height="40dp"
-                android:text="@string/search" />
-
-            <ImageView
-                android:id="@+id/star"
-                android:layout_width="30dp"
-                android:layout_height="40dp"
-                android:layout_marginLeft="10dp"
-                android:background="#A60717"
-                android:clickable="true"
-                android:contentDescription="@string/error"
-                android:src="@drawable/star" />
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/fav_db_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="Test for quick add to db, Drop table with the (red?) star :"
-            android:textSize="18sp"
-            android:textStyle="bold|normal" />
-
-        <TextView
-            android:id="@+id/fav_ex_titre"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:padding="10dp"
-            android:textSize="15sp" />
-
-        <TextView
-            android:id="@+id/fav_ex_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:padding="10dp"
-            android:textSize="15sp" />
-
-        <TextView
-            android:id="@+id/fav_ex_score"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:padding="10dp"
-            android:textSize="15sp" />
-
-        <CheckBox
-            android:id="@+id/fav_ex_seen"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:padding="10dp"
-            android:text="Already seen"
-            android:textSize="15sp"
-            android:visibility="invisible" />
-
-        <Button
-            android:id="@+id/fav_db_add"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="addTodb"
-            android:visibility="invisible" />
-    </LinearLayout>
-
-    <ListView
-        android:id="@+id/drawer"
-        android:layout_width="240dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:background="#111"
-        android:divider="@android:color/transparent"
-        android:dividerHeight="0dp" />
-
+    
 </android.support.v4.widget.DrawerLayout>

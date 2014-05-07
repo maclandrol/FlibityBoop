@@ -2,7 +2,6 @@ package com.maclandrol.flibityboop;
 
 import java.io.ByteArrayInputStream;
 import java.io.ObjectInputStream;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -18,7 +17,7 @@ import android.widget.Toast;
 
 public class DBHelperMedia extends SQLiteOpenHelper {
 
-	static final int VERSION = 7;
+	static final int VERSION = 8;
 	static final String MEDIA_TABLE = "fav_media";
 	static final String SHOW_DATE_TABLE = "show_date";
 
@@ -29,7 +28,7 @@ public class DBHelperMedia extends SQLiteOpenHelper {
 	static final String M_INSERT_TIME = "insert_time";
 	static final String M_TITLE = "titre";
 	static final String M_SHOW = "is_show";
-	static final String M_INFOS = "mediainfo";
+	static final String M_INFOS = "mediainfos";
 	static final String M_SEEN = "seen";
 	static final String M_DAY = "day";
 	static final String M_DAY_CORR = "_id";
@@ -58,8 +57,8 @@ public class DBHelperMedia extends SQLiteOpenHelper {
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		Toast.makeText(context, "Création BDD", Toast.LENGTH_LONG).show();
-		Log.d("DBHelper", "Création BDD mediainfos");
+		//Toast.makeText(context, "Création BDD", Toast.LENGTH_LONG).show();
+		//Log.d("DBHelper", "Création BDD mediainfos");
 
 		// Appel standard pour créer une table dans la base de données.
 		String sql = "create table " + MEDIA_TABLE + " (" + M_ID
@@ -79,10 +78,9 @@ public class DBHelperMedia extends SQLiteOpenHelper {
 	}
 
 	@Override
-	public void onUpgrade(SQLiteDatabase db, int ancienneVersion,
-			int nouvelleVersion) {
-		Toast.makeText(context, "Mise à jour BDD", Toast.LENGTH_LONG).show();
-		Log.d("DBHelper", "Mise à jour BDD");
+	public void onUpgrade(SQLiteDatabase db, int ancienneVersion,int nouvelleVersion) {
+		//Toast.makeText(context, "Mise à jour BDD", Toast.LENGTH_LONG).show();
+		//Log.d("DBHelper", "Mise à jour BDD");
 
 		// Efface l'ancienne base de données
 		db.execSQL("drop table if exists " + MEDIA_TABLE);
@@ -92,9 +90,10 @@ public class DBHelperMedia extends SQLiteOpenHelper {
 		onCreate(db);
 	}
 
-	public void addNewEntry(MediaInfos m, boolean seen, byte[] media_bytes) {
-
-		HashMap<String, String> addInfos = m.getAdditionalFeatures();
+	public void addNewEntry(Media media, boolean seen, byte[] media_bytes) {
+		
+		MediaInfos m = media.mediainfos;
+		HashMap<String, String> addInfos = media.addInfos;
 
 		SQLiteDatabase db = this.getWritableDatabase();
 
@@ -154,13 +153,13 @@ public class DBHelperMedia extends SQLiteOpenHelper {
 
 	public void addNewEntry(ContentValues values) {
 
-		MediaInfos m = null;
+		Media m = null;
 		byte[] bytes = values.getAsByteArray(DBHelperMedia.M_INFOS);
 		boolean seen = values.getAsBoolean(DBHelperMedia.M_SEEN);
 		try {
 			ObjectInputStream ois = new ObjectInputStream(
 					new ByteArrayInputStream(bytes));
-			m = (MediaInfos) ois.readObject();
+			m = (Media) ois.readObject();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
