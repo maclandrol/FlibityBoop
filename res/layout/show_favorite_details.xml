@@ -22,7 +22,7 @@
             <ImageView
                 android:id="@+id/poster_fav"
                 android:layout_width="85dp"
-                android:layout_height="wrap_content"
+                android:layout_height="120dp"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
                 android:layout_marginRight="10dp"
@@ -37,6 +37,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="4dp"
                 android:layout_toRightOf="@+id/poster_fav"
+                android:layout_alignParentTop="true"
                 android:ellipsize="end"
                 android:maxLines="2"
                 android:text="@string/titre"

@@ -30,7 +30,7 @@ public class MovieFavoriteCursorAdapter extends SimpleCursorAdapter {
 		View view= super.getView(arg0, arg1, arg2);
 		final ContentResolver resolver = MovieFavoriteCursorAdapter.this.c.getContentResolver();
 		CheckBox seen = (CheckBox) view.findViewById(R.id.seen_fav);
-	     final TextView title = (TextView) view.findViewById(R.id.title_fav);
+	    final TextView title = (TextView) view.findViewById(R.id.title_fav);
 
         seen.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 

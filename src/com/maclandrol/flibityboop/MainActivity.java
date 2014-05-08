@@ -221,7 +221,7 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 				upcoming_show = (TextView) findViewById(R.id.accueil_string_upcoming_show3);
 			}
         	TraktTVSearch show = upcoming.get(i);
-        	upcoming_show.setText( "- " + show.getTitle() + " will air " +  show.getTimeUntilNextAirTime() +
+        	upcoming_show.setText( "- " + show.getTitle() + " will air " +  show.getAirDay()+" at "+ show.getAirTime()+
         			" on " + show.getNetwork());
         	upcoming_show.setVisibility(View.VISIBLE);
         	i++;
@@ -283,7 +283,7 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 				imLoader.DisplayImage(sim.get(i).getPosterURL(1), sim_poster);
 				sim_poster.setOnClickListener(new IntentListener(
 						sim.get(i)));
-				sim_note.setText(sim.get(i).getScore() + "%");
+				sim_note.setText(sim.get(i).getScore()>0?sim.get(i).getScore() + "%":"?");
 				sim_title.setText(sim.get(i).getDetailedTitle() );
 				sim_rating.setImageResource(sim.get(i).isMovie() ? R.drawable.user_like : 
 																   R.drawable.trakt_love_red);
@@ -363,7 +363,7 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 				imLoader.DisplayImage(last_added.get(i).getPosterURL(1), last_poster);
 				last_poster.setOnClickListener(new IntentListener(
 						last_added.get(i)));
-				last_note.setText(last_added.get(i).getScore() + "%");
+				last_note.setText(last_added.get(i).getScore()>0?last_added.get(i).getScore() + "%":"?");
 				last_title.setText(last_added.get(i).getDetailedTitle() );
 				last_rating.setImageResource(last_added.get(i).isMovie() ? R.drawable.user_like : 
 																   R.drawable.trakt_love_red);

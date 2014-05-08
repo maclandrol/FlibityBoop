@@ -131,8 +131,11 @@ public class ShowFavoriteCursorAdapter extends SimpleCursorTreeAdapter {
                 resolver.delete(MediaContentProvider.CONTENT_URI,
                         DBHelperMedia.M_ID + "=?",
                         new String[] { Integer.toString(id) });
-                if(to_send.mediainfos instanceof TraktTVSearch)
-                	deleteEvent((TraktTVSearch)to_send.mediainfos);
+                if(to_send.mediainfos instanceof TraktTVSearch){
+
+                	Log.d("calendar", "should delete now");
+                 	deleteEvent((TraktTVSearch)to_send.mediainfos);
+                }
 
 
 
@@ -284,14 +287,13 @@ public class ShowFavoriteCursorAdapter extends SimpleCursorTreeAdapter {
 
 	private void deleteEvent(TraktTVSearch tk) {
 		try {
-			this.c.getContentResolver().delete(
-					eventsUri,
-					"calendar_id=? and title=? and eventLocation=? ",
-					new String[] { String.valueOf(1), tk.getTitle(),
-							"FlibityBoop" });
+			this.c.getContentResolver().delete(	eventsUri,	"calendar_id=? and title=? and eventLocation=? ",
+					new String[] { String.valueOf(1), tk.getTitle(), tk.getNetwork()});
+
 			Log.d("calendar", "evenement deleted");
 
 		} catch (Exception e) {
+			e.printStackTrace();
 			Toast.makeText(this.c, "Unable to delete event", Toast.LENGTH_SHORT)
 					.show();
 		}

@@ -45,8 +45,8 @@
     <string name="web_link"><u><b>WebLink:</b></u></string>
     <string name="cc">default title</string>
     <string name="Day">Today</string>
-    <string name="fav_mov">My favorites movies</string>
-    <string name="fav_show">My favorites tv shows</string>
+    <string name="fav_mov">My favorite movies</string>
+    <string name="fav_show">My favorite TV shows</string>
     <string name="seen">seen</string>
     <string name="show_seen">follow</string>
     <string name="author">- default author</string>

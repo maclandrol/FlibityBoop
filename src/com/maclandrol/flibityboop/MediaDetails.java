@@ -355,7 +355,7 @@ public class MediaDetails extends BaseActivity {
 				imLoader.DisplayImage(sim.get(i).getPosterURL(1), sim_poster);
 				sim_poster.setOnClickListener(new MediaDetailsIntentListener(
 						sim.get(i)));
-				sim_note.setText(sim.get(i).getScore() + "%");
+				sim_note.setText(sim.get(i).getScore()>0?sim.get(i).getScore() + "%":"?");
 				sim_title.setText(sim.get(i).getDetailedTitle() );
 				sim_rating.setImageResource(sim.get(i).isMovie() ? R.drawable.user_like : 
 																   R.drawable.trakt_love_red);

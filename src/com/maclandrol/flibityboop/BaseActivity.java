@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Looper;
 import android.provider.SearchRecentSuggestions;
 import android.support.v4.app.FragmentActivity;
@@ -145,13 +146,35 @@ protected void addToDB(Media media, boolean seen){
 	}
 
 
-	protected void delFromDB(Media mediaInfos) {
+	protected void delFromDB(Media media){
 
-		int hash = mediaInfos.hashCode();
+		int hash = media.hashCode();
 		ContentResolver resolver = this.getContentResolver();
 		;
 		resolver.delete(MediaContentProvider.CONTENT_URI, DBHelperMedia.M_ID
 				+ "=?", new String[] { Integer.toString(hash) });
+		
+		if(media.mediainfos instanceof TraktTVSearch){
+
+			Uri eventsUri=null;
+			if (android.os.Build.VERSION.SDK_INT <= 7) {
+		         eventsUri = Uri.parse("content://calendar/events");
+
+		     } else {
+
+		         eventsUri = Uri.parse("content://com.android.calendar/events");
+		     }
+
+			try{
+				resolver.delete(eventsUri,	"calendar_id=? and title=? and eventLocation=? ",	new String[] { String.valueOf(1), media.mediainfos.getTitle(),((TraktTVSearch)media.mediainfos).getNetwork() });
+			}catch(Exception e){
+
+				e.printStackTrace();
+				Log.d("baseactivity", "Event delete echec");
+			}
+
+		}
+
 
 	}
 

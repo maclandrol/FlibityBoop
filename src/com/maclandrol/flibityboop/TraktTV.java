@@ -430,7 +430,6 @@ class TraktTVSearch implements MediaInfos {
 	                nextDayOfWeek = 7;
 	        else
 	                nextDayOfWeek = 0;
-	        System.out.println("status = "+ended);
 	        if(this.ended || nextDayOfWeek==0)
 	             return result;
 	       
