@@ -39,7 +39,8 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 	ImageLoader imLoader = null;
 
 	MediaInfos media;
-	Item [] items = {new SectionItem("Movies"), new ListItem("UpComming"),  new ListItem("In theather"), 
+	Item [] items = {new SectionItem("Media"), new ListItem("Popular"),new ListItem("TopRated"), 
+			new SectionItem("Movies"), new ListItem("UpComing"),  new ListItem("In theather"), 
 			new SectionItem("TVShow"), new ListItem("On Air"),new ListItem("Airing Today")};
 
 	@Override
@@ -76,6 +77,9 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 			}
 			
 		});
+		
+
+		
 		imLoader = new ImageLoader(getApplicationContext());
 		
 		drawerAdapter = new SectionListAdapter(getApplicationContext(), items);
@@ -152,6 +156,7 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 
 		noConnection.setVisibility(isNetworkConnected()? View.GONE : View.VISIBLE);
 		showUpcomingShows();
+		showLastAddedFav();
 		super.onResume();
 	}
 
@@ -164,11 +169,26 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 			break;
 		}
 	}
+	
+	public void quickSearch(View view){
 
+		String genre = (String) view.getContentDescription();
+		Log.d("genre","genre : " + genre);
+		
+		Intent i = new Intent(getApplicationContext(), SearchActivity.class);
+		i.putExtra("from_genre", true);
+		i.putExtra(SearchManager.QUERY, "");
+		i.putExtra("genre", genre);
+		i.setAction(Intent.ACTION_SEARCH);
+		startActivity(i);
+
+	}
+	
 	public void showMedia(){
 		
 		showRecommendations();
 		showUpcomingShows();
+		showLastAddedFav();
 		return;
 	}
 	
@@ -177,13 +197,13 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 		
 		ArrayList<TraktTVSearch> upcoming = upcomingShows();
 		LinearLayout upcoming_layout = (LinearLayout) findViewById(R.id.accueil_upcoming);
+		upcoming_layout.setVisibility(View.VISIBLE);
 		((TextView) findViewById(R.id.accueil_string_upcoming_show1)).setVisibility(View.GONE);
 		((TextView) findViewById(R.id.accueil_string_upcoming_show2)).setVisibility(View.GONE);
 		((TextView) findViewById(R.id.accueil_string_upcoming_show3)).setVisibility(View.GONE);
 		
         if (upcoming.isEmpty()){
         	
-        	Toast.makeText(getApplicationContext(), "upcoming is empty",Toast.LENGTH_LONG).show();
         	upcoming_layout.setVisibility(View.GONE);
 			return;
         }
@@ -214,7 +234,9 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 	}
 	
 	public void showRecommendations(){
+		
 		Media media = randomFav();
+		
 		if (media == null){
 			noRecommendations.setVisibility(View.VISIBLE);
 			return;
@@ -282,6 +304,86 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 				else
 					sim_layout = (LinearLayout) findViewById(R.id.accueil_similar3);
 				sim_layout.setVisibility(View.INVISIBLE);
+			}
+		}
+		
+		
+		
+		
+		
+	}
+	
+	public void showLastAddedFav(){
+		
+		ArrayList<MediaInfos> last_added = lastAddedFav(3);
+		LinearLayout last_added_layout = (LinearLayout) findViewById(R.id.accueil_last_added_list);
+		TextView last_added_string = (TextView) findViewById(R.id.accueil_string_2);
+		((LinearLayout) findViewById(R.id.accueil_last1)).setVisibility(View.VISIBLE);
+		((LinearLayout) findViewById(R.id.accueil_last2)).setVisibility(View.VISIBLE);
+		((LinearLayout) findViewById(R.id.accueil_last3)).setVisibility(View.VISIBLE);
+
+		
+		if (last_added.isEmpty()){
+			last_added_string.setVisibility(View.GONE);
+			last_added_layout.setVisibility(View.GONE);
+			return;
+		}
+		
+		
+		else {
+			last_added_layout.setVisibility(View.VISIBLE);
+			last_added_string.setVisibility(View.VISIBLE);	
+			
+			int i = 0;
+			ImageView last_poster, last_type, last_rating;
+			TextView last_note, last_title;
+			LinearLayout last_layout;
+
+			while (i < 3 && i < last_added.size()) {
+				if (i == 0) {
+					last_poster = (ImageView) findViewById(R.id.accueil_last_poster1);
+					last_note = (TextView) findViewById(R.id.accueil_last_vote_1);
+					last_title = (TextView) findViewById(R.id.accueil_last_title1);
+					last_type = (ImageView) findViewById(R.id.accueil_last_type_1);
+					last_rating = (ImageView) findViewById(R.id.accueil_last_rating_type1);
+
+				} else if (i == 1) {
+
+					last_poster = (ImageView) findViewById(R.id.accueil_last_poster2);
+					last_note = (TextView) findViewById(R.id.accueil_last_vote_2);
+					last_title = (TextView) findViewById(R.id.accueil_last_title2);
+					last_type = (ImageView) findViewById(R.id.accueil_last_type_2);
+					last_rating = (ImageView) findViewById(R.id.accueil_last_rating_type2);
+
+				} else {
+					last_poster = (ImageView) findViewById(R.id.accueil_last_poster3);
+					last_note = (TextView) findViewById(R.id.accueil_last_vote_3);
+					last_title = (TextView) findViewById(R.id.accueil_last_title3);
+					last_type = (ImageView) findViewById(R.id.accueil_last_type_3);
+					last_rating = (ImageView) findViewById(R.id.accueil_last_rating_type3);
+
+				}
+				imLoader.DisplayImage(last_added.get(i).getPosterURL(1), last_poster);
+				last_poster.setOnClickListener(new IntentListener(
+						last_added.get(i)));
+				last_note.setText(last_added.get(i).getScore() + "%");
+				last_title.setText(last_added.get(i).getDetailedTitle() );
+				last_rating.setImageResource(last_added.get(i).isMovie() ? R.drawable.user_like : 
+																   R.drawable.trakt_love_red);
+				last_type.setImageResource(last_added.get(i).isMovie() ? R.drawable.movie :
+																 R.drawable.tvshow);
+				i++;
+
+			}
+
+			for (int j = i + 1; j < 4; j++) {
+				if (j == 1)
+					last_layout = (LinearLayout) findViewById(R.id.accueil_last1);
+				else if (j == 2)
+					last_layout = (LinearLayout) findViewById(R.id.accueil_last2);
+				else
+					last_layout = (LinearLayout) findViewById(R.id.accueil_last3);
+				last_layout.setVisibility(View.INVISIBLE);
 			}
 		}
 		

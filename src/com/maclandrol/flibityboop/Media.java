@@ -323,7 +323,11 @@ public class Media implements Parcelable, Serializable {
 	}
 	
 	public String getShare(){
-		return "Hey Dude, I'm using FlibityBoop and I found this great "+type.toString()+(this.mediainfos.isShow()?" show":"") +" : " + this.getDetailledTitle() +".\nIt's rated " +this.mediainfos.getScore()+"%.\n"+(this.hasTrailer()?"Here is the trailer "+this.getTrailer()+"\n.":"")+(this.hasWiki()?"You can also found all informations on the wiki page"+this.getWiki()+".\n":"")+"Check it if you haven't seen it yet!!"; 		
+		return "Hey Dude, I'm using FlibityBoop and I find this great "+this.mediainfos.getType().toString()+
+				(this.mediainfos.isShow()?" show":"") +" : " + this.getDetailledTitle() +". It's rated " +
+				this.mediainfos.getScore()+"%.\n"+(this.hasTrailer()?"Here is the trailer: "+this.getTrailer()+
+						".\n":"")+(this.hasWiki()?"You can also find all the informations on the wiki page: "+
+				this.getWiki()+".\n":"")+"Check it if you haven't seen it yet!!"; 		
 	}
 	
 	@Override
