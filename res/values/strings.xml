@@ -15,7 +15,7 @@
     <string name="media_detail_img">Media poster</string>
     <string name="default_imdb_rate">9.2</string>
     <string name="imdb_user">(1000)</string>
-    <string name="title_activity_main">FlibityBoop</string>
+    <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_searchable">SearchableActivity</string>
     <string name="noResult">No search result corresponding to your search</string>
     <string name="titre">Titre (Year)</string>
