@@ -145,7 +145,7 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 	        .commit();
 	    }
         
-        showMedia();
+        //showMedia();
         
         
 	}
@@ -153,11 +153,9 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 
 	@Override
 	protected void onResume() {
-
-		noConnection.setVisibility(isNetworkConnected()? View.GONE : View.VISIBLE);
-		showUpcomingShows();
-		showLastAddedFav();
 		super.onResume();
+		noConnection.setVisibility(isNetworkConnected()? View.GONE : View.VISIBLE);
+		showMedia();
 	}
 
 

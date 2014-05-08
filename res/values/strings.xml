@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">FlibityBoop</string>
-    <string name="fav_act">Favoris</string>
+    <string name="fav_act">Favorite Medias</string>
     <string name="action_settings">Settings</string>
     <string name="action_share">Share</string>
     <string name="action_clear_recent">Clear search history</string>
@@ -15,7 +15,7 @@
     <string name="media_detail_img">Media poster</string>
     <string name="default_imdb_rate">9.2</string>
     <string name="imdb_user">(1000)</string>
-    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_main">FlibityBoop</string>
     <string name="title_activity_searchable">SearchableActivity</string>
     <string name="noResult">No search result corresponding to your search</string>
     <string name="titre">Titre (Year)</string>
@@ -54,16 +54,16 @@
     <string name="comment">default comment</string>
     <string name="critics_url">- default url</string>
     <string name="show_more">more</string>
-    <string name="error">Media not found!, maybe it\'s your fault, maybe ours &#8230;</string>
+    <string name="error">Media not found!, maybe it\'s your fault, maybe ours &#8230;.\n Check your internet connection and retry. If you saw this screen again then the API is currently not available!</string>
     <string name="drawer_open">Drawer Ouvert</string>
     <string name="drawer_close">Drawer Fermé</string>
     <string name="title_activity_accueil">Accueil</string>
     <string name="hello_world">Hello world!</string>
-    <string name="accueil_suggestions_string">You might like:</string>
+    <string name="accueil_suggestions_string">You might like</string>
     <string name="accueil_empty_recommendations">We could not find any recommendations for you! Please add media to your favorites to use this function.</string>
-    <string name="accueil_genres_string">Quicksearch by genre</string>
+    <string name="accueil_genres_string">Movie Quicksearch by genre</string>
     <string name="accueil_upcoming_string">Upcoming TV Shows you follow</string>
-    <string name="accueil_last_string">Last added to favorites</string>
+    <string name="accueil_last_string">Last added to Favorites</string>
      <string name="no_internet_connection">No internet connection</string>
 
 </resources>

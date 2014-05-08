@@ -311,19 +311,20 @@ protected void addToDB(Media media, boolean seen){
 	
 	protected ArrayList<TraktTVSearch> upcomingShows() {
 
-		ArrayList<MediaInfos> upcoming = new ArrayList<MediaInfos>();
+		ArrayList<TraktTVSearch> upcoming = new ArrayList<TraktTVSearch>();
 		Media media = null;
 		
 		String[] select = new String[] { DBHelperMedia.M_ID,
 				DBHelperMedia.M_INSERT_TIME, DBHelperMedia.M_TITLE,
 				DBHelperMedia.M_SHOW, DBHelperMedia.M_INFOS, DBHelperMedia.M_SEEN };
-
+		
+		String q_select=DBHelperMedia.M_SHOW + " = ? and "+DBHelperMedia.M_SEEN+ " = ? and " +DBHelperMedia.M_DAY+" not in (?, ?)";
 		
 		Cursor mCursor = getContentResolver().query(
 			    MediaContentProvider.CONTENT_URI,  // 
 			    select,                  	       // 
-			    DBHelperMedia.M_SHOW + " = ?",	   // 
-			    new String[]{"1"},       	       // Only ask for TV shows
+			    q_select,	   // 
+			    new String[]{"1", "1", "Ended", "Unknown"},       	       // Only ask for TV shows
 			    null);               			   // Retrieve all of them to sort them later
 		
 		int index = mCursor.getColumnIndex(DBHelperMedia.M_INFOS);
@@ -344,7 +345,6 @@ protected void addToDB(Media media, boolean seen){
 			     */
 	
 			} else {
-			    // Insert code here to do something with the results
 				
 				try {
 					ObjectInputStream ois = new ObjectInputStream(
@@ -354,9 +354,9 @@ protected void addToDB(Media media, boolean seen){
 	
 				}
 				// If there is a media and it is followed, add it to the list
-				if (media != null && mCursor.getString(mCursor.getColumnIndex(DBHelperMedia.M_SEEN)).equals("1")) {
+				if (media != null && media.mediainfos instanceof TraktTVSearch ) {
 					
-					upcoming.add(media.mediainfos);
+					upcoming.add((TraktTVSearch)media.mediainfos);
 				}
 			}
 			
@@ -365,22 +365,21 @@ protected void addToDB(Media media, boolean seen){
 		ArrayList<TraktTVSearch> sorted_shows = new ArrayList<TraktTVSearch>();
 
 		// Find the next show to air from now.
-		while (sorted_shows.size() < 3 && upcoming.size() > 0){
+		while (sorted_shows.size() < 3 && upcoming.size() >0){
 			
 			int min_index = 0;
 			long min = Long.MAX_VALUE;	
 			
 			for (int i=0; i<upcoming.size(); i++ ){
 				
-				if ( upcoming.get(i) instanceof TraktTVSearch && !((TraktTVSearch)upcoming.get(i)).ended &&
-						((TraktTVSearch)upcoming.get(i)).getTimeToGoMillis() < min){
-					
+				if (upcoming.get(i).getTimeToGoMillis() < min){
+					Log.d("upcomings", ""+((TraktTVSearch)upcoming.get(i)).ended);
 					min_index = i;
 					min = ((TraktTVSearch)upcoming.get(i)).getTimeToGoMillis();
 				}
 				
 			}
-			sorted_shows.add( (TraktTVSearch)upcoming.get(min_index) );
+			sorted_shows.add(upcoming.get(min_index));
 			upcoming.remove(min_index);
 		}
 		

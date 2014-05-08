@@ -198,7 +198,8 @@ class TraktTVSearch implements MediaInfos {
 		tvdb_id = source.readInt();
 		voteCount = source.readInt();
 		rating = source.readDouble();
-		
+		ended = source.readByte() != 0; 
+
 		Bundle bundle = source.readBundle();
 		HashMap<String, String> serializable = (HashMap<String, String>)bundle.getSerializable("infosMap");
 		this.addInfos = serializable; 
@@ -222,7 +223,7 @@ class TraktTVSearch implements MediaInfos {
 		tvdb_id = source.readInt();
 		voteCount = source.readInt();
 		rating = source.readDouble();
-		
+		ended = source.readByte() != 0; 
 		Bundle bundle = source.readBundle();
 		HashMap<String, String> serializable = (HashMap<String, String>)bundle.getSerializable("infosMap");
 		this.addInfos = serializable; 
@@ -376,6 +377,7 @@ class TraktTVSearch implements MediaInfos {
 		out.writeInt(voteCount);
 
 		out.writeDouble(rating);
+		out.writeByte((byte) (ended ? 1 : 0));
 		Bundle bundle = new Bundle();
 		bundle.putSerializable("infosMap", addInfos);
 		out.writeBundle(bundle);
@@ -428,7 +430,8 @@ class TraktTVSearch implements MediaInfos {
 	                nextDayOfWeek = 7;
 	        else
 	                nextDayOfWeek = 0;
-	        if(ended || nextDayOfWeek==0)
+	        System.out.println("status = "+ended);
+	        if(this.ended || nextDayOfWeek==0)
 	             return result;
 	       
 	        int i = air_time.indexOf(':');
@@ -462,8 +465,9 @@ class TraktTVSearch implements MediaInfos {
 	        if(daysToGo>0)
 	        	result= daysToGo+ " day "+result;
 	        return "in "+result;
-	}
+	  	}
 	    
+	  
 		public int getHours() {
 			int i = this.getAirTime().indexOf(':');
 			if(i>0)
@@ -471,6 +475,7 @@ class TraktTVSearch implements MediaInfos {
 			return -1;
 		}
 
+		
 		public int getMinutes() {
 			int i = this.getAirTime().indexOf(':');
 			if (i > 0)
@@ -481,6 +486,7 @@ class TraktTVSearch implements MediaInfos {
 		public int getDuration(){
 			return this.runtime;
 		}
+		
 		
 		public long getTimeToGoMillis() {
 			int nextDayOfWeek = 0, daysToGo, nextMinute= getMinutes(), nextHour=getHours(), hoursToGo, minutesToGo;

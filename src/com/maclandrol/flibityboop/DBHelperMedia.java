@@ -17,7 +17,7 @@ import android.widget.Toast;
 
 public class DBHelperMedia extends SQLiteOpenHelper {
 
-	static final int VERSION = 8;
+	static final int VERSION = 10;
 	static final String MEDIA_TABLE = "fav_media";
 	static final String SHOW_DATE_TABLE = "show_date";
 
@@ -79,7 +79,6 @@ public class DBHelperMedia extends SQLiteOpenHelper {
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int ancienneVersion,int nouvelleVersion) {
-		//Toast.makeText(context, "Mise à jour BDD", Toast.LENGTH_LONG).show();
 		//Log.d("DBHelper", "Mise à jour BDD");
 
 		// Efface l'ancienne base de données
@@ -111,8 +110,7 @@ public class DBHelperMedia extends SQLiteOpenHelper {
 		val.put(M_INSERT_TIME, System.currentTimeMillis());
 		val.put(M_TITLE, m.getTitle());
 		val.put(M_SHOW, m.isMovie() ? 0 : 1);
-		String day = (date != null && !date.isEmpty()) ? date : ("ended"
-				.equals(status) ? "Ended" : "Unknown");
+		String day = "ended".equals(status) ? "Ended" : ((date != null && !date.isEmpty()) ? date :"Unknown");
 		System.out.println(day);
 		val.put(M_INFOS, media_bytes);
 		val.put(M_DAY, day);

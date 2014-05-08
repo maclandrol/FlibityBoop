@@ -518,6 +518,7 @@ public class MediaDetails extends BaseActivity {
 				try {
 					media = new Media(params[0]);
 				} catch (Exception e) {
+					e.printStackTrace();
 					Log.e("Media", "Impossible d'acceder aux media");
 				}
 				// Media.afficheMedia(media);

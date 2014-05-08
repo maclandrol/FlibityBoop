@@ -16,12 +16,11 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class MovieListFragment extends ListFragment implements	LoaderManager.LoaderCallbacks<Cursor> {
 
 	MovieFavoriteCursorAdapter adapter;
-	private static final int LOADER_ID = 8;
+	private static final int LOADER_ID = 10;
 	Cursor cursor;
 
 	String affichage;
@@ -146,18 +145,18 @@ public class MovieListFragment extends ListFragment implements	LoaderManager.Loa
 	public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
 		switch (loader.getId()) {
 		case LOADER_ID:
-			adapter.changeCursor(cursor);
+			adapter.swapCursor(cursor);
 			break;
 		}
 	}
 
 	/*
 	 * Cette méthode gère le cas où le Loader n'a plus accès aux données. On
-	 * indique donc au SimpleCursorAdapter de se déconnecter du Cursor.
+	 * indique donc au CursorAdapter de se déconnecter du Cursor.
 	 */
 	@Override
 	public void onLoaderReset(Loader<Cursor> arg0) {
-		adapter.changeCursor(cursor);
+		adapter.swapCursor(null);
 	}
 
 }

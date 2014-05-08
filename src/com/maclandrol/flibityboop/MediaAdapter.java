@@ -59,7 +59,7 @@ public class MediaAdapter extends BaseAdapter {
 		TextView score = (TextView) view.findViewById(R.id.score);
 		ImageView score_icon = (ImageView) view.findViewById(R.id.score_icon);
 		
-		score.setText(media.getScore() + "%");
+		score.setText(media.getScore()>0?media.getScore() + "%":"?");
 		title.setText(media.getTitle());
 		title.setTextColor(0xFF000000);
 		if (!media.getDate().contains("null") || media.getDate().isEmpty())

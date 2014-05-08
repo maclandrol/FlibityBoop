@@ -21,6 +21,8 @@ public class TVListFragment extends Fragment implements
 	ExpandableListView flv;
 	// final static ImageLoader im = new ImageLoader(getApplicationContext());
 	ShowFavoriteCursorAdapter adapter;
+	private static final int LOADER_ID = 10;
+
 	static final String[] select = new String[] { DBHelperMedia.M_ID,
 			DBHelperMedia.M_INSERT_TIME, DBHelperMedia.M_TITLE,
 			DBHelperMedia.M_SHOW, DBHelperMedia.M_INFOS, DBHelperMedia.M_SEEN };
@@ -34,7 +36,6 @@ public class TVListFragment extends Fragment implements
 
 	static final String[] group_from = new String[] { DBHelperMedia.M_SEEN };
 	static final int[] group_to = new int[] { R.id.ctView1 };
-	private static final int LOADER_ID = 8;
 
 	private Bundle savedInstanceState; // add this to your code
 	LinearLayout empty;

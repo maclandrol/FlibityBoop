@@ -210,7 +210,7 @@ public class ShowFavoriteCursorAdapter extends SimpleCursorTreeAdapter {
 			event.put("calendar_id", 1);
 			// Title of the Event
 			event.put("title", tk.getTitle());
-			event.put("eventLocation", "FlibityBoop");
+			event.put("eventLocation", tk.getNetwork());
 			// Description of the Event
 			event.put("description", tk.getTitle() + " is playing soon...");
 			// Start Date of the Event
