@@ -62,10 +62,13 @@ public class MediaDetails extends BaseActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Intent i = getIntent();
-		sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+		sharedPref =PreferenceManager.getDefaultSharedPreferences(this);
 		fm = getFragmentManager();
-		resolver = this.getContentResolver();
+		resolver= this.getContentResolver();
 		setContentView(R.layout.media_details);
+		//shareIntent.setType("image/png");
+		shareIntent.setType("text/plain");
+		
 		imLoader = new ImageLoader(getApplicationContext());
 		fav= (ToggleButton)findViewById(R.id.fav);
 		if (savedInstanceState != null) {
@@ -79,10 +82,12 @@ public class MediaDetails extends BaseActivity {
 			showMedia(m);
 		} else {
 			if (i != null) {
-				mInfos = i.getParcelableExtra("mediainfo");
-				m= i.getParcelableExtra("mediaComplete");
+				this.mInfos = i.getParcelableExtra("mediainfo");
+				this.m= i.getParcelableExtra("mediaComplete");
 				if(m!=null && m instanceof Media){
 					this.mInfos=m.mediainfos;
+					m=(Media)m;
+					Log.d("mediadetails", "error showing detail from favorite");
 					new LoadMedia(false).execute(mInfos);
 
 				}
@@ -92,9 +97,7 @@ public class MediaDetails extends BaseActivity {
 			}
 		}
 
-		//shareIntent.setType("image/png");
-		shareIntent.setType("text/plain");
-		
+	
 	}
 
 	
@@ -111,7 +114,8 @@ public class MediaDetails extends BaseActivity {
 	
 		
 	public void showMedia(Media result) {
-		share(m.getShare()+"\n\n"+sharedPref.getString("username","FlibityBoop Team"));
+		Log.d("mediadetails", result.toString());
+		this.share(result.getShare()+"\n\n"+sharedPref.getString("username","FlibityBoop Team"));
 		int in_db= resolver.query(MediaContentProvider.CONTENT_URI, null, DBHelperMedia.M_ID+" LIKE ?", new String [] {Integer.toString(mInfos.hashCode())}, null).getCount();
 		fav.setChecked(in_db>0);
 		fav.setTextOn("YES");
@@ -255,8 +259,10 @@ public class MediaDetails extends BaseActivity {
 			final String trailer_link = result.getTrailer();
 			trailerView.setText(Html.fromHtml("<a href=\"" + trailer_link
 					+ "\">" + result.getTrailerTitle() + "</a>"));
-			trailerView.setClickable(true);
-			trailerView.setOnClickListener(new WebIntentListener(trailer_link));
+			trailerView.setMovementMethod(LinkMovementMethod.getInstance());
+
+			//trailerView.setClickable(true);
+			//trailerView.setOnClickListener(new WebIntentListener(trailer_link));
 
 		}
 		// Trailer pas trouvé, cacher le layout
@@ -273,8 +279,10 @@ public class MediaDetails extends BaseActivity {
 			TextView linkView = (TextView) findViewById(R.id.wikilink);
 			linkView.setText(Html.fromHtml("<a href=\"" + page + "\">"
 					+ (result.hasWiki() ? "Wikipedia page" : page) + "</a>"));
-			linkView.setClickable(true);
-			linkView.setOnClickListener(new WebIntentListener(page));
+			linkView.setMovementMethod(LinkMovementMethod.getInstance());
+
+			//linkView.setClickable(true);
+			//linkView.setOnClickListener(new WebIntentListener(page));
 		}
 
 		// On va chercher les recommendations ici
@@ -486,8 +494,8 @@ public class MediaDetails extends BaseActivity {
 				findViewById(R.id.view_content).setVisibility(View.VISIBLE);
 			} else {
 				// Erreur, aucun media trouvé, afficher ce message d'erreur
-				error.setText("We are so sorry that we couldn't find your media, The truth is our 4 APIs sucks!");
-				error.setBackgroundResource(R.color.error_color);
+				error.setText("Sorry, we couldn't retrieve this media. Try something else!");
+	
 
 			}
 
@@ -534,7 +542,7 @@ public class MediaDetails extends BaseActivity {
 		}
 	}
 
-	// Cette classe permet de demarrer une activité web
+	// Cette classe permet de demarrer une activité web mais actuellement elle n'est plus utilisé...
 	private class WebIntentListener implements OnClickListener {
 		private String link;
 

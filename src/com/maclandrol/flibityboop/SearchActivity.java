@@ -1,6 +1,10 @@
 package com.maclandrol.flibityboop;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+
+import com.maclandrol.flibityboop.API.MediaType;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -9,6 +13,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Looper;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.provider.SearchRecentSuggestions;
@@ -21,6 +26,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 public class SearchActivity extends BaseActivity {
@@ -29,10 +35,12 @@ public class SearchActivity extends BaseActivity {
 	private ArrayList<? extends MediaInfos> filminfosList;
 	private ArrayList<? extends MediaInfos> showinfosList;
 	private ArrayList<? extends MediaInfos> mediainfosList;
-	final static int TV_ON_AIR=4;
-	final static int TV_AIRING_TODAY=5;
-	final static int MOVIE_UPCOMMING=1;
-	final static int MOVIE_IN_THEATHER=2;
+	final static int TV_ON_AIR=7;
+	final static int TV_AIRING_TODAY=8;
+	final static int MOVIE_UPCOMMING=4;
+	final static int MOVIE_IN_THEATHER=5;
+	final static int POPULAR=1;
+	final static int TOP_RATED=2;
 	// Number of results returned by APIs
 	private int nResultsRT;
 	private int nResultsTTV;
@@ -47,6 +55,7 @@ public class SearchActivity extends BaseActivity {
 	private Activity activity;
 	private String previous_query = "", search_title="";
 	private TextView noResultTextView;
+	private ToggleButton movieToggle, showToggle;
 
 	public void onNewIntent(Intent intent) {
 		noResultTextView.setVisibility(View.INVISIBLE);
@@ -60,13 +69,20 @@ public class SearchActivity extends BaseActivity {
 
 		if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
 			boolean from_main = intent.getBooleanExtra("drawer", false);
+			boolean from_genre = intent.getBooleanExtra("from_genre", false);
 			String new_query = intent.getStringExtra(SearchManager.QUERY);
 
 			if(from_main){
-				previous_query=new_query;
+				previous_query = new_query;
 				Utils.setLastQuery(new_query);
 				int type=intent.getIntExtra("type",0);
 				new DrawerAsyncTask(type).execute();
+			}
+			else if (from_genre){
+				previous_query = new_query;
+				Utils.setLastQuery(new_query);
+				String genre = intent.getStringExtra("genre");
+				new GenreAsyncTask(genre).execute();
 			}
 			else{
 	
@@ -152,6 +168,8 @@ public class SearchActivity extends BaseActivity {
 		progress.setCancelable(false);
 		progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 		noResultTextView = (TextView) activity.findViewById(R.id.noResult);
+		movieToggle = (ToggleButton) findViewById(R.id.searchToggleMovies);
+		showToggle = (ToggleButton) findViewById(R.id.searchToggleTVShows);
 		
 		if(savedInstanceState!=null && savedInstanceState.getBoolean("search_title")){
 			this.filminfosList=savedInstanceState.getParcelableArrayList("movies");
@@ -308,12 +326,52 @@ public class SearchActivity extends BaseActivity {
 
 	}
 	
+	protected class GenreAsyncTask extends AsyncTask<String, String, Void> {
+
+		String genre="";
+		
+		public GenreAsyncTask (String genre){
+			this.genre = genre;
+		}
+		
+		protected void onPreExecute() {
+			progress.show();
+		}
+		
+		protected Void doInBackground(String... params) {
+
+			TheMovieDB tmdb=new TheMovieDB();
+
+			ArrayList<TMDBSearch> a = null;
+			
+			try {
+				a = tmdb.getMoviesByGenres(genre, false, maxPage);
+
+			} catch (Exception e) {
+				Log.e("asyncError", e.getMessage());
+			}
+			
+			filminfosList = a;
+			mediainfosList = a;
+
+			return null;
+		}
+		
+
+		protected void onPostExecute(Void result) {
+			search_title = genre.substring(0, 1).toUpperCase() + genre.substring(1) + " movies";
+			displaySearchResult();
+
+		}
+
+	}
+	
 	protected class DrawerAsyncTask extends AsyncTask<Void, String, Void> {
 
 		int queryType;
 		String message="";
 		boolean movie=true;
-
+		boolean mixte=false;
 		public DrawerAsyncTask (int queryType){
 			this.queryType=queryType;
 		}
@@ -352,18 +410,48 @@ public class SearchActivity extends BaseActivity {
 					a=tmdb.getOnAirTV(maxPage);
 					movie=false;
 					break;
+				case SearchActivity.POPULAR:
+					this.message="Really populars now";
+					a=tmdb.getPopularMedia(MediaType.Any, maxPage);
+					mixte=true;
+					break;
+					
+				case SearchActivity.TOP_RATED:
+					this.message="Top rated media";
+					a=tmdb.getTopRatedMedia(MediaType.Any, maxPage);
+					mixte=true;
+					break;
+					
 				}
 				
 			} catch (Exception e) {
 				Log.e("asyncError", e.getMessage());
 		
 			}
-			mediainfosList=a;
-			if(movie){
-				filminfosList = a;
+			
+			if (mixte) {
+				filminfosList = new ArrayList<TMDBSearch>(a);
+				showinfosList = new ArrayList<TMDBSearch>(a);
+				Set<MediaInfos> removeShow = new HashSet<MediaInfos>();
+				Set<MediaInfos> removeFilm = new HashSet<MediaInfos>();
+				for (MediaInfos m : a) {
+					if (m.isShow()){
+						removeShow.add(m);
+					}
+					else
+						removeFilm.add(m);
+				}
+				filminfosList.removeAll(removeShow);
+				showinfosList.removeAll(removeFilm);
+				mediainfosList = Utils.entrelace(filminfosList, showinfosList);
+			} else {
+				mediainfosList = a;
+
+				if (movie) {
+					filminfosList = a;
+				} else
+					showinfosList = a;
 			}
-			else
-				showinfosList = a;
 			Log.d("async", "making mediainfoslists");
 			return null;
 		}

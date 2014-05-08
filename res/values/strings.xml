@@ -63,6 +63,7 @@
     <string name="accueil_empty_recommendations">We could not find any recommendations for you! Please add media to your favorites to use this function.</string>
     <string name="accueil_genres_string">Quicksearch by genre</string>
     <string name="accueil_upcoming_string">Upcoming TV Shows you follow</string>
+    <string name="accueil_last_string">Last added to favorites</string>
      <string name="no_internet_connection">No internet connection</string>
 
 </resources>
