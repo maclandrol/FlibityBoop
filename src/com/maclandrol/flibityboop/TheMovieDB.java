@@ -562,7 +562,7 @@ class TMDBSearch implements MediaInfos {
 		if (original)
 			return this.ori_title;
 		else
-			return this.title;
+			return (this.title==null||this.title.isEmpty())?this.ori_title:this.title;
 	}
 	
 	public String getDetailedTitle() {
