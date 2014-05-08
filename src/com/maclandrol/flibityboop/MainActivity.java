@@ -23,7 +23,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class MainActivity extends BaseActivity implements OnClickListener {
 
@@ -246,8 +245,8 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 			noRecommendations.setVisibility(View.VISIBLE);
 			return;
 		}
-		
-		
+
+	
 		else {
 			noRecommendations.setVisibility(View.GONE);
 				
