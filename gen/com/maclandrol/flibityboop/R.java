@@ -286,8 +286,11 @@ public final class R {
         public static final int show_favorite_details=0x7f03000e;
     }
     public static final class menu {
-        public static final int main=0x7f0a0000;
-        public static final int main_actions=0x7f0a0001;
+        public static final int activity_search=0x7f0a0000;
+        public static final int main=0x7f0a0001;
+        public static final int main_actions=0x7f0a0002;
+        public static final int media_details=0x7f0a0003;
+        public static final int search=0x7f0a0004;
     }
     public static final class string {
         public static final int Day=0x7f07002b;
