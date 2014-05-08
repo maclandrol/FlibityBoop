@@ -35,13 +35,27 @@
 			android:background="@color/appback"
 			android:paddingTop="5dp"
 	       	android:orientation="vertical" >
-		                    
+		                 
+	       
+	       		<TextView
+			        android:id="@+id/app_title"
+			        android:layout_width="fill_parent"
+			        android:layout_height="wrap_content"
+			        android:layout_gravity="center"
+			        android:background="@color/appback"
+		            android:layout_alignParentLeft="true"
+		            android:layout_alignParentTop="true"
+			        android:paddingTop="5dp"
+			        android:gravity="center"
+			        android:text="@string/app_name"
+			        android:textSize="@dimen/font" />
+	       		
 		        <TextView
 		            android:id="@+id/accueil_string_1"
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
 		            android:layout_alignParentLeft="true"
-		            android:layout_alignParentTop="true"
+		            android:layout_below="@+id/app_title"
 		            android:padding="5dp"
 		            android:text="@string/accueil_suggestions_string"
 		            android:textSize="@dimen/font" />

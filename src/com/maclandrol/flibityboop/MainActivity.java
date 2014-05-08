@@ -317,7 +317,11 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 		
 		ArrayList<MediaInfos> last_added = lastAddedFav(3);
 		LinearLayout last_added_layout = (LinearLayout) findViewById(R.id.accueil_last_added_list);
-		TextView last_added_string = (TextView) findViewById(R.id.accueil_string_3);
+		TextView last_added_string = (TextView) findViewById(R.id.accueil_string_2);
+		((LinearLayout) findViewById(R.id.accueil_last1)).setVisibility(View.VISIBLE);
+		((LinearLayout) findViewById(R.id.accueil_last2)).setVisibility(View.VISIBLE);
+		((LinearLayout) findViewById(R.id.accueil_last3)).setVisibility(View.VISIBLE);
+
 		
 		if (last_added.isEmpty()){
 			last_added_string.setVisibility(View.GONE);

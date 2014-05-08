@@ -134,6 +134,8 @@ public class ShowFavoriteCursorAdapter extends SimpleCursorTreeAdapter {
                 if(to_send.mediainfos instanceof TraktTVSearch)
                 	deleteEvent((TraktTVSearch)to_send.mediainfos);
 
+
+
                 ShowFavoriteCursorAdapter.this.notifyDataSetChanged(true); 
            
                 

@@ -373,7 +373,7 @@ protected void addToDB(Media media, boolean seen){
 			
 			for (int i=0; i<upcoming.size(); i++ ){
 				
-				if (upcoming.get(i) instanceof TraktTVSearch && !((TraktTVSearch)upcoming.get(i)).ended && 
+				if ( upcoming.get(i) instanceof TraktTVSearch && !((TraktTVSearch)upcoming.get(i)).ended &&
 						((TraktTVSearch)upcoming.get(i)).getTimeToGoMillis() < min){
 					
 					min_index = i;
@@ -388,7 +388,6 @@ protected void addToDB(Media media, boolean seen){
 		mCursor.close();
 		// Return the 3 next followed shows to air 
 		return sorted_shows;
-		
 	}
 
 	protected boolean isNetworkConnected() {
