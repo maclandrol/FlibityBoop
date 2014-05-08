@@ -385,8 +385,10 @@ protected void addToDB(Media media, boolean seen){
 			upcoming.remove(min_index);
 		}
 		
+		mCursor.close();
 		// Return the 3 next followed shows to air 
 		return sorted_shows;
+		
 	}
 
 	protected boolean isNetworkConnected() {
