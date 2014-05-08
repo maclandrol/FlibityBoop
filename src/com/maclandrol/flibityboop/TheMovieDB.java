@@ -28,7 +28,7 @@ public class TheMovieDB extends API {
 
 	// liste de tous les genre possible. Mieux en durs (encore mieux dans une
 	// base de donnée)
-	private static HashMap<String, Integer> genres = new HashMap<String, Integer>() {
+	public static HashMap<String, Integer> genres = new HashMap<String, Integer>() {
 		/**
 		 * 
 		 */
@@ -281,7 +281,7 @@ public class TheMovieDB extends API {
 			erreur = "Genre inconnu\n";
 			return movies;
 		}
-		while (page < maxPage && !maxPageReached) {
+		while (page <= maxPage && !maxPageReached) {
 			try {
 				r = this.getJSON(url + "&page=" + page);
 				result = r.getJSONArray("results");
@@ -622,7 +622,7 @@ class TMDBSearch implements MediaInfos {
 	@Override
 	public ArrayList<? extends MediaInfos> getSimilar() {
 		return this.isMovie() ? new TheMovieDB().getSimilarMovie(this.id, 2,
-				2.0, 1) : null;
+				2.0, 1) : new ArrayList<MediaInfos>();
 	}
 
 	public boolean equals(Object obj) {

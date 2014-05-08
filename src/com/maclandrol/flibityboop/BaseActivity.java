@@ -15,21 +15,25 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Looper;
 import android.provider.SearchRecentSuggestions;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MenuItem.OnMenuItemClickListener;
+import android.view.View;
+import android.view.View.OnFocusChangeListener;
 import android.widget.SearchView;
 import android.widget.ShareActionProvider;
-import android.widget.Toast;
 
 
-public class BaseActivity extends FragmentActivity{
+public class BaseActivity extends FragmentActivity implements OnFocusChangeListener{
 
 	ShareActionProvider myShareActionProvider=null;
 	Intent shareIntent = new Intent(Intent.ACTION_SEND);
+	
+	MenuItem searchMenuItem=null;
 
     // This is to set up the same action bar on all the activities.
 	@Override
@@ -63,9 +67,14 @@ public class BaseActivity extends FragmentActivity{
 						return true;
 					}
 		});
-	   
+
+		searchMenuItem = menu.findItem(R.id.action_search);
+		SearchView sv = (SearchView) searchMenuItem.getActionView();
+		sv.setOnQueryTextFocusChangeListener(this); 
+
+
 	   	ActionBar ab = getActionBar();
-	    ab.setHomeButtonEnabled(true);
+	    ab.setDisplayHomeAsUpEnabled(true);
 		//share intent
 		myShareActionProvider = (ShareActionProvider) menu.findItem(R.id.menu_item_share).getActionProvider();
 		setShareIntent(shareIntent);
@@ -131,9 +140,7 @@ protected void addToDB(Media media, boolean seen){
 		resolver.insert(MediaContentProvider.CONTENT_URI, val);
 	
 		int sz = resolver.query(MediaContentProvider.CONTENT_URI, null, null, null, null).getCount();
-		Toast.makeText(getApplicationContext(), "AddToDB (" + sz + " elements)",Toast.LENGTH_LONG).show();
 		}else{
-			Toast.makeText(getApplicationContext(), "not AddedToDB",Toast.LENGTH_LONG).show();
 
 		}
 	}
@@ -146,8 +153,6 @@ protected void addToDB(Media media, boolean seen){
 		;
 		resolver.delete(MediaContentProvider.CONTENT_URI, DBHelperMedia.M_ID
 				+ "=?", new String[] { Integer.toString(hash) });
-		Toast.makeText(getApplicationContext(), "Media deleted",
-				Toast.LENGTH_LONG).show();
 
 	}
 
@@ -158,9 +163,6 @@ protected void addToDB(Media media, boolean seen){
 
 		int sz = resolver.query(MediaContentProvider.CONTENT_URI, null, null,
 				null, null).getCount();
-		Toast.makeText(getApplicationContext(),
-				"All row deleted (" + sz + " elements)", Toast.LENGTH_LONG)
-				.show();
 
 		return sz == 0;
 
@@ -178,7 +180,16 @@ protected void addToDB(Media media, boolean seen){
 	    }
 	}
 	
+	@Override
+
+	public void onFocusChange(View v, boolean hasFocus) {
+
+		if (!hasFocus) {
+			searchMenuItem.collapseActionView();
+		}
+	}
 	
+
 	protected Media randomFav() {
 
 		Media media = null;
@@ -240,6 +251,63 @@ protected void addToDB(Media media, boolean seen){
 		}
 		
 		return media;
+	}
+	
+	protected ArrayList<MediaInfos> lastAddedFav(int n) {
+
+		ArrayList<MediaInfos> lastAdded = new ArrayList<MediaInfos>();
+		Media media = null;
+		
+		String[] select = new String[] { DBHelperMedia.M_ID,
+				DBHelperMedia.M_INSERT_TIME, DBHelperMedia.M_TITLE,
+				DBHelperMedia.M_SHOW, DBHelperMedia.M_INFOS, DBHelperMedia.M_SEEN };
+
+		
+		Cursor mCursor = getContentResolver().query(
+			    MediaContentProvider.CONTENT_URI,  // 
+			    select,                  	       // 
+			    null,							   // 
+			    null,       	       			   // 
+			    DBHelperMedia.M_INSERT_TIME + " DESC"); 
+		
+		int index = mCursor.getColumnIndex(DBHelperMedia.M_INFOS);
+
+		
+		while (mCursor.moveToNext() && lastAdded.size() < n ) {
+			
+			if (null == mCursor) {
+			    // Insert code here to handle the error. Be sure not to use the cursor!
+			     	Log.e("baseactivity","null cursor");
+			     	// If the Cursor is empty, the provider found no matches
+			} else if (mCursor.getCount() < 1) {
+	
+			    /*
+			     * Insert code here to notify the user that the search was unsuccessful. This isn't necessarily
+			     * an error. You may want to offer the user the option to insert a new row, or re-type the
+			     * search term.
+			     */
+	
+			} else {
+			    // Insert code here to do something with the results
+				
+				try {
+					ObjectInputStream ois = new ObjectInputStream(
+							new ByteArrayInputStream(mCursor.getBlob(index)));
+					media= (Media) ois.readObject();
+				} catch (Exception e) {
+	
+				}
+				// If there is a media and it is followed, add it to the list
+				if (media != null) {
+					
+					lastAdded.add(media.mediainfos);
+				}
+			}
+			
+		}
+		
+		return lastAdded;
+		
 	}
 	
 	protected ArrayList<TraktTVSearch> upcomingShows() {
