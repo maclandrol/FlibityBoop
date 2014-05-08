@@ -131,7 +131,8 @@ public class ShowFavoriteCursorAdapter extends SimpleCursorTreeAdapter {
                 resolver.delete(MediaContentProvider.CONTENT_URI,
                         DBHelperMedia.M_ID + "=?",
                         new String[] { Integer.toString(id) });
-				deleteEvent((TraktTVSearch) to_send.mediainfos);
+                if(to_send.mediainfos instanceof TraktTVSearch)
+                	deleteEvent((TraktTVSearch)to_send.mediainfos);
 
                 ShowFavoriteCursorAdapter.this.notifyDataSetChanged(true); 
            
