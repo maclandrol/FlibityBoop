@@ -16,7 +16,6 @@ import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
-import android.os.Looper;
 import android.provider.SearchRecentSuggestions;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -26,6 +25,8 @@ import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
 import android.widget.SearchView;
+import android.widget.Toast;
+import android.widget.SearchView.OnQueryTextListener;
 import android.widget.ShareActionProvider;
 
 
@@ -69,8 +70,7 @@ public class BaseActivity extends FragmentActivity implements OnFocusChangeListe
 		});
 
 		searchMenuItem = menu.findItem(R.id.action_search);
-		SearchView sv = (SearchView) searchMenuItem.getActionView();
-		sv.setOnQueryTextFocusChangeListener(this); 
+		searchView.setOnQueryTextFocusChangeListener(this); 
 		
 	   	ActionBar ab = getActionBar();
 	    ab.setDisplayHomeAsUpEnabled(true);
@@ -83,6 +83,13 @@ public class BaseActivity extends FragmentActivity implements OnFocusChangeListe
 	    
     }
 	
+	@Override
+	protected void onStop() {
+		
+		searchMenuItem.collapseActionView();
+		super.onStop();
+	}
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -147,7 +154,7 @@ protected void addToDB(Media media, boolean seen){
 
 		int hash = media.hashCode();
 		ContentResolver resolver = this.getContentResolver();
-		;
+		
 		resolver.delete(MediaContentProvider.CONTENT_URI, DBHelperMedia.M_ID
 				+ "=?", new String[] { Integer.toString(hash) });
 		
@@ -317,8 +324,9 @@ protected void addToDB(Media media, boolean seen){
 				}
 				// If there is a media and it is followed, add it to the list
 				if (media != null) {
-					
+					int i = lastAdded.size();
 					lastAdded.add(media.mediainfos);
+					
 				}
 			}
 			

@@ -13,8 +13,8 @@
     <string name="search_hint">Enter a Movie or TV show</string>
     <string name="search">Search</string>
     <string name="media_detail_img">Media poster</string>
-    <string name="default_imdb_rate">9.2</string>
-    <string name="imdb_user">(1000)</string>
+    <string name="default_imdb_rate">0</string>
+    <string name="imdb_user">(0)</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_searchable">SearchableActivity</string>
     <string name="noResult">No search result corresponding to your search</string>
@@ -64,6 +64,9 @@
     <string name="accueil_genres_string">Movie Quicksearch by genre</string>
     <string name="accueil_upcoming_string">Upcoming TV Shows you follow</string>
     <string name="accueil_last_string">Last added to Favorites</string>
-     <string name="no_internet_connection">No internet connection</string>
-
+    <string name="no_internet_connection">No internet connection</string>
+	<string name="home">Home</string>
+    <string name="details">Details</string>
+    <string name="favorites">Favorites</string>
+	
 </resources>

@@ -5,7 +5,7 @@
     <string name="pref_title_display_name">Username</string>
 	<string name="pref_default_display_name">FlibityBoop Team</string>
     <string name="pref_max_result_per_req">Results limit per page</string>
-    <string name="pref_max_page_request">Max number of result page</string>
+    <string name="pref_max_page_request">Max number of result pages</string>
 
     
 
@@ -26,9 +26,9 @@
     <string-array name="pref_sync_reminders">
         <item>15 minutes</item>
         <item>30 minutes</item>
-        <item>1 heure</item>
-        <item>3 heures</item>
-        <item>6 heures</item>
+        <item>1 hours</item>
+        <item>3 hours</item>
+        <item>6 hours</item>
     </string-array>
     <string-array name="pref_sync_reminders_values">
         <item>15</item>

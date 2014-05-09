@@ -151,9 +151,9 @@ public class ShowFavoriteCursorAdapter extends SimpleCursorTreeAdapter {
 			public void onClick(View v) {
 			       ContentValues val = new ContentValues();
 			       boolean isChecked=((CheckBox)v).isChecked();
-	                val.clear();
-	                val.put(DBHelperMedia.M_SEEN, isChecked);
-	                val.put(DBHelperMedia.M_INSERT_TIME, System.currentTimeMillis());
+	               val.clear();
+	               val.put(DBHelperMedia.M_SEEN, isChecked);
+	               //val.put(DBHelperMedia.M_INSERT_TIME, System.currentTimeMillis());
 	               resolver.update(MediaContentProvider.CONTENT_URI, val,	DBHelperMedia.M_TITLE + "=?", new String[] {to_send.mediainfos.getTitle() });
 	               if (isChecked && to_send.mediainfos instanceof TraktTVSearch) {
 						addEvent((TraktTVSearch) to_send.mediainfos);

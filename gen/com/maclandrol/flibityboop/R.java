@@ -277,16 +277,15 @@ public final class R {
         public static final int empty_fav=0x7f030003;
         public static final int expendable_fragment_favorites=0x7f030004;
         public static final int film_display=0x7f030005;
-        public static final int fragment_accueil=0x7f030006;
-        public static final int fragment_favorites=0x7f030007;
-        public static final int fragment_search=0x7f030008;
-        public static final int item_list=0x7f030009;
-        public static final int item_section=0x7f03000a;
-        public static final int layout_favorites=0x7f03000b;
-        public static final int layout_group=0x7f03000c;
-        public static final int media_details=0x7f03000d;
-        public static final int movie_favorite_details=0x7f03000e;
-        public static final int show_favorite_details=0x7f03000f;
+        public static final int fragment_favorites=0x7f030006;
+        public static final int fragment_search=0x7f030007;
+        public static final int item_list=0x7f030008;
+        public static final int item_section=0x7f030009;
+        public static final int layout_favorites=0x7f03000a;
+        public static final int layout_group=0x7f03000b;
+        public static final int media_details=0x7f03000c;
+        public static final int movie_favorite_details=0x7f03000d;
+        public static final int show_favorite_details=0x7f03000e;
     }
     public static final class menu {
         public static final int activity_search=0x7f0a0000;
@@ -322,6 +321,7 @@ public final class R {
         public static final int date_text=0x7f07001a;
         public static final int def_rate=0x7f070016;
         public static final int default_imdb_rate=0x7f07000c;
+        public static final int details=0x7f070041;
         public static final int details_text=0x7f070031;
         public static final int drawer_close=0x7f070037;
         public static final int drawer_open=0x7f070036;
@@ -330,10 +330,12 @@ public final class R {
         public static final int fav_act=0x7f070001;
         public static final int fav_mov=0x7f07002c;
         public static final int fav_show=0x7f07002d;
-        public static final int freshness=0x7f07004c;
+        public static final int favorites=0x7f070042;
+        public static final int freshness=0x7f07004f;
         public static final int hello_world=0x7f070039;
+        public static final int home=0x7f070040;
         public static final int image_default=0x7f070007;
-        public static final int imdb=0x7f07004b;
+        public static final int imdb=0x7f07004e;
         public static final int imdb_count=0x7f070014;
         public static final int imdb_rate=0x7f070012;
         public static final int imdb_user=0x7f07000d;
@@ -343,18 +345,18 @@ public final class R {
         public static final int noResult=0x7f070010;
         public static final int no_internet_connection=0x7f07003f;
         public static final int overview_text=0x7f07001d;
-        public static final int pref_alert=0x7f070049;
-        public static final int pref_default_display_name=0x7f070043;
-        public static final int pref_header_general=0x7f070041;
+        public static final int pref_alert=0x7f07004c;
+        public static final int pref_default_display_name=0x7f070046;
+        public static final int pref_header_general=0x7f070044;
         /**  Example settings for Notifications 
          */
-        public static final int pref_header_notifications=0x7f070046;
-        public static final int pref_mail=0x7f07004a;
-        public static final int pref_max_page_request=0x7f070045;
-        public static final int pref_max_result_per_req=0x7f070044;
-        public static final int pref_reminders=0x7f070047;
-        public static final int pref_title_display_name=0x7f070042;
-        public static final int pref_title_message_notifications=0x7f070048;
+        public static final int pref_header_notifications=0x7f070049;
+        public static final int pref_mail=0x7f07004d;
+        public static final int pref_max_page_request=0x7f070048;
+        public static final int pref_max_result_per_req=0x7f070047;
+        public static final int pref_reminders=0x7f07004a;
+        public static final int pref_title_display_name=0x7f070045;
+        public static final int pref_title_message_notifications=0x7f07004b;
         public static final int rt_count=0x7f070015;
         public static final int rtu_count=0x7f070017;
         public static final int runtime_text=0x7f070019;
@@ -371,10 +373,10 @@ public final class R {
         public static final int title_activity_media_details=0x7f070025;
         public static final int title_activity_search=0x7f070026;
         public static final int title_activity_searchable=0x7f07000f;
-        public static final int title_activity_settings=0x7f070040;
+        public static final int title_activity_settings=0x7f070043;
         public static final int titre=0x7f070011;
         public static final int trailer_text=0x7f070028;
-        public static final int user_freshness=0x7f07004d;
+        public static final int user_freshness=0x7f070050;
         public static final int web_link=0x7f070029;
     }
     public static final class style {

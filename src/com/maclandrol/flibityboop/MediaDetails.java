@@ -8,6 +8,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -69,6 +70,20 @@ public class MediaDetails extends BaseActivity {
 		//shareIntent.setType("image/png");
 		shareIntent.setType("text/plain");
 		
+		progressDiag = new ProgressDialog(this);
+		progressDiag.setCancelable(true);
+		progressDiag.setMessage("Getting media infos");
+		progressDiag.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+		
+		progressDiag.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
+		    @Override
+		    public void onClick(DialogInterface dialog, int which) {
+		        finish();
+		    	dialog.dismiss();
+		    }
+		});
+
+	
 		imLoader = new ImageLoader(getApplicationContext());
 		fav= (ToggleButton)findViewById(R.id.fav);
 		if (savedInstanceState != null) {
@@ -506,8 +521,8 @@ public class MediaDetails extends BaseActivity {
 			super.onPreExecute();
 			// Demarrer le progress dialog pour l'attente
 			((TextView) findViewById(R.id.error_text)).setText("");
-			MediaDetails.progressDiag = ProgressDialog.show(MediaDetails.this,
-					null, "Getting media infos");
+			
+			MediaDetails.progressDiag.show();
 		}
 
 		@Override

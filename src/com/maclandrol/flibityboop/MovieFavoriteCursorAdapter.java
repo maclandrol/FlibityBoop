@@ -40,7 +40,7 @@ public class MovieFavoriteCursorAdapter extends SimpleCursorAdapter {
                 ContentValues val = new ContentValues();
                 val.clear();
                 val.put(DBHelperMedia.M_SEEN, isChecked);
-                val.put(DBHelperMedia.M_INSERT_TIME, System.currentTimeMillis());
+                //val.put(DBHelperMedia.M_INSERT_TIME, System.currentTimeMillis());
                 resolver.update(MediaContentProvider.CONTENT_URI, val,	DBHelperMedia.M_TITLE + "=?", new String[] { title.getText().toString() });
 
             }

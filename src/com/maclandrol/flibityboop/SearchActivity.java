@@ -9,6 +9,7 @@ import com.maclandrol.flibityboop.API.MediaType;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.app.SearchManager;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -165,8 +166,17 @@ public class SearchActivity extends BaseActivity {
 		myList.setOnItemClickListener(new ListOnItemClick());
 		toggleProgress = (ProgressBar) findViewById(R.id.searchToggleProgress2);
 		progress = new ProgressDialog(activity);
-		progress.setCancelable(false);
+		progress.setCancelable(true);
+		progress.setMessage("Searching for your media");
 		progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+		progress.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
+		    @Override
+		    public void onClick(DialogInterface dialog, int which) {
+		        finish();
+		    	dialog.dismiss();
+		    }
+		});
+		
 		noResultTextView = (TextView) activity.findViewById(R.id.noResult);
 		movieToggle = (ToggleButton) findViewById(R.id.searchToggleMovies);
 		showToggle = (ToggleButton) findViewById(R.id.searchToggleTVShows);

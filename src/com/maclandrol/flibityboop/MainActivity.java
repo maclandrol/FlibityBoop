@@ -23,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends BaseActivity implements OnClickListener {
 
@@ -154,8 +155,7 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 	protected void onResume() {
 		super.onResume();
 		noConnection.setVisibility(isNetworkConnected()? View.GONE : View.VISIBLE);
-		showUpcomingShows();
-		showLastAddedFav();
+		showMedia();
 	}
 
 
@@ -234,6 +234,11 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 	public void showRecommendations(){
 		
 		sim = randomRecommendations(3);
+		noRecommendations.setVisibility(View.GONE);
+		rdmButton.setVisibility(View.VISIBLE);
+		((LinearLayout) findViewById(R.id.accueil_similar3)).setVisibility(View.VISIBLE);
+		((LinearLayout) findViewById(R.id.accueil_similar2)).setVisibility(View.VISIBLE);
+		((LinearLayout) findViewById(R.id.accueil_similar3)).setVisibility(View.VISIBLE);
 		
 		if (sim.isEmpty()){
 			noRecommendations.setVisibility(View.VISIBLE);
@@ -242,11 +247,6 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 		}
 	
 		else {
-			rdmButton.setVisibility(View.VISIBLE);
-			noRecommendations.setVisibility(View.GONE);
-			((LinearLayout) findViewById(R.id.accueil_similar3)).setVisibility(View.VISIBLE);
-			((LinearLayout) findViewById(R.id.accueil_similar2)).setVisibility(View.VISIBLE);
-			((LinearLayout) findViewById(R.id.accueil_similar3)).setVisibility(View.VISIBLE);
 				
 			Collections.shuffle(sim);
 			int i = 0;
@@ -313,9 +313,6 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 		ArrayList<MediaInfos> last_added = lastAddedFav(3);
 		LinearLayout last_added_layout = (LinearLayout) findViewById(R.id.accueil_last_added_list);
 		TextView last_added_string = (TextView) findViewById(R.id.accueil_string_2);
-		((LinearLayout) findViewById(R.id.accueil_last1)).setVisibility(View.VISIBLE);
-		((LinearLayout) findViewById(R.id.accueil_last2)).setVisibility(View.VISIBLE);
-		((LinearLayout) findViewById(R.id.accueil_last3)).setVisibility(View.VISIBLE);
 
 		
 		if (last_added.isEmpty()){
@@ -328,6 +325,10 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 		else {
 			last_added_layout.setVisibility(View.VISIBLE);
 			last_added_string.setVisibility(View.VISIBLE);	
+
+			((LinearLayout) findViewById(R.id.accueil_last1)).setVisibility(View.VISIBLE);
+			((LinearLayout) findViewById(R.id.accueil_last2)).setVisibility(View.VISIBLE);
+			((LinearLayout) findViewById(R.id.accueil_last3)).setVisibility(View.VISIBLE);
 			
 			int i = 0;
 			ImageView last_poster, last_type, last_rating;
