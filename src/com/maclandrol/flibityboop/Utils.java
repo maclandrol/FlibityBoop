@@ -5,12 +5,8 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.util.DisplayMetrics;
 import android.view.View;
 
 public class Utils {
@@ -76,20 +72,6 @@ public class Utils {
 		return entrelacee;
 	}
 
-	// Rapetisse une image Bitmap a une nouvelle hauteur en fonction de son
-	// contexte.
-	// stackoverflow.com/questions/3528735/
-	public static Bitmap MinimiseBitmap(Bitmap bm, int hauteur, Context context) {
-
-		final float d = context.getResources().getDisplayMetrics().density;
-
-		int h = (int) (hauteur * d);
-		int w = (int) (h * bm.getWidth() / ((double) bm.getHeight()));
-
-		bm = Bitmap.createScaledBitmap(bm, w, h, true);
-
-		return bm;
-	}
 	
 	//Take a screenshot from activity
 	public static Bitmap takeScreenShot(Activity activity)

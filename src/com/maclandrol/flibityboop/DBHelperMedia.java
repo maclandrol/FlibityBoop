@@ -13,7 +13,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.text.TextUtils;
 import android.util.Log;
-import android.widget.Toast;
 
 public class DBHelperMedia extends SQLiteOpenHelper {
 

@@ -14,7 +14,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Looper;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.provider.SearchRecentSuggestions;
@@ -27,7 +26,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ToggleButton;
 
 public class SearchActivity extends BaseActivity {
@@ -56,7 +54,6 @@ public class SearchActivity extends BaseActivity {
 	private Activity activity;
 	private String previous_query = "", search_title="";
 	private TextView noResultTextView;
-	private ToggleButton movieToggle, showToggle;
 
 	public void onNewIntent(Intent intent) {
 		noResultTextView.setVisibility(View.INVISIBLE);
@@ -178,8 +175,6 @@ public class SearchActivity extends BaseActivity {
 		});
 		
 		noResultTextView = (TextView) activity.findViewById(R.id.noResult);
-		movieToggle = (ToggleButton) findViewById(R.id.searchToggleMovies);
-		showToggle = (ToggleButton) findViewById(R.id.searchToggleTVShows);
 		
 		if(savedInstanceState!=null && savedInstanceState.getBoolean("search_title")){
 			this.filminfosList=savedInstanceState.getParcelableArrayList("movies");

@@ -25,8 +25,6 @@ import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
 import android.widget.SearchView;
-import android.widget.Toast;
-import android.widget.SearchView.OnQueryTextListener;
 import android.widget.ShareActionProvider;
 
 
@@ -324,9 +322,8 @@ protected void addToDB(Media media, boolean seen){
 				}
 				// If there is a media and it is followed, add it to the list
 				if (media != null) {
-					int i = lastAdded.size();
-					lastAdded.add(media.mediainfos);
-					
+
+					lastAdded.add(media.mediainfos);					
 				}
 			}
 			

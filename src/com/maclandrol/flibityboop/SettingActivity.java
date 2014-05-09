@@ -15,7 +15,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MenuItem.OnMenuItemClickListener;
 import android.widget.SearchView;
-import android.widget.ShareActionProvider;
 
 /**
  * Une SettingsActivity présente des paramètres à l'usager.

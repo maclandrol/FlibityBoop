@@ -3,8 +3,6 @@ package com.maclandrol.flibityboop;
 import java.util.List;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
