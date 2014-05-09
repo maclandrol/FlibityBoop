@@ -1,3 +1,10 @@
+/**
+ * IFT2905 : Interface personne machine
+ * Projet de session: FlibityBoop.
+ * Team: Vincent CABELI, Henry LIM, Pamela MEHANNA, Emmanuel NOUTAHI, Olivier TASTET
+ * @author Emmanuel Noutahi, Vincent Cabeli
+ */
+
 package com.maclandrol.flibityboop;
 
 import android.app.ActionBar;
@@ -17,6 +24,8 @@ import android.view.MenuItem.OnMenuItemClickListener;
 import android.widget.SearchView;
 
 /**
+ * SettingsActivity pour que l'usager puisse être en contrôle de l'application
+ * Fortement inspiré du code du démo
  * Une SettingsActivity présente des paramètres à l'usager.
  * C'est un système complètement différent des interfaces standards,
  * car l'apparence des panneaux de configuration est unifiée à travers
@@ -170,17 +179,12 @@ public class SettingActivity extends PreferenceActivity {
 
 			// ... puis on associe les préférences à leur valeur
 			bindPreferenceSummaryToValue(findPreference("max_req"));
-			
-			// Et on répète pour chaque XML
 			addPreferencesFromResource(R.xml.pref_notification);
 			bindPreferenceSummaryToValue(findPreference("notif_time"));
 			bindPreferenceSummaryToValue(findPreference("max_req"));
 			bindPreferenceSummaryToValue(findPreference("maxPage"));
 			bindPreferenceSummaryToValue(findPreference("username"));
 
-			/*bindPreferenceSummaryToValue(findPreference("alert"));
-
-			bindPreferenceSummaryToValue(findPreference("mail"));*/
 		}
 	}
 }

@@ -1,3 +1,9 @@
+/**
+ * IFT2905 : Interface personne machine
+ * Projet de session: FlibityBoop.
+ * Team: Vincent CABELI, Henry LIM, Pamela MEHANNA, Emmanuel NOUTAHI, Olivier TASTET
+ * @author Emmanuel Noutahi, Vincent Cabeli
+ */
 package com.maclandrol.flibityboop;
 
 import java.util.ArrayList;
@@ -24,6 +30,10 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+/**
+ * Activité principale, page d'acceuil de l'application
+ * Le MainActivity uilise un drawer
+ */
 public class MainActivity extends BaseActivity implements OnClickListener {
 
 	SectionListAdapter drawerAdapter;
@@ -36,8 +46,9 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 	
 	
 	ImageLoader imLoader = null;
-
+	
 	MediaInfos media;
+	//Item pour le listview du drawer
 	Item [] items = {new SectionItem("Media"), new ListItem("Popular"),new ListItem("TopRated"), 
 			new SectionItem("Movies"), new ListItem("UpComing"),  new ListItem("In theather"), 
 			new SectionItem("TVShow"), new ListItem("On Air"),new ListItem("Airing Today")};
@@ -149,10 +160,10 @@ public class MainActivity extends BaseActivity implements OnClickListener {
         
 	}
 
-
 	@Override
 	protected void onResume() {
-		super.onResume();
+		super.onResume();	
+		//On resume, vérifier si la connection est perdu ou pas
 		noConnection.setVisibility(isNetworkConnected()? View.GONE : View.VISIBLE);
 		showMedia();
 	}
@@ -167,6 +178,9 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 		}
 	}
 	
+	/*
+	 * Recherche par genre
+	 */
 	public void quickSearch(View view){
 
 		String genre = (String) view.getContentDescription();
@@ -181,6 +195,9 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 
 	}
 	
+	/*
+	 * Afficher les différents view du layout
+	 */
 	public void showMedia(){
 		
 		showRecommendations();
@@ -301,11 +318,9 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 			}
 		}
 		
-		
-		
-		
-		
+	
 	}
+	
 	
 	public void showLastAddedFav(){
 		

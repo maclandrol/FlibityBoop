@@ -1,3 +1,10 @@
+/**
+ * IFT2905 : Interface personne machine
+ * Projet de session: FlibityBoop.
+ * Team: Vincent CABELI, Henry LIM, Pamela MEHANNA, Emmanuel NOUTAHI, Olivier TASTET
+ * @author Emmanuel Noutahi, Vincent Cabeli
+ */
+
 package com.maclandrol.flibityboop;
 
 import java.io.ByteArrayInputStream;
@@ -10,17 +17,16 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Parcelable;
 import android.support.v4.widget.SimpleCursorAdapter;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.TextView;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
+/**
+ * Classe MovieFavoriteCursorAdapter, adapter pour les favoris de type Film (voir le fragment correspondant)
+ */
 public class MovieFavoriteCursorAdapter extends SimpleCursorAdapter {
 
 	Context c;
@@ -76,6 +82,7 @@ public class MovieFavoriteCursorAdapter extends SimpleCursorAdapter {
         
 		final Media to_send = media;
 
+		//click sur le bouton delete
         del.setOnClickListener(new OnClickListener() {
 
             @Override
@@ -90,6 +97,7 @@ public class MovieFavoriteCursorAdapter extends SimpleCursorAdapter {
         });
 
      
+        //click sur le poster, on doit avoir les détails du media
 		poster_fav.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -103,6 +111,7 @@ public class MovieFavoriteCursorAdapter extends SimpleCursorAdapter {
 
 		});
 		
+		//click sur le checkbox seen
         seen.setOnClickListener(new OnClickListener() {
 
 			@Override

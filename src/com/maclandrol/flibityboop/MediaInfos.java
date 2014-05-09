@@ -1,3 +1,10 @@
+/**
+ * IFT2905 : Interface personne machine
+ * Projet de session: FlibityBoop.
+ * Team: Vincent CABELI, Henry LIM, Pamela MEHANNA, Emmanuel NOUTAHI, Olivier TASTET
+ * @author Emmanuel Noutahi, Vincent Cabeli
+ */
+
 package com.maclandrol.flibityboop;
 
 import java.io.Serializable;
@@ -7,6 +14,9 @@ import java.util.HashMap;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+/**
+ * Interface MediaInfos, implémenté par résultats de recherche de chaque API 
+ */
 public interface MediaInfos extends Parcelable, Serializable {
 
 	public String getTitle();

@@ -1,3 +1,9 @@
+/**
+ * IFT2905 : Interface personne machine
+ * Projet de session: FlibityBoop.
+ * Team: Vincent CABELI, Henry LIM, Pamela MEHANNA, Emmanuel NOUTAHI, Olivier TASTET
+ * @author Emmanuel Noutahi, Vincent Cabeli
+ */
 package com.maclandrol.flibityboop;
 
 import java.io.Serializable;
@@ -14,6 +20,12 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
+/**
+ * Classe Media, contient les informations relatives à un Film ou une série TV
+ * Ainsi que les méthodes d'accès à ces informations. 
+ * Media implémente Parcelable et Serializable pour permettre le transfert comme intent et la
+ * sauvegarde dans la base de donnée sous forme de byteArray
+ */
 public class Media implements Parcelable, Serializable {
 
 	private static final long serialVersionUID = -1709498292286584203L;
@@ -34,6 +46,7 @@ public class Media implements Parcelable, Serializable {
 				true));
 		ArrayList<TKSearchResult> tk_similar = null;
 		try {
+			//aller chercher les infos supplémentaires de tastekid si possible
 			JSONObject jo = t.getJSONMedia(this.mediainfos.getTitle(), type);
 			jo.toString(4);
 			tk_info = t.getMediaInfos(jo);
@@ -299,28 +312,7 @@ public class Media implements Parcelable, Serializable {
 		return new ArrayList<MediaInfos>(this.similarMedia);
 	}
 
-	public static void afficheMedia(Media m) {
-		HashMap<String, String> l = m.addInfos;
-		HashSet<MediaInfos> similar = m.similarMedia;
-		System.out.println("Current MediaInfos : \n");
-		System.out.println(m.mediainfos);
-		System.out.println("List of features :\n");
-		for (String name : l.keySet()) {
-			String key = name.toString();
-			String value = l.get(name);
-			System.out.println(key + " : " + value);
-		}
 
-		System.out.println("\nList of Similar movie");
-		int i = 0;
-		for (MediaInfos mi : similar) {
-			i++;
-			System.out.println("* " + (i) + ") ");
-			System.out.println(mi);
-			System.out.println();
-		}
-	}
-	
 	public String getShare(){
 		return "Hey Dude, I'm using FlibityBoop and I found this great "+this.mediainfos.getType().toString()+
 				(this.mediainfos.isShow()?" show":"") +" : " + this.getDetailledTitle() +". It's rated " +

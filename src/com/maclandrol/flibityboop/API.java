@@ -1,3 +1,9 @@
+/**
+ * IFT2905 : Interface personne machine
+ * Projet de session: FlibityBoop.
+ * Team: Vincent CABELI, Henry LIM, Pamela MEHANNA, Emmanuel NOUTAHI, Olivier TASTET
+ * @author: Emmanuel Noutahi, Vincent Cabeli
+ */
 package com.maclandrol.flibityboop;
 
 import java.io.BufferedInputStream;
@@ -24,10 +30,20 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.util.Log;
 
+/**
+ * API, superclasse de toutes les classes de requêtes vers une API spécifique
+ */
 public class API {
 
-	// Enum, specifie le type de media à cherche pour les méthodes qui en exige
-	// Movie, TV, ou peut importe
+	
+	public String baseURL;
+	public String key;
+	String erreur;
+	
+	/*
+	 * Enum
+	 * MediaType specifie le type de media (Film ou TVShow) pour les requêtes 
+	 */
 	public enum MediaType {
 		Movies("movie"), TVShow("tv"), Any("");
 
@@ -42,11 +58,6 @@ public class API {
 		}
 	}
 
-	public String baseURL;
-	public String key;
-	String erreur;
-
-	// Constructeur de la superclasse API
 	public API(String baseURL, String key) {
 		this.baseURL = baseURL;
 		this.key = key;
@@ -59,6 +70,9 @@ public class API {
 		erreur = null;
 	}
 
+	/*
+	 * getBitmapPoster, retourne l'image Bitmap à partit d'un url 
+	 */
 	public static Bitmap getBitmapPoster(String poster_url) {
 		Bitmap webposter = null;
 		Log.d("url", poster_url);
@@ -80,6 +94,9 @@ public class API {
 		return webposter;
 	}
 
+	/*
+	 * getADDdata, retourne les données additionnelles d'un mediainfo par une requête sur OMDBAPI 
+	 */
 	public HashMap<String, String> getADDdata(String imdb_id, String title,
 			boolean tomatoes) {
 
@@ -126,7 +143,9 @@ public class API {
 
 	}
 
-	// Retrieve JSON a partir d'une url
+	/*
+	 * getJSON, retourne l'objet json à partir d'une url
+	 */
 	public JSONObject getJSON(String url) {
 
 		JSONObject js = null;
@@ -145,7 +164,10 @@ public class API {
 
 		return js;
 	}
-
+	
+	/*
+	 * getJSONArray, retourne l'objet JsonArray à partir d'un url
+	 */
 	public JSONArray getJSONArray(String url) {
 		JSONArray jarray = null;
 		try {
@@ -164,7 +186,9 @@ public class API {
 		return jarray;
 	}
 
-	// This should be a private method, but who cares? change nothing!!
+	/*
+	 * getReq, retourne le résultat de la requête effectué à partir de l'url
+	 */
 	public HttpEntity GetReq(String url) throws ClientProtocolException,
 			IOException {
 		HttpClient httpClient = new DefaultHttpClient();

@@ -1,3 +1,9 @@
+/**
+ * IFT2905 : Interface personne machine
+ * Projet de session: FlibityBoop.
+ * Team: Vincent CABELI, Henry LIM, Pamela MEHANNA, Emmanuel NOUTAHI, Olivier TASTET
+ * @author Emmanuel Noutahi, Vincent Cabeli
+ */
 package com.maclandrol.flibityboop;
 
 import android.database.Cursor;
@@ -13,12 +19,14 @@ import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 
 
-public class TVListFragment extends Fragment implements
-		LoaderManager.LoaderCallbacks<Cursor> {
+/**
+ * Classe TVListFragment, 
+ * Fragment pour les Séries Favoris, le layout contient un ExpendableListView
+ */
+public class TVListFragment extends Fragment implements	LoaderManager.LoaderCallbacks<Cursor> {
 	int layout;
 	Cursor cursor;
 	ExpandableListView flv;
-	// final static ImageLoader im = new ImageLoader(getApplicationContext());
 	ShowFavoriteCursorAdapter adapter;
 	private static final int LOADER_ID = 10;
 
@@ -36,12 +44,9 @@ public class TVListFragment extends Fragment implements
 	static final String[] group_from = new String[] { DBHelperMedia.M_SEEN };
 	static final int[] group_to = new int[] { R.id.ctView1 };
 
-	private Bundle savedInstanceState; 
 	LinearLayout empty;
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-		this.savedInstanceState = savedInstanceState; 
 
 	}
 

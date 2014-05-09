@@ -1,3 +1,9 @@
+/**
+ * IFT2905 : Interface personne machine
+ * Projet de session: FlibityBoop.
+ * Team: Vincent CABELI, Henry LIM, Pamela MEHANNA, Emmanuel NOUTAHI, Olivier TASTET
+ * @author: Emmanuel Noutahi, Vincent Cabeli
+ */
 package com.maclandrol.flibityboop;
 
 import java.io.ByteArrayInputStream;
@@ -27,33 +33,38 @@ import android.view.View.OnFocusChangeListener;
 import android.widget.SearchView;
 import android.widget.ShareActionProvider;
 
-
+/**
+ * Classe BaseActivity, Superclasse de toutes les activités. 
+ * BaseActivity se charge de l'affichage des menus et contient des méthodes utilisables par toutes les activité filles
+ */
 public class BaseActivity extends FragmentActivity implements OnFocusChangeListener{
 
+	//Share intention
 	ShareActionProvider myShareActionProvider=null;
 	Intent shareIntent = new Intent(Intent.ACTION_SEND);
 	
 	MenuItem searchMenuItem=null;
 
-	// This is to set up the same action bar on all the activities.
+	// Menu bar dans toutes les activités filles
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		
-	   // Retrieves the action menu.
 		getMenuInflater().inflate(R.menu.main_actions, menu);
 
-		// Declares the SearchView for the search bar.
+		// Déclarer le searchview pour le menu bar et ses actions
 		SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-		SearchView searchView = (SearchView) menu.findItem(R.id.action_search)
-				.getActionView();
+		searchMenuItem = menu.findItem(R.id.action_search);
+
+		SearchView searchView = (SearchView) searchMenuItem.getActionView();
 		if (null != searchView) {
 			searchView.setSearchableInfo(searchManager
 					.getSearchableInfo(getComponentName()));
 			searchView.setIconifiedByDefault(false);
 		}
 		searchView.setQuery(Utils.getLastQuery(), false);
-	
+		searchView.setOnQueryTextFocusChangeListener(this); 
 		
+		//Action du menu favoris, intent vers l'activité Favoris
 		menu.findItem(R.id.action_favorites).setOnMenuItemClickListener(
 				new OnMenuItemClickListener() {
 					@Override
@@ -67,27 +78,35 @@ public class BaseActivity extends FragmentActivity implements OnFocusChangeListe
 					}
 		});
 
-		searchMenuItem = menu.findItem(R.id.action_search);
-		searchView.setOnQueryTextFocusChangeListener(this); 
-		
+		//Activer le bouton home de l'action bar		
 	   	ActionBar ab = getActionBar();
 	    ab.setDisplayHomeAsUpEnabled(true);
-		//share intent
+
+	    // Activer l'option de partage
 		myShareActionProvider = (ShareActionProvider) menu.findItem(R.id.menu_item_share).getActionProvider();
 		setShareIntent(shareIntent);
-		
-		
-       return true;
+		return true;
 	    
     }
 	
 	@Override
 	protected void onStop() {
-		
 		searchMenuItem.collapseActionView();
 		super.onStop();
 	}
+	
+	@Override
+	public void onFocusChange(View v, boolean hasFocus) {
 
+		if (!hasFocus) {
+			searchMenuItem.collapseActionView();
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see android.app.Activity#onOptionsItemSelected(android.view.MenuItem)
+	 */
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -119,7 +138,10 @@ public class BaseActivity extends FragmentActivity implements OnFocusChangeListe
 		return super.onOptionsItemSelected(item);
 	}
 
-protected void addToDB(Media media, boolean seen){
+	/*
+	 * Ajout d'un média à la base de donnée
+	 */
+	protected void addToDB(Media media, boolean seen){
 		
 		ContentResolver resolver = getContentResolver();
 		ContentValues val = new ContentValues();
@@ -142,12 +164,13 @@ protected void addToDB(Media media, boolean seen){
 		resolver.insert(MediaContentProvider.CONTENT_URI, val);
 	
 		int sz = resolver.query(MediaContentProvider.CONTENT_URI, null, null, null, null).getCount();
-		}else{
-
+		Log.d("database", "taille actuelle = "+sz);
 		}
 	}
 
-
+/*
+ * Effacer un média de la base de données
+ */
 	protected void delFromDB(Media media){
 
 		int hash = media.hashCode();
@@ -179,6 +202,9 @@ protected void addToDB(Media media, boolean seen){
 
 	}
 
+	/*
+	 * Drop database
+	 */
 	protected boolean emptyDB() {
 		ContentResolver resolver = this.getContentResolver();
 		resolver.delete(MediaContentProvider.CONTENT_URI, null, null);
@@ -191,6 +217,9 @@ protected void addToDB(Media media, boolean seen){
 
 	}
 	
+	/*
+	 * Partager un text
+	 */
 	public void share(String text){
 		//shareIntent.putExtra(Intent.EXTRA_STREAM, new FileCache(this).saveAndGetBitMapPath(Utils.takeScreenShot(this)));
 		shareIntent.putExtra(Intent.EXTRA_TEXT, text);
@@ -203,16 +232,9 @@ protected void addToDB(Media media, boolean seen){
 	    }
 	}
 	
-	@Override
-
-	public void onFocusChange(View v, boolean hasFocus) {
-
-		if (!hasFocus) {
-			searchMenuItem.collapseActionView();
-		}
-	}
-	
-
+	/*
+	 * Selection de recommendations au hasard dans la liste de favoris
+	 */
 	protected ArrayList<MediaInfos> randomRecommendations(int n) {
 
 		ArrayList<MediaInfos> recommendations = new ArrayList<MediaInfos>();
@@ -224,11 +246,11 @@ protected void addToDB(Media media, boolean seen){
 
 		
 		Cursor mCursor = getContentResolver().query(
-			    MediaContentProvider.CONTENT_URI,  // The content URI of the words table
-			    select,                  	       // The columns to return for each row
-			    null,			        	       // Either null, or the word the user entered
-			    null,       	       			   // Either empty, or the string the user entered
-			    "RANDOM()");              		   // The sort order for the returned rows
+			    MediaContentProvider.CONTENT_URI,  
+			    select,                  	       
+			    null,			        	       
+			    null,       	       			   
+			    "RANDOM()");
 		
 		mCursor.moveToFirst();
 		int index = mCursor.getColumnIndex(DBHelperMedia.M_INFOS);
@@ -237,20 +259,11 @@ protected void addToDB(Media media, boolean seen){
 			
 		while (pos < fav_count && recommendations.size() < n) {
 			
-			if (null == mCursor) {
-			    // Insert code here to handle the error. Be sure not to use the cursor!
-			     	Log.e("baseactivity","null cursor");
-			     	// If the Cursor is empty, the provider found no matches
-			} else if (mCursor.getCount() < 1) {
-	
-			    /*
-			     * Insert code here to notify the user that the search was unsuccessful. This isn't necessarily
-			     * an error. You may want to offer the user the option to insert a new row, or re-type the
-			     * search term.
-			     */
-	
+			if (null == mCursor || mCursor.getCount() < 1) {
+				//cursor null, pas de match
+			    Log.e("baseactivity","null cursor");
+			    
 			} else {
-			    // Insert code here to do something with the results
 				
 				try {
 					ObjectInputStream ois = new ObjectInputStream(
@@ -276,6 +289,9 @@ protected void addToDB(Media media, boolean seen){
 		return recommendations;
 	}
 	
+	/*
+	 * Récupérer la liste des derniers favoris ajoutés
+	 */
 	protected ArrayList<MediaInfos> lastAddedFav(int n) {
 
 		ArrayList<MediaInfos> lastAdded = new ArrayList<MediaInfos>();
@@ -287,10 +303,10 @@ protected void addToDB(Media media, boolean seen){
 
 		
 		Cursor mCursor = getContentResolver().query(
-			    MediaContentProvider.CONTENT_URI,  // 
-			    select,                  	       // 
-			    null,							   // 
-			    null,       	       			   // 
+			    MediaContentProvider.CONTENT_URI,   
+			    select,                  	        
+			    null,							   
+			    null,       	       			    
 			    DBHelperMedia.M_INSERT_TIME + " DESC"); 
 		
 		int index = mCursor.getColumnIndex(DBHelperMedia.M_INFOS);
@@ -298,20 +314,10 @@ protected void addToDB(Media media, boolean seen){
 		
 		while (mCursor.moveToNext() && lastAdded.size() < n ) {
 			
-			if (null == mCursor) {
-			    // Insert code here to handle the error. Be sure not to use the cursor!
-			     	Log.e("baseactivity","null cursor");
-			     	// If the Cursor is empty, the provider found no matches
-			} else if (mCursor.getCount() < 1) {
-	
-			    /*
-			     * Insert code here to notify the user that the search was unsuccessful. This isn't necessarily
-			     * an error. You may want to offer the user the option to insert a new row, or re-type the
-			     * search term.
-			     */
+			if (null == mCursor || mCursor.getCount() < 1) {
+		     	Log.e("baseactivity","null cursor");
 	
 			} else {
-			    // Insert code here to do something with the results
 				
 				try {
 					ObjectInputStream ois = new ObjectInputStream(
@@ -322,7 +328,6 @@ protected void addToDB(Media media, boolean seen){
 				}
 				// If there is a media and it is followed, add it to the list
 				if (media != null) {
-
 					lastAdded.add(media.mediainfos);					
 				}
 			}
@@ -333,6 +338,9 @@ protected void addToDB(Media media, boolean seen){
 		
 	}
 	
+	/*
+	 * Récuperer la liste des qui jouent bientôt
+	 */
 	protected ArrayList<TraktTVSearch> upcomingShows() {
 
 		ArrayList<TraktTVSearch> upcoming = new ArrayList<TraktTVSearch>();
@@ -345,9 +353,9 @@ protected void addToDB(Media media, boolean seen){
 		String q_select=DBHelperMedia.M_SHOW + " = ? and "+DBHelperMedia.M_SEEN+ " = ? and " +DBHelperMedia.M_DAY+" not in (?, ?)";
 		
 		Cursor mCursor = getContentResolver().query(
-			    MediaContentProvider.CONTENT_URI,  // 
-			    select,                  	       // 
-			    q_select,	   // 
+			    MediaContentProvider.CONTENT_URI,  
+			    select,         
+			    q_select,	   
 			    new String[]{"1", "1", "Ended", "Unknown"},       	       // Only ask for TV shows
 			    null);               			   // Retrieve all of them to sort them later
 		
@@ -356,19 +364,10 @@ protected void addToDB(Media media, boolean seen){
 		
 		while (mCursor.moveToNext()) {
 			
-			if (null == mCursor) {
-			    // Insert code here to handle the error. Be sure not to use the cursor!
-			     	Log.e("baseactivity","null cursor");
-			     	// If the Cursor is empty, the provider found no matches
-			} else if (mCursor.getCount() < 1) {
+			if (null == mCursor || mCursor.getCount() < 1) {
+		     	Log.e("baseactivity","null cursor");
 	
-			    /*
-			     * Insert code here to notify the user that the search was unsuccessful. This isn't necessarily
-			     * an error. You may want to offer the user the option to insert a new row, or re-type the
-			     * search term.
-			     */
-	
-			} else {
+			}else {
 				
 				try {
 					ObjectInputStream ois = new ObjectInputStream(
@@ -412,6 +411,9 @@ protected void addToDB(Media media, boolean seen){
 		return sorted_shows;
 	}
 	
+	/*
+	 * Récuperer la liste des films déja vus
+	 */
 	protected ArrayList<MediaInfos> checkSeen(ArrayList<MediaInfos> list) {
 
 		Media media = null;
@@ -435,19 +437,10 @@ protected void addToDB(Media media, boolean seen){
 		
 		while (mCursor.moveToNext()) {
 			
-			if (null == mCursor) {
-			    // Insert code here to handle the error. Be sure not to use the cursor!
-			     	Log.e("baseactivity","null cursor");
-			     	// If the Cursor is empty, the provider found no matches
-			} else if (mCursor.getCount() < 1) {
+			if (null == mCursor || mCursor.getCount() < 1) {
+		     	Log.e("baseactivity","null cursor");
 	
-			    /*
-			     * Insert code here to notify the user that the search was unsuccessful. This isn't necessarily
-			     * an error. You may want to offer the user the option to insert a new row, or re-type the
-			     * search term.
-			     */
-	
-			} else {
+			}else {
 				
 				try {
 					ObjectInputStream ois = new ObjectInputStream(
@@ -477,7 +470,6 @@ protected void addToDB(Media media, boolean seen){
 		  } else
 		   return true;
 	}
-	
 	
 
 }

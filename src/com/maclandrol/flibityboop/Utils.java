@@ -1,3 +1,12 @@
+/**
+ * IFT2905 : Interface personne machine
+ * Projet de session: FlibityBoop.
+ * Team: Vincent CABELI, Henry LIM, Pamela MEHANNA, Emmanuel NOUTAHI, Olivier TASTET
+ * @author Emmanuel Noutahi, Vincent Cabeli
+ * Cette classe a été modifié pour l'adapter au projet.
+ * L'original peut être trouvé ici: https://github.com/thest1/LazyList
+ */
+
 package com.maclandrol.flibityboop;
 
 import java.io.InputStream;
@@ -37,8 +46,9 @@ public class Utils {
 		}
 	}
 
-	// Fusionne deux arraylists de mediainfos dans leur ordre original en les
-	// alternant.
+	/*
+	 *  Fusionne deux arraylists de mediainfos dans leur ordre original en les alternant
+	 */
 	public static ArrayList<MediaInfos> entrelace(
 			ArrayList<? extends MediaInfos> a, ArrayList<? extends MediaInfos> b) {
 
@@ -73,7 +83,8 @@ public class Utils {
 	}
 
 	
-	//Take a screenshot from activity
+	//Take a screenshot from activity in order to share it
+	//Not used in the App
 	public static Bitmap takeScreenShot(Activity activity)
 	{
 	    View act_view = activity.findViewById(android.R.id.content);
@@ -86,10 +97,8 @@ public class Utils {
 
 	    int width=  activity.getWindowManager().getDefaultDisplay().getWidth();
 	    int height=activity.getWindowManager().getDefaultDisplay().getWidth();
-	    /*int width= displaymetrics.widthPixels;
-	    int height = displaymetrics.heightPixels;
-*/
-	    Bitmap b = Bitmap.createBitmap(b1);//, 0, statusBarHeight, width, height  - statusBarHeight);
+
+	    Bitmap b = Bitmap.createBitmap(b1, 0, statusBarHeight, width, height  - statusBarHeight);
 	    act_view.destroyDrawingCache();
 	    return b;
 	}

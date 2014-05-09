@@ -1,7 +1,12 @@
+/**
+ * IFT2905 : Interface personne machine
+ * Projet de session: FlibityBoop.
+ * Team: Vincent CABELI, Henry LIM, Pamela MEHANNA, Emmanuel NOUTAHI, Olivier TASTET
+ * @author Emmanuel Noutahi, Vincent Cabeli
+ */
+
 package com.maclandrol.flibityboop;
 
-import java.io.ByteArrayInputStream;
-import java.io.ObjectInputStream;
 
 import android.database.Cursor;
 import android.os.Bundle;
@@ -9,20 +14,19 @@ import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v4.widget.SimpleCursorAdapter.ViewBinder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.ImageView;
-import android.widget.TextView;
 
+/**
+ * Classe MovieListFragment, 
+ * Fragment de type List pour les Films favoris
+ */
 public class MovieListFragment extends ListFragment implements	LoaderManager.LoaderCallbacks<Cursor> {
 
-	MovieFavoriteCursorAdapter adapter;
+	MovieFavoriteCursorAdapter adapter; //adapter pour le listview
 	private static final int LOADER_ID = 10;
 	Cursor cursor;
-
 	String affichage;
 	static final String[] select = new String[] { DBHelperMedia.M_ID,
 			DBHelperMedia.M_INSERT_TIME, DBHelperMedia.M_TITLE,
@@ -37,22 +41,22 @@ public class MovieListFragment extends ListFragment implements	LoaderManager.Loa
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,	Bundle savedInstanceState) {
+		//Récuperer les arguments, 
 		Bundle args = getArguments();
 		affichage = args.getString("trie");
 		View rootView = inflater.inflate(R.layout.fragment_favorites,	container, false);
 
 		getLoaderManager().initLoader(LOADER_ID, null, this);
 		adapter= new MovieFavoriteCursorAdapter(this.getActivity(), R.layout.movie_favorite_details, cursor, from, to, 0);
-		//adapter.setViewBinder(VIEW_BINDER);
 	    setListAdapter(adapter);
 		return rootView;
 	}
 	
-	private Bundle savedInstanceState; // add this to your code
+	private Bundle savedInstanceState;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		this.savedInstanceState = savedInstanceState; // add this to your code
+		this.savedInstanceState = savedInstanceState;
 
 	}
 
@@ -62,60 +66,6 @@ public class MovieListFragment extends ListFragment implements	LoaderManager.Loa
 		onCreate(savedInstanceState);        
 	}
 	
-	static final ViewBinder VIEW_BINDER = new ViewBinder() {
-		@Override
-		public boolean setViewValue(View v, Cursor c, int index) {
-			Media media = null;
-			MediaInfos m =null;
-
-			switch (v.getId()) {
-			case R.id.date_fav:
-				try {
-					ObjectInputStream ois = new ObjectInputStream(
-							new ByteArrayInputStream(c.getBlob(index)));
-					media= (Media) ois.readObject();
-				} catch (Exception e) {
-
-				}
-				if (media != null) {
-					m = media.mediainfos;
-					((TextView) v).setText(m.getDate());
-				}
-				return true;
-
-			case R.id.score_fav:
-				try {
-					ObjectInputStream ois = new ObjectInputStream(
-							new ByteArrayInputStream(c.getBlob(index)));
-					media = (Media) ois.readObject();
-				} catch (Exception e) {
-
-				}
-				if (media != null) {
-					m = media.mediainfos;
-					((TextView) v).setText(m.getScore() + "%");
-				}
-				return true;
-				
-			case R.id.poster_fav:
-				return true;
-				
-			case R.id.title_fav:
-				return false; // on laisse android afficher directement
-			case R.id.type_icon_fav:
-				((ImageView) v)
-						.setImageResource(c.getInt(index) <= 0 ? R.drawable.movie
-								: R.drawable.tvshow);
-				return true;
-			case R.id.seen_fav:
-				boolean seen = c.getInt(index) > 0 ? true : false;
-				((CheckBox) v).setChecked(seen);
-				return true;
-			}
-
-			return false;
-		}
-	};
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 		CursorLoader cursorLoader = null;

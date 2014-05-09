@@ -1,4 +1,14 @@
+/**
+ * IFT2905 : Interface personne machine
+ * Projet de session: FlibityBoop.
+ * Team: Vincent CABELI, Henry LIM, Pamela MEHANNA, Emmanuel NOUTAHI, Olivier TASTET
+ * @author Emmanuel Noutahi, Vincent Cabeli
+ * Cette classe a été modifié pour l'adapter au projet.
+ * L'original peut être trouvé ici: https://github.com/thest1/LazyList
+ */
+
 package com.maclandrol.flibityboop;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

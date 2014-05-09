@@ -1,3 +1,10 @@
+/**
+ * IFT2905 : Interface personne machine
+ * Projet de session: FlibityBoop.
+ * Team: Vincent CABELI, Henry LIM, Pamela MEHANNA, Emmanuel NOUTAHI, Olivier TASTET
+ * @author Emmanuel Noutahi, Vincent Cabeli
+ */
+
 package com.maclandrol.flibityboop;
 
 import java.io.UnsupportedEncodingException;
@@ -14,17 +21,23 @@ import android.os.Parcelable;
 
 import com.maclandrol.flibityboop.API.MediaType;
 
+/**
+ * Classe API de RottenTomatoes
+ */
 public class RottenTomatoes extends API {
 
 	public static final String rottenbase = "http://api.rottentomatoes.com/api/public/v1.0/",
 			rottenkey = "?apikey=fb9vdz4avkk4g7puuapap4mf";
-	// baseURL=http://api.rottentomatoes.com/api/public/v1.0/lists.json?apikey=fb9vdz4avkk4g7puuapap4mf
+
 	public static final int DEFAULT_PAGE_LIMIT = 30, DEFAULT_MAX_PAGE = 10;
 
 	public RottenTomatoes() {
 		super(rottenbase, rottenkey);
 	}
 
+	/*
+	 * Récuperer les résultats de recherches à partir du lien de requête
+	 */
 	public ArrayList<RTSearch> getRequestPerLink(String url, int page_limit,
 			int maxPage) {
 
@@ -42,6 +55,7 @@ public class RottenTomatoes extends API {
 		JSONObject request;
 		JSONArray movie_list;
 
+		//Tant que la page max n'est pas atteinte, aller récuperer une autre page
 		while (page <= maxPage && !maxPageReached) {
 
 			try {
@@ -69,6 +83,9 @@ public class RottenTomatoes extends API {
 		return sr;
 	}
 
+	/*
+	 * Récupérer les résultats d'une recherche de filmà partir d'un query
+	 */
 	public ArrayList<RTSearch> searchMovies(String query, int page_limit,
 			int maxPage) {
 		try {
@@ -82,6 +99,9 @@ public class RottenTomatoes extends API {
 		return this.getRequestPerLink(url, page_limit, maxPage);
 	}
 
+	/*
+	 * Récuperer les critiques disponibles sur rottenTomaotes pour  un film
+	 */
 	public ArrayList<Critics> getRTCritics(int movieID, int limit) {
 		ArrayList<Critics> critique = new ArrayList<Critics>();
 		String url = this.baseURL + "movies/" + movieID + "/reviews.json"
@@ -96,6 +116,9 @@ public class RottenTomatoes extends API {
 		return critique;
 	}
 
+	/*
+	 * Récupérer les films recommandés d'un Film particulier
+	 */
 	public ArrayList<RTSearch> getSimilarMovies(int movieID, int limit) {
 		String url = this.baseURL + "movies/" + movieID + "/similar.json"
 				+ this.key;
@@ -105,6 +128,10 @@ public class RottenTomatoes extends API {
 
 	}
 
+	/*
+	 * Récuperer toutes les informations additionnelles possibles qui ne sont pas indispensables pour 
+	 * MediaInfos mais peuvent l'être pour le média au complet 
+	 */
 	public HashMap<String, String> getMovieInfos(int movieID) {
 		String url = this.baseURL + "movies/" + movieID + ".json" + this.key;
 		HashMap<String, String> infos = new HashMap<String, String>();
@@ -193,6 +220,10 @@ public class RottenTomatoes extends API {
 	}
 }
 
+/**
+ * Classe RTSearch, implémentant l'interface MediaInfos
+ * Chaque instance correspond à un résultat de recherche d'un film sur RottenTomatoes
+ */
 class RTSearch implements MediaInfos {
 
 	private static final long serialVersionUID = -4764592788822302046L;
@@ -276,6 +307,7 @@ class RTSearch implements MediaInfos {
 		addInfos = serializable; 
 	}
 
+	
 	public RTSearch(Parcel source, boolean b) {
 		if(b)
 			source.readInt();
@@ -301,6 +333,7 @@ class RTSearch implements MediaInfos {
 		addInfos = serializable; 
 	}
 
+	
 	@Override
 	public String getTitle() {
 		return this.title;
@@ -464,9 +497,7 @@ class RTSearch implements MediaInfos {
 	}
 	
 	public String getDetailedTitle() {
-
 		return (getTitle() + " (" + years + ")");
-
 	}
 
 	public static final Parcelable.Creator<RTSearch> CREATOR = new Creator<RTSearch>() {

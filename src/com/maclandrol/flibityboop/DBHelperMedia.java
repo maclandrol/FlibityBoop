@@ -1,3 +1,10 @@
+/**
+ * IFT2905 : Interface personne machine
+ * Projet de session: FlibityBoop.
+ * Team: Vincent CABELI, Henry LIM, Pamela MEHANNA, Emmanuel NOUTAHI, Olivier TASTET
+ * @author Emmanuel Noutahi, Vincent Cabeli
+ */
+
 package com.maclandrol.flibityboop;
 
 import java.io.ByteArrayInputStream;
@@ -14,14 +21,17 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.text.TextUtils;
 import android.util.Log;
 
+/**
+ * Gestionnaire de la base de donnée de média 
+ */
 public class DBHelperMedia extends SQLiteOpenHelper {
 
-	static final int VERSION = 10;
+	static final int VERSION = 10; //version actuelle de la base de données
 	static final String MEDIA_TABLE = "fav_media";
 	static final String SHOW_DATE_TABLE = "show_date";
 
 	/*
-	 * Liste des colonnes de la tables
+	 * Liste des colonnes des deux tables
 	 */
 	static final String M_ID = "_id";
 	static final String M_INSERT_TIME = "insert_time";
@@ -56,7 +66,6 @@ public class DBHelperMedia extends SQLiteOpenHelper {
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		//Toast.makeText(context, "Création BDD", Toast.LENGTH_LONG).show();
 		//Log.d("DBHelper", "Création BDD mediainfos");
 
 		// Appel standard pour créer une table dans la base de données.
@@ -78,7 +87,6 @@ public class DBHelperMedia extends SQLiteOpenHelper {
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int ancienneVersion,int nouvelleVersion) {
-		//Log.d("DBHelper", "Mise à jour BDD");
 
 		// Efface l'ancienne base de données
 		db.execSQL("drop table if exists " + MEDIA_TABLE);
@@ -88,6 +96,9 @@ public class DBHelperMedia extends SQLiteOpenHelper {
 		onCreate(db);
 	}
 
+	/*
+	 * Insertion d'une nouvelle entrée dans la base de données
+	 */
 	public void addNewEntry(Media media, boolean seen, byte[] media_bytes) {
 		
 		MediaInfos m = media.mediainfos;
@@ -132,14 +143,12 @@ public class DBHelperMedia extends SQLiteOpenHelper {
 		db.close();
 	}
 
+	/*
+	 * Récuperer le nombre d'éléments dans une table
+	 */
 	public int querySize(String table) {
 
 		SQLiteDatabase db = this.getReadableDatabase();
-
-		// Cursor est un objet très utilisé qui permet de stocker
-		// le résultat d'une requête SQL. Ce résultat peut être,
-		// dans le cas présent, la colonne ID de toutes les lignes
-		// de la base de donnée, ce qui nous permet de les compter.
 		Cursor c = db.query(SHOW_DATE_TABLE.equals("table") ? SHOW_DATE_TABLE
 				: MEDIA_TABLE, new String[] { M_ID }, null, null, null, null,
 				null);
@@ -148,6 +157,9 @@ public class DBHelperMedia extends SQLiteOpenHelper {
 		return size;
 	}
 
+	/*
+	 * Ajouter une nouvelle entrée à partir d'un contentvalues
+	 */
 	public void addNewEntry(ContentValues values) {
 
 		Media m = null;
@@ -166,6 +178,9 @@ public class DBHelperMedia extends SQLiteOpenHelper {
 
 	}
 
+	/*
+	 * Mettre à jour les dates d'un média
+	 */
 	public void updateDate() {
 		SQLiteDatabase db = this.getReadableDatabase();
 		HashSet<String> in_day = new HashSet<String>();

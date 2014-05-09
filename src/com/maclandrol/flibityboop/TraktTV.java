@@ -1,3 +1,10 @@
+/**
+ * IFT2905 : Interface personne machine
+ * Projet de session: FlibityBoop.
+ * Team: Vincent CABELI, Henry LIM, Pamela MEHANNA, Emmanuel NOUTAHI, Olivier TASTET
+ * @author Emmanuel Noutahi, Vincent Cabeli
+ */
+
 package com.maclandrol.flibityboop;
 
 import java.io.UnsupportedEncodingException;
@@ -18,6 +25,9 @@ import android.os.Parcelable;
 
 import com.maclandrol.flibityboop.API.MediaType;
 
+/**
+ * Classe TraktTV, gère les requêtes vers l'API de TraktTV.
+ */
 public class TraktTV extends API {
 	public static final String traktkey = "a62503a2e4aa0735de62a46bad65148a",
 			trakt_base = "http://api.trakt.tv/";
@@ -28,10 +38,16 @@ public class TraktTV extends API {
 
 	}
 
+	/*
+	 * Recherche d'un show basé sur un query
+	 */
 	public ArrayList<TraktTVSearch> searchShow(String query) {
 		return this.searchShow(query, -1);
 	}
 
+	/*
+	 * Recherche d'un show basé sur un query
+	 */
 	public ArrayList<TraktTVSearch> searchShow(String query, int limit) {
 		ArrayList<TraktTVSearch> result = new ArrayList<TraktTVSearch>();
 		try {
@@ -65,6 +81,9 @@ public class TraktTV extends API {
 		return result;
 	}
 
+	/*
+	 * Récuperer la liste de show similaire à un show particulier
+	 */
 	public ArrayList<TraktTVSearch> getSimilarShow(int tvdb_id) {
 		ArrayList<TraktTVSearch> result = new ArrayList<TraktTVSearch>();
 		String url = this.baseURL + "show/related.json/" + this.key + "/"
@@ -86,6 +105,9 @@ public class TraktTV extends API {
 
 	}
 
+	/*
+	 * Récuperer la liste des critiques/commentaires sur un show
+	 */
 	public ArrayList<Critics> getTVCritics(int tvdb_id) {
 		ArrayList<Critics> critiques = new ArrayList<Critics>();
 		String url = this.baseURL + "show/comments.json/" + this.key + "/"
@@ -110,6 +132,10 @@ public class TraktTV extends API {
 
 }
 
+/**
+ * Classe TraktTVSearch, implémentant l'interface MediaInfos
+ * Chaque instance correspond à un résultat de recherche d'un TV show sur TraktTV
+ */
 class TraktTVSearch implements MediaInfos {
 
 	private static final long serialVersionUID = -9203729736235978006L;
@@ -124,6 +150,7 @@ class TraktTVSearch implements MediaInfos {
 	String genres, overview, network;
 	private HashMap<String, String> addInfos = null;
 
+	
 	public TraktTVSearch(JSONObject js, MediaType type) throws JSONException {
 
 		this.title = js.optString("title");
@@ -205,6 +232,7 @@ class TraktTVSearch implements MediaInfos {
 		this.addInfos = serializable; 
 		}
 
+	
 	public TraktTVSearch(Parcel source, boolean b) {
 		if(b) source.readInt();
 		title = source.readString();
@@ -401,7 +429,10 @@ class TraktTVSearch implements MediaInfos {
 	};
 	
 	
-	  public String getTimeUntilNextAirTime() {
+	/*
+	 * Récupérer le temps avant la prochaine diffusion
+	 */
+	public String getTimeUntilNextAirTime() {
 	        
 	        int daysToGo, hoursToGo, minutesToGo;
 	        String result="";
@@ -467,6 +498,9 @@ class TraktTVSearch implements MediaInfos {
 	  	}
 	    
 	  
+	/*
+	 * Récuperer l'heure de diffusion
+	 */
 		public int getHours() {
 			int i = this.getAirTime().indexOf(':');
 			if(i>0)
@@ -474,7 +508,10 @@ class TraktTVSearch implements MediaInfos {
 			return -1;
 		}
 
-		
+
+		/*
+		 * Récuperer les minutes de l'heure de diffusion
+		 */
 		public int getMinutes() {
 			int i = this.getAirTime().indexOf(':');
 			if (i > 0)
@@ -482,11 +519,17 @@ class TraktTVSearch implements MediaInfos {
 			return -1;
 		}
 		
+		/*
+		 * Récuperer la durée de diffusion
+		 */
 		public int getDuration(){
 			return this.runtime;
 		}
 		
 		
+		/*
+		 * Récuperer le temps en long milliseconde avant la prochaine diffusion
+		 */
 		public long getTimeToGoMillis() {
 			int nextDayOfWeek = 0, daysToGo, nextMinute= getMinutes(), nextHour=getHours(), hoursToGo, minutesToGo;
 	        GregorianCalendar today = new GregorianCalendar();

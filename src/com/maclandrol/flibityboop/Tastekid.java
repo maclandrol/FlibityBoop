@@ -1,3 +1,10 @@
+/**
+ * IFT2905 : Interface personne machine
+ * Projet de session: FlibityBoop.
+ * Team: Vincent CABELI, Henry LIM, Pamela MEHANNA, Emmanuel NOUTAHI, Olivier TASTET
+ * @author Emmanuel Noutahi, Vincent Cabeli
+ */
+
 package com.maclandrol.flibityboop;
 
 import java.io.Serializable;
@@ -13,7 +20,9 @@ import org.json.JSONObject;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-///CLASSE TASTEKID API!!
+/**
+ * Classe Tastekid, gère les requêtes vers l'API de Tastekid
+ */
 public class Tastekid extends API {
 
 	// Arguments pour les requetes avec l'API
@@ -28,10 +37,10 @@ public class Tastekid extends API {
 
 	}
 
-	// ICI on veut avoir un JSON constitué des FILMS et TVSHOW de la recherche
-	// "name" de type qType
-	// Example : JSONOBject j = tsk.getJSONMedia("death note",
-	// MediaType.Movies);
+	/* ICI on veut avoir un JSON constitué des FILMS et TVSHOW de la recherche
+	 * "name" de type qType
+	 * Example : JSONOBject j = tsk.getJSONMedia("death note", MediaType.Movies);
+	 */
 	public JSONObject getJSONMedia(String name, MediaType qType)
 			throws UnsupportedEncodingException {
 		JSONObject movies = getJSONMovies(name, qType);
@@ -46,15 +55,16 @@ public class Tastekid extends API {
 			}
 
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			this.erreur = e.getMessage();
 		}
 		return movies;
 	}
 
-	// ICI on veut uniquement le JSON de l'ensemble des reponses de type FILMS
-	// dans la requete uniquement (pas de TVSHOW)
+	/*
+	 * getJSONMovies sert à récuperer le JSON de l'ensemble des reponses de type FILM uniquement
+	 * (pas de TVSHOW)
+	 */
 	public JSONObject getJSONMovies(String name, MediaType qType)
 			throws UnsupportedEncodingException {
 
@@ -73,7 +83,9 @@ public class Tastekid extends API {
 
 	}
 
-	// ICI c'est plutot resultats de type serie qu'on recherche
+	/*
+	 * getJSONSeries sert à récuperer le JSON de l'ensemble des reponses de type TVSHOW uniquement
+	 */
 	public JSONObject getJSONSeries(String name, MediaType qType)
 			throws UnsupportedEncodingException {
 		String resType = "";
@@ -91,9 +103,11 @@ public class Tastekid extends API {
 		return super.getJSON(url);
 	}
 
-	// Cette methode retourne les infos sur le query (le titre cherché)
-	// NB: xa prends un JSON en argument et non un name, donc faire getJSON****
-	// avant
+	/*
+	 * Cette methode retourne les infos sur le query (le titre cherché)
+	 * NB: elle prends un JSON en argument et non un name, donc faire il faut récupérer d'abord le JSON du query
+	 */
+	
 	public TKSearchResult getMediaInfos(JSONObject jsList) {
 
 		TKSearchResult current = null;
@@ -109,10 +123,11 @@ public class Tastekid extends API {
 		return current;
 	}
 
-	// Cette méthode retourne les resultats des recommendation obtenue pour la
-	// requete:
-	public ArrayList<TKSearchResult> getRecomMediaInfos(
-			JSONObject jsList) {
+	/*
+	 * Cette methode retourne les recommandations pour le query (le titre cherché)
+	 * NB: elle prends un JSON en argument et non un name, donc faire il faut récupérer d'abord le JSON du query
+	 */
+	public ArrayList<TKSearchResult> getRecomMediaInfos(JSONObject jsList) {
 
 		ArrayList<TKSearchResult> currents = new ArrayList<TKSearchResult>();
 		try {
@@ -134,7 +149,7 @@ public class Tastekid extends API {
 		return currents;
 	}
 
-	// Methode privée pour retourner un objet de type Tastekid.SearchResult à
+	// Methode privée pour retourner un objet de type TKSearchResult à
 	// partir d'un JSON
 	private TKSearchResult GetMediaFeatures(JSONObject jsMedia){
 		return new TKSearchResult(jsMedia.optString("wTeaser"),
@@ -145,8 +160,12 @@ public class Tastekid extends API {
 
 }
 
-// Cette classe contient les informations et les méthodes propres aux medias
-// retournés par tastekid
+/**
+ * Cette classe contient les informations et les méthodes propres aux résultats retournés par tastekid
+ * Ces résultats n'ont pas assez d'informations pour être considérer comme des MediaInfos à part mais servent à completer
+ * les médiaInfos pour compléter un objet de type Media
+ */
+
 class TKSearchResult implements Parcelable, Serializable {
 	
 	private static final long serialVersionUID = 8605593584797495584L;

@@ -1,3 +1,10 @@
+/**
+ * IFT2905 : Interface personne machine
+ * Projet de session: FlibityBoop.
+ * Team: Vincent CABELI, Henry LIM, Pamela MEHANNA, Emmanuel NOUTAHI, Olivier TASTET
+ * @author Emmanuel Noutahi, Vincent Cabeli
+ */
+
 package com.maclandrol.flibityboop;
 
 import java.io.UnsupportedEncodingException;
@@ -15,6 +22,9 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import com.maclandrol.flibityboop.API.MediaType;
 
+/**
+ * Classe TheMovieDB, gère les requêtes ves l'API de TheMovieDB 
+ */
 public class TheMovieDB extends API {
 
 	public static final String tmdbKey = "?api_key=ecda05db82a153f8f3a1d1f0eecb1c00",
@@ -73,12 +83,14 @@ public class TheMovieDB extends API {
 		}
 	};
 
-	// default and uniq contructor
+	// default and unique contructor
 	public TheMovieDB() {
 		super(tmdbAPI, tmdbKey);
 	}
 
-	// Methode privée pour decoder un json de themoviedb
+	/*
+	 *  Methode privée pour decoder un json de themoviedb
+	 */
 	private ArrayList<TMDBSearch> decodeJSONArray(JSONArray result,
 			MediaType type) {
 		ArrayList<TMDBSearch> sr = new ArrayList<TMDBSearch>();
@@ -93,7 +105,9 @@ public class TheMovieDB extends API {
 		return sr;
 	}
 
-	// Trouver un media en fonction de son idée: confert API : /find/{id}
+	/*
+	 *  Trouver un media en fonction de son idée: confert API : /find/{id} de TMDB
+	 */
 	public ArrayList<TMDBSearch> findMedia(String id, String source) {
 		if (source == null)
 			source = "imdb_id";
@@ -115,7 +129,10 @@ public class TheMovieDB extends API {
 
 		return sr;
 	}
-
+	
+	/*
+	 * Lancer une requête vers l'API de TMDB à partir d'une URL puis récupérer les résultats de recherche
+	 */
 	private ArrayList<TMDBSearch> getRequestPerLink(String url, MediaType type,
 			int maxPage) {
 
@@ -152,13 +169,13 @@ public class TheMovieDB extends API {
 
 	}
 
-	// Discover media based on the minVote, the min vote count. Je supporte TV,
-	// MOVIE et ANY dans la même fonction
-	// avec MediaType type. int maxPage permet de specifier le nombre max de
+	// Discover media based on the minVote, the min vote count. La méthode supporte TV,
+	// MOVIE et ANY comme mediaType. maxPage permet de specifier le nombre max de
 	// page à visiter dans la recherhce
 	// l'API est mal faite et retourne toujours la premiere page (soit au plus
-	// 10 resultat). Je fais des requetes supp pour completer les recherches
+	// 10 resultat). JNous faisons des requetes supp pour completer les recherches
 	// This can be greedy in time
+	// Not used in the APP
 	public ArrayList<TMDBSearch> discoverMedia(MediaType type, double minVote,
 			int minCount, int maxPage) {
 
@@ -182,7 +199,9 @@ public class TheMovieDB extends API {
 
 	}
 
-	// GetPopularMedia
+	/*
+	 * Get the popular Media
+	 */
 	public ArrayList<TMDBSearch> getPopularMedia(MediaType type, int maxPage) {
 
 		ArrayList<TMDBSearch> sr = new ArrayList<TMDBSearch>();
@@ -197,7 +216,9 @@ public class TheMovieDB extends API {
 		return sr;
 	}
 
-	// GetTopRated
+	/*
+	 * Get the top rated media
+	 */
 	public ArrayList<TMDBSearch> getTopRatedMedia(MediaType type, int maxPage) {
 
 		ArrayList<TMDBSearch> sr = new ArrayList<TMDBSearch>();
@@ -213,7 +234,9 @@ public class TheMovieDB extends API {
 
 	}
 
-	// Get Movie in theather
+	/*
+	 *  Get Movies in theather
+	 */
 	public ArrayList<TMDBSearch> getInTheaterMovies(int maxPage) {
 
 		String url = this.baseURL + "movie/now_playing" + this.key;
@@ -221,7 +244,9 @@ public class TheMovieDB extends API {
 
 	}
 
-	// Get TV on air
+	/*
+	 * Get TV on air
+	 */
 	public ArrayList<TMDBSearch> getOnAirTV(int maxPage) {
 
 		String url = this.baseURL + "tv/on_the_air" + this.key;
@@ -229,7 +254,9 @@ public class TheMovieDB extends API {
 
 	}
 
-	// getAiringToday TV
+	/*
+	 *  Get TV airing today
+	 */
 	public ArrayList<TMDBSearch> getAiringToday(int maxPage) {
 
 		String url = this.baseURL + "tv/airing_today" + this.key;
@@ -237,7 +264,9 @@ public class TheMovieDB extends API {
 
 	}
 
-	// getUPcomings movies
+	/*
+	 * Get upcoming movies
+	 */
 	public ArrayList<TMDBSearch> getUpcomingMovies(int maxPage) {
 
 		String url = this.baseURL + "movie/upcoming" + this.key;
@@ -246,10 +275,9 @@ public class TheMovieDB extends API {
 	}
 
 	// Trouver des films par genres, case insensitif pour le genre et un boolean
-	// pour specifier si tous les films sont a mettre en cache?
+	// pour specifier si tous les types de films sont à récupérer
 	// maxPage a la meme role que precedemment expliqué
-	public ArrayList<TMDBSearch> getMoviesByGenres(String genre,
-			boolean include_all_movies, int maxPage) {
+	public ArrayList<TMDBSearch> getMoviesByGenres(String genre,boolean include_all_movies, int maxPage) {
 		ArrayList<TMDBSearch> movies = new ArrayList<TMDBSearch>();
 
 		try {
@@ -262,6 +290,9 @@ public class TheMovieDB extends API {
 		return movies;
 	}
 
+	/*
+	 * Get movies by genre
+	 */
 	public ArrayList<TMDBSearch> getMoviesByGenres(int genre,
 			boolean include_all_movies, int maxPage) {
 		String url;
@@ -298,6 +329,9 @@ public class TheMovieDB extends API {
 		return movies;
 	}
 
+	/*
+	 * Get Movie Review using a movie ID
+	 */
 	public ArrayList<Critics> getMovieReviews(int movieID, int maxPage) {
 		String url = this.baseURL + "movie/" + movieID + "/reviews" + this.key;
 		ArrayList<Critics> critique = new ArrayList<Critics>();
@@ -328,9 +362,10 @@ public class TheMovieDB extends API {
 		return critique;
 	}
 
-	// public abstract ArrayList<TheMovieDBSearchResult> getTVSeasonInfos(int
-	// tvID, int season);
-
+	/*
+	 * Récuperer toutes les informations additionnelles possibles qui ne sont pas indispensables pour 
+	 * MediaInfos mais peuvent l'être pour le média au complet 
+	 */
 	public HashMap<String, String> getMediaByID(MediaType type, int id) {
 
 		String url = this.baseURL + type.toString() + "/" + id + this.key;
@@ -393,6 +428,9 @@ public class TheMovieDB extends API {
 		return features;
 	}
 
+	/*
+	 * Get similar movie, using a specific movieID
+	 */
 	public ArrayList<TMDBSearch> getSimilarMovie(int movieID, int maxPage,
 			double minVote, int minVoteCount) {
 
@@ -414,8 +452,7 @@ public class TheMovieDB extends API {
 
 	// Recherche d'un media, en fonction du type, du titre et aussi, du nombre
 	// max de page a visiter
-	public ArrayList<TMDBSearch> searchMedia(MediaType type, String name,
-			int maxPage) {
+	public ArrayList<TMDBSearch> searchMedia(MediaType type, String name,	int maxPage) {
 
 		try {
 			name = URLEncoder.encode(name, "UTF-8");
@@ -440,10 +477,12 @@ public class TheMovieDB extends API {
 
 	}
 
-	// /Cette Classe fait la même chose que SearchResult dans tastekid, mais a
-	// des attribut diffrents
 }
 
+/**
+ * Classe TMDBSearch, implémentant l'interface MediaInfos
+ * Chaque instance correspond à un résultat de recherche d'un média (Film ou TV show) sur TMDB
+ */
 class TMDBSearch implements MediaInfos {
 
 	private static final long serialVersionUID = 5773288890801480572L;

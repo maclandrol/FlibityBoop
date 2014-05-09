@@ -1,3 +1,10 @@
+/**
+ * IFT2905 : Interface personne machine
+ * Projet de session: FlibityBoop.
+ * Team: Vincent CABELI, Henry LIM, Pamela MEHANNA, Emmanuel NOUTAHI, Olivier TASTET
+ * @author Emmanuel Noutahi, Vincent Cabeli
+ */
+
 package com.maclandrol.flibityboop;
 
 import android.content.Context;
@@ -7,6 +14,10 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+/**
+ * Adapter pour la listView dans le drawer du MainActivity
+ * Différentiation entre les sections et les items cliquables
+ */
 public class SectionListAdapter  extends ArrayAdapter<Item>{
 
 
@@ -26,7 +37,9 @@ public class SectionListAdapter  extends ArrayAdapter<Item>{
 		final Item item = items[position];
 
 		if (v == null) {
+			//Si le view est null, choisir le bon layout à inflater
 			if (item.isSection()) {
+				//S'il s'agit d'une section, le rendre non cliquable, selectionnable ou focusable
 				v = inflater.inflate(R.layout.item_section, parent, false);
 				v.setClickable(false);
 				v.setFocusable(false);
@@ -42,6 +55,10 @@ public class SectionListAdapter  extends ArrayAdapter<Item>{
 	  return v;
 	 }
 }
+
+/*
+ * Classe pour différencier le type d'item
+ */
 
 abstract class Item {
 

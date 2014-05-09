@@ -1,3 +1,10 @@
+/**
+ * IFT2905 : Interface personne machine
+ * Projet de session: FlibityBoop.
+ * Team: Vincent CABELI, Henry LIM, Pamela MEHANNA, Emmanuel NOUTAHI, Olivier TASTET
+ * @author Emmanuel Noutahi, Vincent Cabeli
+ */
+
 package com.maclandrol.flibityboop;
 
 import java.util.ArrayList;
@@ -34,8 +41,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
-// android.v4.
 
+/**
+ * L'activité MediaDetails correspond à l'interface qui affiche toutes les informations relatives à un média
+ */
 public class MediaDetails extends BaseActivity {
 	
 	Media m = null;
@@ -66,7 +75,6 @@ public class MediaDetails extends BaseActivity {
 		fm = getFragmentManager();
 		resolver= this.getContentResolver();
 		setContentView(R.layout.media_details);
-		//shareIntent.setType("image/png");
 		shareIntent.setType("text/plain");
 		
 		progressDiag = new ProgressDialog(this);
@@ -85,16 +93,24 @@ public class MediaDetails extends BaseActivity {
 	
 		imLoader = new ImageLoader(getApplicationContext());
 		fav= (ToggleButton)findViewById(R.id.fav);
+		
+		/* Dans ce cas, on a deja toutes les infos, il ne reste plus qu'a les afficher
+		 * Pas besoin de requêtes
+		 */
+		
 		if (savedInstanceState != null) {
 			this.critics_pos = savedInstanceState.getInt("critic");
 			this.m = savedInstanceState.getParcelable("media");
 			this.mInfos = savedInstanceState.getParcelable("mediainfo");
 			this.similar = savedInstanceState.getParcelableArrayList("similar");
-			// Toast.makeText(getApplicationContext(), "instance saved",
 			// Toast.LENGTH_LONG).show();
 
 			showMedia(m);
 		} else {
+			/*
+			 * On doit faire des requêtes, verifier s'il faut alors chercher le media à partir du média infos
+			 * ou s'il est deja disponible dans l'intent
+			 */
 			if (i != null) {
 				this.mInfos = i.getParcelableExtra("mediainfo");
 				this.m= i.getParcelableExtra("mediaComplete");
@@ -110,8 +126,6 @@ public class MediaDetails extends BaseActivity {
 				}
 			}
 		}
-
-	
 	}
 
 	
@@ -119,12 +133,14 @@ public class MediaDetails extends BaseActivity {
 	public void onResume(){
 		super.onResume();
 		if(m!=null){
+			//reactiver le share
 			shareIntent.setType("text/plain");
-			Log.d("share", "share not working");
 			setShareIntent(shareIntent);
 			this.share(m.getShare()+"\n\n"+sharedPref.getString("username","FlibityBoop Team"));
 		}
 	}
+	
+	
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
@@ -135,7 +151,10 @@ public class MediaDetails extends BaseActivity {
 	}
 
 	
-		
+	/**
+	 * Afficher un média particulier en mettant les contenus appropriés pour chaque view  	
+	 * @param result
+	 */
 	public void showMedia(Media result) {
 		Log.d("mediadetails", result.toString());
 		this.share(result.getShare()+"\n\n"+sharedPref.getString("username","FlibityBoop Team"));
@@ -283,10 +302,6 @@ public class MediaDetails extends BaseActivity {
 			trailerView.setText(Html.fromHtml("<a href=\"" + trailer_link
 					+ "\">" + result.getTrailerTitle() + "</a>"));
 			trailerView.setMovementMethod(LinkMovementMethod.getInstance());
-
-			//trailerView.setClickable(true);
-			//trailerView.setOnClickListener(new WebIntentListener(trailer_link));
-
 		}
 		// Trailer pas trouvé, cacher le layout
 		else {
@@ -304,13 +319,10 @@ public class MediaDetails extends BaseActivity {
 					+ (result.hasWiki() ? "Wikipedia page" : page) + "</a>"));
 			linkView.setMovementMethod(LinkMovementMethod.getInstance());
 
-			//linkView.setClickable(true);
-			//linkView.setOnClickListener(new WebIntentListener(page));
 		}
 
 		// On va chercher les recommendations ici
 		ArrayList<MediaInfos> sim = this.similar; // inutile de le recopier mais
-													// bof...
 		if (sim == null || sim.isEmpty()) {
 			findViewById(R.id.similar_show_list).setVisibility(View.GONE);
 			findViewById(R.id.you_may_like).setVisibility(View.GONE);
@@ -462,11 +474,6 @@ public class MediaDetails extends BaseActivity {
 
 		FragmentTransaction ft = fm.beginTransaction();
 
-		// Fragment animation, ne marche pas
-		// ft.setCustomAnimations(android.R.anim.fade_in,
-		// android.R.anim.fade_out,android.R.anim.fade_out,
-		// android.R.anim.fade_in);
-
 		// Remplacer par le prochain fragment critique
 		ft.replace(R.id.comments, fragment);
 
@@ -474,6 +481,9 @@ public class MediaDetails extends BaseActivity {
 		ft.commit();
 	}
 
+	/*
+	 * Intent vers l'activité SearchActivity pour afficher le reste des recommandations lorsque more est cliqué
+	 */
 	public boolean onSearchRequested() {
 		Bundle appData = new Bundle();
 		appData.putString("origin", "noRequest");
@@ -496,7 +506,9 @@ public class MediaDetails extends BaseActivity {
 		return true;
 	}
 
-	// List des classes
+	/*
+	 * AyncTask pour aller chercher les infos sur un media à partir de son mediainfos
+	 */
 	class LoadMedia extends AsyncTask<MediaInfos, Void, Media> {
 
 		boolean sendReq=true;
@@ -517,9 +529,7 @@ public class MediaDetails extends BaseActivity {
 				findViewById(R.id.view_content).setVisibility(View.VISIBLE);
 			} else {
 				// Erreur, aucun media trouvé, afficher ce message d'erreur
-				error.setText("Sorry, we couldn't retrieve this media. Try something else!");
-	
-
+				error.setText("Sorry, we couldn't retrieve this media. Try something else!");	
 			}
 
 		}
@@ -544,13 +554,15 @@ public class MediaDetails extends BaseActivity {
 					e.printStackTrace();
 					Log.e("Media", "Impossible d'acceder aux media");
 				}
-				// Media.afficheMedia(media);
 			}
 			return media;
 		}
 
 	}
 
+	/*
+	 * Prise en charge du click sur une recommendation. On doit démarrer une nouvelle activité MediaDetails
+	 */
 	private class MediaDetailsIntentListener implements OnClickListener {
 		MediaInfos infos;
 
@@ -566,6 +578,9 @@ public class MediaDetails extends BaseActivity {
 		}
 	}
 
+	/*
+	 * Fragment pour les critiques et leurs navigations
+	 */
 	public static class CriticFragment extends Fragment {
 
 		public static CriticFragment newInstance(int pos, Critics c) {

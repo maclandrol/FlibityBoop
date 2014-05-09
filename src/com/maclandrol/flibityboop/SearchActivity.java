@@ -1,3 +1,10 @@
+/**
+ * IFT2905 : Interface personne machine
+ * Projet de session: FlibityBoop.
+ * Team: Vincent CABELI, Henry LIM, Pamela MEHANNA, Emmanuel NOUTAHI, Olivier TASTET
+ * @author Emmanuel Noutahi, Vincent Cabeli
+ */
+
 package com.maclandrol.flibityboop;
 
 import java.util.ArrayList;
@@ -28,6 +35,11 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+/**
+ * Activité SearchActivity
+ * Affiche es résultats des différentes requêtes de recherche effectuées
+ * utilise newIntent pour trouver déterminer quel type de recherche à effectuer
+ */
 public class SearchActivity extends BaseActivity {
 
 	private ListView myList;
@@ -58,7 +70,6 @@ public class SearchActivity extends BaseActivity {
 	public void onNewIntent(Intent intent) {
 		noResultTextView.setVisibility(View.INVISIBLE);
 		myList.setVisibility(View.VISIBLE);
-
 		setIntent(intent);
 		handleIntent(intent);
 	}
@@ -66,22 +77,29 @@ public class SearchActivity extends BaseActivity {
 	private void handleIntent(Intent intent) {
 
 		if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+			//intent de type recherche
+
 			boolean from_main = intent.getBooleanExtra("drawer", false);
 			boolean from_genre = intent.getBooleanExtra("from_genre", false);
 			String new_query = intent.getStringExtra(SearchManager.QUERY);
 
+			//Intent du mainActivity (popular, topRated, ...)
 			if(from_main){
 				previous_query = new_query;
 				Utils.setLastQuery(new_query);
 				int type=intent.getIntExtra("type",0);
 				new DrawerAsyncTask(type).execute();
 			}
+			
+			//Intent du MainActivity mais avec les recherches de films par genre
 			else if (from_genre){
 				previous_query = new_query;
 				Utils.setLastQuery(new_query);
 				String genre = intent.getStringExtra("genre");
 				new GenreAsyncTask(genre).execute();
 			}
+
+			//Intent avec recherche par query
 			else{
 	
 			 if (!previous_query.equalsIgnoreCase(new_query)) {
@@ -98,6 +116,7 @@ public class SearchActivity extends BaseActivity {
 			}
 			}
 		} else {
+			//Sinon pas de recherche, l'appel est deja avec les données de recherche, juste afficher ces données
 			Bundle b = intent.getBundleExtra("Similar");
 
 			String origin = null;
@@ -120,6 +139,9 @@ public class SearchActivity extends BaseActivity {
 
 	}
 
+	/*
+	 * Click sur un item du listview de search doit amener vers la page de détails
+	 */
 	private class ListOnItemClick implements OnItemClickListener {
 		@Override
 		public void onItemClick(AdapterView<?> adapter, View view,
@@ -138,7 +160,7 @@ public class SearchActivity extends BaseActivity {
 		}
 	}
 
-	
+
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
@@ -154,6 +176,7 @@ public class SearchActivity extends BaseActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		activity = this;
+		//Utiliser les données de l'utilisateur pour le nombre de résultat et le nombre de page
 		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 		nResultsRT= Integer.parseInt(sharedPref.getString("max_req", "20"));
 		maxPage=Integer.parseInt(sharedPref.getString("maxPage", "1"));
@@ -176,6 +199,7 @@ public class SearchActivity extends BaseActivity {
 		
 		noResultTextView = (TextView) activity.findViewById(R.id.noResult);
 		
+		//Ne pas refaire des requêtes si onSaveInstance a été appelé
 		if(savedInstanceState!=null && savedInstanceState.getBoolean("search_title")){
 			this.filminfosList=savedInstanceState.getParcelableArrayList("movies");
 			this.showinfosList=savedInstanceState.getParcelableArrayList("shows");
@@ -190,11 +214,6 @@ public class SearchActivity extends BaseActivity {
 		
 	}
 
-	@Override
-	public void onDestroy() {
-		//Toast.makeText(getApplicationContext(), "onCreate()", Toast.LENGTH_LONG).show();
-		super.onDestroy();
-	}
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -213,6 +232,9 @@ public class SearchActivity extends BaseActivity {
 
 	}
 
+	/*
+	 * Affichage des résultats de recherche en fonction des filtres
+	 */
 	private void displaySearchResult() {
 
 		ArrayList<? extends MediaInfos> listToDisplay = null;
@@ -286,6 +308,9 @@ public class SearchActivity extends BaseActivity {
 		displaySearchResult();
 	}
 
+	/*
+	 * AsyncTask pour les recherches de média basé sur un query
+	 */
 	protected class DownloadLoginTask extends AsyncTask<String, String, Void> {
 
 		String query;
@@ -299,6 +324,7 @@ public class SearchActivity extends BaseActivity {
 
 		protected Void doInBackground(String... params) {
 
+			//Chercher à la fois les films et les TVShows. L'utilisateur pourrait trier plus tard
 			RottenTomatoes RT = new RottenTomatoes();
 			TraktTV TTV = new TraktTV();
 			query = params[0];
@@ -318,6 +344,7 @@ public class SearchActivity extends BaseActivity {
 			filminfosList = a;
 			showinfosList = b;
 			Log.d("async", "making mediainfoslists");
+			//Mettre les films et les show de facon alternative
 			mediainfosList = Utils.entrelace(filminfosList, showinfosList);
 
 			return null;
@@ -325,12 +352,15 @@ public class SearchActivity extends BaseActivity {
 
 		protected void onPostExecute(Void result) {
 			search_title="Search result for \""+query+"\"";
-			displaySearchResult();
+			displaySearchResult();//afficher les résultats à la fin
 
 		}
 
 	}
 	
+	/*
+	 * AsyncTask pour les recherches de films basé sur le genre (Intent from MainActivity)
+	 */
 	protected class GenreAsyncTask extends AsyncTask<String, String, Void> {
 
 		String genre="";
@@ -371,12 +401,15 @@ public class SearchActivity extends BaseActivity {
 
 	}
 	
+	/*
+	 * AsyncTask pour les recherches de média  basé  sur les options du drawer du MainActivity
+	 */
 	protected class DrawerAsyncTask extends AsyncTask<Void, String, Void> {
 
-		int queryType;
+		int queryType; //type de requête à faire
 		String message="";
-		boolean movie=true;
-		boolean mixte=false;
+		boolean movie=true; //seulement de type film
+		boolean mixte=false; //la recherche est mixte (popular ou TopRated)
 		public DrawerAsyncTask (int queryType){
 			this.queryType=queryType;
 		}
@@ -434,6 +467,7 @@ public class SearchActivity extends BaseActivity {
 		
 			}
 			
+			//Distribuer les résulats correctement dans filminfosList et showinfosList
 			if (mixte) {
 				filminfosList = new ArrayList<TMDBSearch>(a);
 				showinfosList = new ArrayList<TMDBSearch>(a);

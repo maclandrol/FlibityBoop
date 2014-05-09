@@ -1,3 +1,9 @@
+/**
+ * IFT2905 : Interface personne machine
+ * Projet de session: FlibityBoop.
+ * Team: Vincent CABELI, Henry LIM, Pamela MEHANNA, Emmanuel NOUTAHI, Olivier TASTET
+ * @author Emmanuel Noutahi, Vincent Cabeli
+ */
 package com.maclandrol.flibityboop;
 
 import android.app.ActionBar;
@@ -11,17 +17,9 @@ import android.widget.TextView;
 
 
 /**
- * 
- * Cette activité utilise un ViewPager, un élément faisant
- * partie de l'Android Support Library, qui permet d'afficher
- * plusieurs "pages" ou "tabs" dans une seule activité et qui
- * permet à l'usager de glisser (swipe) d'un à l'autre de gauche
- * à droite.
- * 
- * Cette activité implante un cas où on a beaucoup de pages, nécessitant
- * ainsi l'usage d'un indicateur de tabs dynamique qui n'affiche qu'une
- * partie des tabs.
- * 
+ * Activité des favoris, utilise un viewpager avec des fragments
+ * Une page pour les TVShow et une seconde pour les Films
+ * Ce code est fortement inspiré de celui du démo
  */
 public class FavoriteActivity extends BaseActivity {
 	

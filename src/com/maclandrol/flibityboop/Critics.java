@@ -1,3 +1,9 @@
+/**
+ * IFT2905 : Interface personne machine
+ * Projet de session: FlibityBoop.
+ * Team: Vincent CABELI, Henry LIM, Pamela MEHANNA, Emmanuel NOUTAHI, Olivier TASTET
+ * @author Emmanuel Noutahi, Vincent Cabeli
+ */
 package com.maclandrol.flibityboop;
 
 import java.io.Serializable;
@@ -9,6 +15,10 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.webkit.URLUtil;
 
+/**
+ * Classe Critics, contient les commentaires et les critiques sur un média ainsi que les méthodes
+ * pour avoir accès aux informations relatives à ces critiques
+ */
 public class Critics implements Parcelable, Serializable {
 
 	private static final long serialVersionUID = -4069392063214205777L;
@@ -128,7 +138,6 @@ public class Critics implements Parcelable, Serializable {
 
 		@Override
 		public Critics createFromParcel(Parcel source) {
-			// TODO Auto-generated method stub
 			return new Critics(source);
 		}
 

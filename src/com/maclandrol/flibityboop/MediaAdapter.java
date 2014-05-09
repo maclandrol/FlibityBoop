@@ -1,3 +1,10 @@
+/**
+ * IFT2905 : Interface personne machine
+ * Projet de session: FlibityBoop.
+ * Team: Vincent CABELI, Henry LIM, Pamela MEHANNA, Emmanuel NOUTAHI, Olivier TASTET
+ * @author Emmanuel Noutahi, Vincent Cabeli
+ */
+
 package com.maclandrol.flibityboop;
 
 import java.util.List;
@@ -10,6 +17,9 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+/**
+ * MediaAdapter est l'adapter du listview de SearchActivity qui permet d'afficher une liste de résultat de recherche
+ */
 
 public class MediaAdapter extends BaseAdapter {	
 	
@@ -44,6 +54,7 @@ public class MediaAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View view, ViewGroup parent) {
 		
+		//Set view content
 		MediaInfos media = _data.get(position);
 		
 		if (view == null) {
