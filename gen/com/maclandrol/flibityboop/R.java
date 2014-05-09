@@ -60,8 +60,8 @@ public final class R {
         public static final int fresh=0x7f02000d;
         public static final int ic_action_delete=0x7f02000e;
         public static final int ic_action_fast_back=0x7f02000f;
-        public static final int ic_action_fast_forward=0x7f020010;
-        public static final int ic_action_favorites=0x7f020011;
+        public static final int ic_action_favorites=0x7f020010;
+        public static final int ic_action_forward=0x7f020011;
         public static final int ic_action_search=0x7f020012;
         public static final int ic_drawer_am=0x7f020013;
         public static final int ic_launcher=0x7f020014;

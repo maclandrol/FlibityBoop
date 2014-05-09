@@ -81,7 +81,6 @@ public class BaseActivity extends FragmentActivity implements OnFocusChangeListe
 		setShareIntent(shareIntent);
 		
 		
-		
        return true;
 	    
     }
@@ -172,7 +171,6 @@ protected void addToDB(Media media, boolean seen){
 				e.printStackTrace();
 				Log.d("baseactivity", "Event delete echec");
 			}
-
 		}
 
 
@@ -212,8 +210,9 @@ protected void addToDB(Media media, boolean seen){
 	}
 	
 
-	protected Media randomFav() {
+	protected ArrayList<MediaInfos> randomFav(int n) {
 
+		ArrayList<MediaInfos> recommendations = new ArrayList<MediaInfos>();
 		Media media = null;
 		
 		String[] select = new String[] { DBHelperMedia.M_ID,
@@ -233,7 +232,7 @@ protected void addToDB(Media media, boolean seen){
 		int fav_count = mCursor.getCount();
 		int pos = mCursor.getPosition();
 			
-		while (media == null && pos < fav_count) {
+		while (pos < fav_count && recommendations.size() < n) {
 			
 			if (null == mCursor) {
 			    // Insert code here to handle the error. Be sure not to use the cursor!
@@ -257,14 +256,12 @@ protected void addToDB(Media media, boolean seen){
 				} catch (Exception e) {
 	
 				}
-				if (media != null) {
+				if (recommendations != null) {
 	
 					// si le media a une liste de recommendations on le retourne
 					if (! media.similarMedia.isEmpty())
-						return media;
+						recommendations.addAll(media.similarMedia);
 					// sinon on essaye le suivant
-					else
-						media = null;
 				}
 			}
 			
@@ -272,7 +269,7 @@ protected void addToDB(Media media, boolean seen){
 			pos = mCursor.getPosition();
 		}
 		
-		return media;
+		return recommendations;
 	}
 	
 	protected ArrayList<MediaInfos> lastAddedFav(int n) {

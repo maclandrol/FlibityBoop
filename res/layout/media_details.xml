@@ -577,7 +577,7 @@
                         android:background="#EEE"
                         android:contentDescription="@string/indisponible"
                         android:padding="5dp"
-                        android:src="@drawable/ic_action_fast_forward" />
+                        android:src="@drawable/ic_action_forward" />
                 </LinearLayout>
             </LinearLayout>
 

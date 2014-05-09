@@ -614,7 +614,7 @@
                             android:onClick="quickSearch"
                             android:padding="3dip"
                             android:text="Action"
-                            android:textSize="16sp" />
+                            android:textSize="15sp" />
 
                         <Button
                             android:id="@+id/accueil_genre2"
@@ -626,7 +626,7 @@
                             android:onClick="quickSearch"
                             android:padding="3dip"
                             android:text="Adventure"
-                            android:textSize="16sp" />
+                            android:textSize="15sp" />
 
                         <Button
                             android:id="@+id/accueil_genre3"
@@ -638,7 +638,7 @@
                             android:onClick="quickSearch"
                             android:padding="3dip"
                             android:text="Animation"
-                            android:textSize="16sp" />
+                            android:textSize="15sp" />
 
                         <Button
                             android:id="@+id/accueil_genre4"
@@ -650,7 +650,7 @@
                             android:onClick="quickSearch"
                             android:padding="3dip"
                             android:text="Comedy"
-                            android:textSize="16sp" />
+                            android:textSize="15sp" />
                     </TableRow>
 
                     <TableRow
@@ -669,7 +669,7 @@
                             android:onClick="quickSearch"
                             android:padding="3dip"
                             android:text="Crime"
-                            android:textSize="16sp" />
+                            android:textSize="15sp" />
 
                         <Button
                             android:id="@+id/accueil_genre6"
@@ -681,7 +681,7 @@
                             android:onClick="quickSearch"
                             android:padding="3dip"
                             android:text="Documentary"
-                            android:textSize="16sp" />
+                            android:textSize="15sp" />
 
                         <Button
                             android:id="@+id/accueil_genre7"
@@ -693,7 +693,7 @@
                             android:onClick="quickSearch"
                             android:padding="3dip"
                             android:text="Drama"
-                            android:textSize="16sp" />
+                            android:textSize="15sp" />
 
                         <Button
                             android:id="@+id/accueil_genre8"
@@ -705,7 +705,7 @@
                             android:onClick="quickSearch"
                             android:padding="3dip"
                             android:text="Family"
-                            android:textSize="16sp" />
+                            android:textSize="15sp" />
                     </TableRow>
 
                     <TableRow
@@ -724,7 +724,7 @@
                             android:onClick="quickSearch"
                             android:padding="3dip"
                             android:text="Fantasy"
-                            android:textSize="16sp" />
+                            android:textSize="15sp" />
 
                         <Button
                             android:id="@+id/accueil_genre10"
@@ -736,7 +736,7 @@
                             android:onClick="quickSearch"
                             android:padding="3dip"
                             android:text="Foreign"
-                            android:textSize="16sp" />
+                            android:textSize="15sp" />
 
                         <Button
                             android:id="@+id/accueil_genre11"
@@ -748,7 +748,7 @@
                             android:onClick="quickSearch"
                             android:padding="3dip"
                             android:text="Fiction"
-                            android:textSize="16sp" />
+                            android:textSize="15sp" />
 
                         <Button
                             android:id="@+id/accueil_genre12"
@@ -760,7 +760,7 @@
                             android:onClick="quickSearch"
                             android:padding="3dip"
                             android:text="Film noir"
-                            android:textSize="16sp" />
+                            android:textSize="15sp" />
                     </TableRow>
 
                     <TableRow
@@ -779,7 +779,7 @@
                             android:onClick="quickSearch"
                             android:padding="3dip"
                             android:text="History"
-                            android:textSize="16sp" />
+                            android:textSize="15sp" />
 
                         <Button
                             android:id="@+id/accueil_genre14"
@@ -791,7 +791,7 @@
                             android:onClick="quickSearch"
                             android:padding="3dip"
                             android:text="Horror"
-                            android:textSize="16sp" />
+                            android:textSize="15sp" />
 
                         <Button
                             android:id="@+id/accueil_genre15"
@@ -803,7 +803,7 @@
                             android:onClick="quickSearch"
                             android:padding="3dip"
                             android:text="Romance"
-                            android:textSize="16sp" />
+                            android:textSize="15sp" />
 
                         <Button
                             android:id="@+id/accueil_genre16"
@@ -815,7 +815,7 @@
                             android:onClick="quickSearch"
                             android:padding="3dip"
                             android:text="Science fiction"
-                            android:textSize="16sp" />
+                            android:textSize="15sp" />
                     </TableRow>
 
                     <TableRow
@@ -834,7 +834,7 @@
                             android:onClick="quickSearch"
                             android:padding="3dip"
                             android:text="Suspense"
-                            android:textSize="16sp" />
+                            android:textSize="15sp" />
 
                         <Button
                             android:id="@+id/accueil_genre18"
@@ -846,7 +846,7 @@
                             android:onClick="quickSearch"
                             android:padding="3dip"
                             android:text="Thriller"
-                            android:textSize="16sp" />
+                            android:textSize="15sp" />
 
                         <Button
                             android:id="@+id/accueil_genre19"
@@ -858,7 +858,7 @@
                             android:onClick="quickSearch"
                             android:padding="3dip"
                             android:text="War"
-                            android:textSize="16sp" />
+                            android:textSize="15sp" />
 
                         <Button
                             android:id="@+id/accueil_genre20"
@@ -870,7 +870,7 @@
                             android:onClick="quickSearch"
                             android:padding="3dip"
                             android:text="Western"
-                            android:textSize="16sp" />
+                            android:textSize="15sp" />
                     </TableRow>
                 </TableLayout>
             </RelativeLayout>

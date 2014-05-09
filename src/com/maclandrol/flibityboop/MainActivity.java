@@ -232,20 +232,12 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 	
 	public void showRecommendations(){
 		
-		Media media = randomFav();
+		sim = randomFav(3);
 		
-		if (media == null){
+		if (sim == null){
 			noRecommendations.setVisibility(View.VISIBLE);
 			return;
 		}
-
-		sim = media.getRecommendations();
-		
-		if (sim == null || sim.isEmpty()) {
-			noRecommendations.setVisibility(View.VISIBLE);
-			return;
-		}
-
 	
 		else {
 			noRecommendations.setVisibility(View.GONE);
