@@ -116,7 +116,16 @@ public class MediaDetails extends BaseActivity {
 	}
 
 	
-
+	@Override
+	public void onResume(){
+		super.onResume();
+		if(m!=null){
+			shareIntent.setType("text/plain");
+			Log.d("share", "share not working");
+			setShareIntent(shareIntent);
+			this.share(m.getShare()+"\n\n"+sharedPref.getString("username","FlibityBoop Team"));
+		}
+	}
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
