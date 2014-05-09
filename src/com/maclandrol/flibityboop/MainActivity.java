@@ -154,7 +154,8 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 	protected void onResume() {
 		super.onResume();
 		noConnection.setVisibility(isNetworkConnected()? View.GONE : View.VISIBLE);
-		showMedia();
+		showUpcomingShows();
+		showLastAddedFav();
 	}
 
 
@@ -232,15 +233,20 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 	
 	public void showRecommendations(){
 		
-		sim = randomFav(3);
+		sim = randomRecommendations(3);
 		
-		if (sim == null){
+		if (sim.isEmpty()){
 			noRecommendations.setVisibility(View.VISIBLE);
+			rdmButton.setVisibility(View.GONE);
 			return;
 		}
 	
 		else {
+			rdmButton.setVisibility(View.VISIBLE);
 			noRecommendations.setVisibility(View.GONE);
+			((LinearLayout) findViewById(R.id.accueil_similar3)).setVisibility(View.VISIBLE);
+			((LinearLayout) findViewById(R.id.accueil_similar2)).setVisibility(View.VISIBLE);
+			((LinearLayout) findViewById(R.id.accueil_similar3)).setVisibility(View.VISIBLE);
 				
 			Collections.shuffle(sim);
 			int i = 0;

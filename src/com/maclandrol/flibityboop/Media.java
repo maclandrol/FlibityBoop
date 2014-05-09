@@ -114,7 +114,7 @@ public class Media implements Parcelable, Serializable {
 	}
 
 	public String getSynopsys() {
-		String resume = "Synopsis not available, We are so, so sorry!";
+		String resume = "Synopsis not available, sorry!";
 		if (this.addInfos.get("overview")!=null && !this.addInfos.get("overview").isEmpty()) {
 			resume = this.addInfos.get("overview");
 		} else if (this.tk_info != null) {
@@ -323,11 +323,11 @@ public class Media implements Parcelable, Serializable {
 	}
 	
 	public String getShare(){
-		return "Hey Dude, I'm using FlibityBoop and I find this great "+this.mediainfos.getType().toString()+
+		return "Hey Dude, I'm using FlibityBoop and I found this great "+this.mediainfos.getType().toString()+
 				(this.mediainfos.isShow()?" show":"") +" : " + this.getDetailledTitle() +". It's rated " +
 				this.mediainfos.getScore()+"%.\n"+(this.hasTrailer()?"Here is the trailer: "+this.getTrailer()+
 						".\n":"")+(this.hasWiki()?"You can also find all the informations on the wiki page: "+
-				this.getWiki()+".\n":"")+"Check it if you haven't seen it yet!!"; 		
+				this.getWiki()+".\n":"")+"Check it out if you haven't seen it yet!!"; 		
 	}
 	
 	@Override

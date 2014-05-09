@@ -36,7 +36,7 @@ public class BaseActivity extends FragmentActivity implements OnFocusChangeListe
 	
 	MenuItem searchMenuItem=null;
 
-    // This is to set up the same action bar on all the activities.
+	// This is to set up the same action bar on all the activities.
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		
@@ -53,7 +53,6 @@ public class BaseActivity extends FragmentActivity implements OnFocusChangeListe
 			searchView.setIconifiedByDefault(false);
 		}
 		searchView.setQuery(Utils.getLastQuery(), false);
-		
 	
 		
 		menu.findItem(R.id.action_favorites).setOnMenuItemClickListener(
@@ -72,8 +71,7 @@ public class BaseActivity extends FragmentActivity implements OnFocusChangeListe
 		searchMenuItem = menu.findItem(R.id.action_search);
 		SearchView sv = (SearchView) searchMenuItem.getActionView();
 		sv.setOnQueryTextFocusChangeListener(this); 
-
-
+		
 	   	ActionBar ab = getActionBar();
 	    ab.setDisplayHomeAsUpEnabled(true);
 		//share intent
@@ -210,7 +208,7 @@ protected void addToDB(Media media, boolean seen){
 	}
 	
 
-	protected ArrayList<MediaInfos> randomFav(int n) {
+	protected ArrayList<MediaInfos> randomRecommendations(int n) {
 
 		ArrayList<MediaInfos> recommendations = new ArrayList<MediaInfos>();
 		Media media = null;
@@ -261,6 +259,7 @@ protected void addToDB(Media media, boolean seen){
 					// si le media a une liste de recommendations on le retourne
 					if (! media.similarMedia.isEmpty())
 						recommendations.addAll(media.similarMedia);
+						recommendations = checkSeen(recommendations);
 					// sinon on essaye le suivant
 				}
 			}
@@ -406,6 +405,62 @@ protected void addToDB(Media media, boolean seen){
 		mCursor.close();
 		// Return the 3 next followed shows to air 
 		return sorted_shows;
+	}
+	
+	protected ArrayList<MediaInfos> checkSeen(ArrayList<MediaInfos> list) {
+
+		Media media = null;
+		
+		String[] select = new String[] { DBHelperMedia.M_ID,
+				DBHelperMedia.M_INSERT_TIME, DBHelperMedia.M_TITLE,
+				DBHelperMedia.M_SHOW, DBHelperMedia.M_INFOS, DBHelperMedia.M_SEEN };
+		
+		String q_select = DBHelperMedia.M_SEEN+ " = ?";
+
+		
+		Cursor mCursor = getContentResolver().query(
+			    MediaContentProvider.CONTENT_URI,  // 
+			    select,                  	       // 
+			    q_select,	   // 
+			    new String[]{"1"},       	       // 
+			    null);               			   // 
+		
+		int index = mCursor.getColumnIndex(DBHelperMedia.M_INFOS);
+
+		
+		while (mCursor.moveToNext()) {
+			
+			if (null == mCursor) {
+			    // Insert code here to handle the error. Be sure not to use the cursor!
+			     	Log.e("baseactivity","null cursor");
+			     	// If the Cursor is empty, the provider found no matches
+			} else if (mCursor.getCount() < 1) {
+	
+			    /*
+			     * Insert code here to notify the user that the search was unsuccessful. This isn't necessarily
+			     * an error. You may want to offer the user the option to insert a new row, or re-type the
+			     * search term.
+			     */
+	
+			} else {
+				
+				try {
+					ObjectInputStream ois = new ObjectInputStream(
+							new ByteArrayInputStream(mCursor.getBlob(index)));
+					media= (Media) ois.readObject();
+				} catch (Exception e) {
+	
+				}
+				// If there is a media and it is followed, add it to the list
+				if (list.contains(media.mediainfos)) {
+					
+					list.remove(media.mediainfos);
+				}
+			}
+			
+		}
+		
+		return list;
 	}
 
 	protected boolean isNetworkConnected() {
