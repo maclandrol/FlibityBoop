@@ -11,7 +11,6 @@ import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -564,21 +563,6 @@ public class MediaDetails extends BaseActivity {
 			Intent i = new Intent(MediaDetails.this, MediaDetails.class);
 			i.putExtra("mediainfo", (Parcelable)infos);
 			startActivity(i);
-		}
-	}
-
-	// Cette classe permet de demarrer une activité web mais actuellement elle n'est plus utilisé...
-	private class WebIntentListener implements OnClickListener {
-		private String link;
-
-		public WebIntentListener(String s) {
-			this.link = s;
-		}
-
-		@Override
-		public void onClick(View v) {
-			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(this.link)));
-
 		}
 	}
 

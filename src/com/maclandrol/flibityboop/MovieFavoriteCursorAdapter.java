@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Parcelable;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -25,30 +26,6 @@ public class MovieFavoriteCursorAdapter extends SimpleCursorAdapter {
 	Context c;
 	ImageLoader im;
 
-	@Override
-	public View getView(int arg0, View arg1, ViewGroup arg2) {
-		View view= super.getView(arg0, arg1, arg2);
-		final ContentResolver resolver = MovieFavoriteCursorAdapter.this.c.getContentResolver();
-		CheckBox seen = (CheckBox) view.findViewById(R.id.seen_fav);
-	    final TextView title = (TextView) view.findViewById(R.id.title_fav);
-
-        seen.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView,
-                    boolean isChecked) {
-                ContentValues val = new ContentValues();
-                val.clear();
-                val.put(DBHelperMedia.M_SEEN, isChecked);
-                //val.put(DBHelperMedia.M_INSERT_TIME, System.currentTimeMillis());
-                resolver.update(MediaContentProvider.CONTENT_URI, val,	DBHelperMedia.M_TITLE + "=?", new String[] { title.getText().toString() });
-
-            }
-
-        });
-		return view;
-	}
-
 	public MovieFavoriteCursorAdapter(Context context, int layout, Cursor c,
 			String[] from, int[] to, int flags) {
 		super(context, layout, c, from, to, flags);
@@ -58,13 +35,47 @@ public class MovieFavoriteCursorAdapter extends SimpleCursorAdapter {
 
 	@Override
 	public void bindView(View view, Context context, Cursor cursor) {
-		super.bindView(view, context, cursor);
+
+		//super.bindView(view, context, cursor);
         
 		final int id = cursor.getInt(cursor.getColumnIndex(DBHelperMedia.M_ID));
-        final ContentResolver resolver = MovieFavoriteCursorAdapter.this.c
-                .getContentResolver();
+        final ContentResolver resolver = MovieFavoriteCursorAdapter.this.c.getContentResolver();
+        
         ImageButton del = (ImageButton) view.findViewById(R.id.del_fav);
         ImageView poster_fav =(ImageView) view.findViewById(R.id.poster_fav);
+        
+        TextView date = (TextView)view.findViewById(R.id.date_fav);
+        TextView score = (TextView)view.findViewById(R.id.score_fav);
+        TextView title = (TextView)view.findViewById(R.id.title_fav);
+        ImageView icon_fav =(ImageView) view.findViewById(R.id.type_icon_fav);
+		CheckBox seen = (CheckBox) view.findViewById(R.id.seen_fav);
+
+        final int media_pos= cursor.getColumnIndex(DBHelperMedia.M_INFOS);
+        
+		title.setText(cursor.getString(cursor.getColumnIndex(DBHelperMedia.M_TITLE)));
+		icon_fav.setImageResource(cursor.getInt(cursor.getColumnIndex(DBHelperMedia.M_SHOW)) <= 0 ? R.drawable.movie: R.drawable.tvshow);
+		boolean checked=cursor.getInt(cursor.getColumnIndex(DBHelperMedia.M_SEEN)) > 0 ? true: false;
+		
+		seen.setChecked(checked);
+        //retrieving media 
+        Media media=null;
+        MediaInfos m=null;
+        try {
+			ObjectInputStream ois = new ObjectInputStream(
+					new ByteArrayInputStream(cursor.getBlob(media_pos)));
+			media = (Media) ois.readObject();
+		} catch (Exception e) {
+
+		}
+		if (media != null) {
+			m= media.mediainfos;
+			im.DisplayImage(m.getPosterURL(1), poster_fav);
+			date.setText(m.getDate());
+			score.setText(m.getScore()>0?m.getScore() + "%":"?");
+		}
+        
+		final Media to_send = media;
+
         del.setOnClickListener(new OnClickListener() {
 
             @Override
@@ -78,24 +89,7 @@ public class MovieFavoriteCursorAdapter extends SimpleCursorAdapter {
 
         });
 
-        
-        final int media_pos= cursor.getColumnIndex(DBHelperMedia.M_INFOS);
-        
-        Media media=null;
-        MediaInfos m=null;
-        try {
-			ObjectInputStream ois = new ObjectInputStream(
-					new ByteArrayInputStream(cursor.getBlob(media_pos)));
-			media = (Media) ois.readObject();
-		} catch (Exception e) {
-
-		}
-		if (media != null) {
-			m= media.mediainfos;
-			im.DisplayImage(m.getPosterURL(1), poster_fav);
-		}
-		final Media to_send = media;
-
+     
 		poster_fav.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -108,6 +102,20 @@ public class MovieFavoriteCursorAdapter extends SimpleCursorAdapter {
 			}
 
 		});
+		
+        seen.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				ContentValues val = new ContentValues();
+                val.clear();
+                val.put(DBHelperMedia.M_SEEN, ((CheckBox)v).isChecked());
+                //val.put(DBHelperMedia.M_INSERT_TIME, System.currentTimeMillis());
+                resolver.update(MediaContentProvider.CONTENT_URI, val,	DBHelperMedia.M_ID + "=?",new String[] { Integer.toString(id) });
+				
+			}
+
+        });
 
 	}
 

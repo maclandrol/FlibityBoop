@@ -43,7 +43,7 @@ public class MovieListFragment extends ListFragment implements	LoaderManager.Loa
 
 		getLoaderManager().initLoader(LOADER_ID, null, this);
 		adapter= new MovieFavoriteCursorAdapter(this.getActivity(), R.layout.movie_favorite_details, cursor, from, to, 0);
-		adapter.setViewBinder(VIEW_BINDER);
+		//adapter.setViewBinder(VIEW_BINDER);
 	    setListAdapter(adapter);
 		return rootView;
 	}

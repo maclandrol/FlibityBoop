@@ -19,6 +19,7 @@ import android.provider.CalendarContract.Reminders;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CheckedTextView;
 import android.widget.ImageButton;
@@ -72,10 +73,17 @@ public class ShowFavoriteCursorAdapter extends SimpleCursorTreeAdapter {
 	}
 
 	@Override
+	public View newChildView(Context context, Cursor cursor,
+			boolean isLastChild, ViewGroup parent) {
+		return super.newChildView(context, cursor, isLastChild, parent);
+	}
+
+	@Override
 	protected void bindChildView(View view, Context context, Cursor cursor,
 			boolean isLastChild) {
 		Media media = null;
 		MediaInfos m =null;
+		Log.d("binding view", "this must'nt be recursive");
 		final int id = cursor.getInt(cursor.getColumnIndex(DBHelperMedia.M_ID));
 
 		TextView date = (TextView) view.findViewById(R.id.date_fav);

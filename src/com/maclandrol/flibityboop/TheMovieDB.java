@@ -13,8 +13,6 @@ import org.json.JSONObject;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.os.Parcelable.Creator;
-
 import com.maclandrol.flibityboop.API.MediaType;
 
 public class TheMovieDB extends API {

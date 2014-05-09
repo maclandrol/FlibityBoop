@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 
 public class TVListFragment extends Fragment implements
@@ -37,12 +36,12 @@ public class TVListFragment extends Fragment implements
 	static final String[] group_from = new String[] { DBHelperMedia.M_SEEN };
 	static final int[] group_to = new int[] { R.id.ctView1 };
 
-	private Bundle savedInstanceState; // add this to your code
+	private Bundle savedInstanceState; 
 	LinearLayout empty;
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		this.savedInstanceState = savedInstanceState; // add this to your code
+		this.savedInstanceState = savedInstanceState; 
 
 	}
 
