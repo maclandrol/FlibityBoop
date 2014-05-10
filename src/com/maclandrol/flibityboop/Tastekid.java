@@ -237,8 +237,8 @@ class TKSearchResult implements Parcelable, Serializable {
 		dest.writeString(type);
 		dest.writeString(title);
 		dest.writeString(webpage);
-		dest.writeString(ytbtitle);
 		dest.writeString(ytblink);
+		dest.writeString(ytbtitle);
 
 	}
 
